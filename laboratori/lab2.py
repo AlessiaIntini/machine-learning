@@ -73,7 +73,10 @@ if __name__=='__main__':
     #statistics
     #mean
     mu=mcol(d_array.mean(axis=1),d_array.shape[0])
+    print(mu)
     DC=d_array-mu
+    muDC=mcol(DC.mean(axis=1),DC.shape[0])
+    print(muDC)
     
     for i in range(4):
         hist(DC,l_array,i,label_name[i])
