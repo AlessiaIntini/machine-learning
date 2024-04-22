@@ -1,6 +1,8 @@
 import numpy as np
+from matplotlib import pyplot as plt
 
 import ReadData as ut
+import plot
 
 
 def compute_mu_C(D):
@@ -32,5 +34,23 @@ def log_likelihood(X, mu, C):
 
 
 def apply_ML(D, L):
-    print("D", D)
-    print("L", L)
+    for i in range(1, 7):
+        plt.figure()
+        plt.title("Feature {}".format(i))
+
+        D0 = np.array(D[i - 1:i, L == 0])
+        m_ML0, C_ML0 = compute_mu_C(D0)
+        plot.plot_gaussian_density(D0, m_ML0, C_ML0)
+
+        D1 = np.array(D[i - 1:i, L == 1])
+        m_ML1, C_ML1 = compute_mu_C(D1)
+        plot.plot_gaussian_density(D1, m_ML1, C_ML1)
+
+        plt.legend(['False', 'True', 'False', 'True'])
+        plt.show()
+        print("feature", i)
+        # Un valore di log-verosimiglianza più alto indica un adattamento migliore del modello ai dati.
+        ll = log_likelihood(D0, m_ML0, C_ML0)
+        print("False\n", ll)
+        ll = log_likelihood(D1, m_ML1, C_ML1)
+        print("True\n", ll)
