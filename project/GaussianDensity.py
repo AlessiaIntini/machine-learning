@@ -29,6 +29,17 @@ def logpdf_GAU_ND(X, mu, C):
     return np.array(Y)
 
 
+def predict_labels(DVAL, TH, LLR, class1, class2):
+    PVAL = np.zeros(DVAL.shape[1], dtype=np.int32)
+    PVAL[LLR >= TH] = class2
+    PVAL[LLR < TH] = class1
+    return PVAL
+
+
+def error_rate(PVAL, LVAL):
+    return ((PVAL != LVAL).sum() / float(LVAL.size) * 100)
+
+
 def log_likelihood(X, mu, C):
     return logpdf_GAU_ND(X, mu, C).sum()
 
@@ -38,11 +49,11 @@ def apply_ML(D, L):
         plt.figure()
         plt.title("Feature {}".format(i))
 
-        D0 = np.array(D[i - 1:i, L == 0])
+        D0 = D[i - 1:i, L == 0]
         m_ML0, C_ML0 = compute_mu_C(D0)
         plot.plot_gaussian_density(D0, m_ML0, C_ML0)
 
-        D1 = np.array(D[i - 1:i, L == 1])
+        D1 = D[i - 1:i, L == 1]
         m_ML1, C_ML1 = compute_mu_C(D1)
         plot.plot_gaussian_density(D1, m_ML1, C_ML1)
 

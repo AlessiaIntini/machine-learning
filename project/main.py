@@ -1,3 +1,5 @@
+import Dim_reduction as dr
+import FeaturesAnalysis as fa
 import GaussianDensity as gd
 import ReadData as rd
 
@@ -6,16 +8,16 @@ if __name__ == '__main__':
     # ########################
     # ## FEATURES ANALYSIS ###
     # ########################
-    # fa.plot_features(D,L)
+    fa.plot_features(D, L)
 
     # ########################
     # ## DIM REDUCTION #######
     # ########################
-    # dr.Dim_red(D, L)
+    dr.Dim_red(D, L)
 
     # Classification
-    # (DTR, LTR), (DVAL, LVAL) = rd.split_db_2to1(D, L)
-    # dr.classification(DTR, LTR, DVAL, LVAL)
+    (DTR, LTR), (DVAL, LVAL) = rd.split_db_2to1(D, L)
+    dr.classification(DTR, LTR, DVAL, LVAL)
 
     # ########################
     # ## Gausian Density ####
