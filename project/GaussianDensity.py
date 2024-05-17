@@ -6,7 +6,7 @@ import plot
 
 
 def compute_mu_C(D):
-    mu = ut.mcol(D.mean(1), D.mean(1).size)
+    mu = ut.vcol(D.mean(1))
     C = ((D - mu) @ (D - mu).T) / float(D.shape[1])
     return mu, C
 
@@ -17,7 +17,7 @@ def logpdf_GAU_ND(X, mu, C):
     N = X.shape[0]
     # for each input data
     for x in X.T:
-        x = ut.mcol(x, x.shape[0])
+        x = ut.vcol(x)
         # compute the constant term
         const = N * np.log(2 * np.pi)  # compute the second term
         logC = np.linalg.slogdet(C)[1]  # compute the third term

@@ -26,5 +26,5 @@ def plot_gaussian_density(D, m_ML, C_ML):
     plt.hist(D.ravel(), bins=50, density=True, alpha=0.5)
     XPlot = np.linspace(-8, 12, 1000)
 
-    plt.plot(XPlot.ravel(), np.exp(gd.logpdf_GAU_ND(ut.mrow(XPlot, XPlot.shape[0]), m_ML, C_ML)))
+    plt.plot(XPlot.ravel(), np.exp(gd.logpdf_GAU_ND(ut.vrow(XPlot), m_ML, C_ML)))
     plt.xlim(-5, 5)
