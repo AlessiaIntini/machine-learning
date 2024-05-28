@@ -24,7 +24,7 @@ def PCA_function(D, m):
 
     s, U = np.linalg.eigh(C)
     P = U[:, ::-1][:, 0:m]  # matrice di proiezione
-    print("P", P)
+    # print("P", P)
     # U,s,Vh=np.linalg.svd(C)
     # P=U[:,0:m]#matrice di proiezione
     return s, P
