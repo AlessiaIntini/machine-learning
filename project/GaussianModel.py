@@ -1,6 +1,7 @@
 import numpy as np
 import scipy
 
+import Evaluation as error
 import GaussianDensity as gd
 import ReadData as ut
 
@@ -66,7 +67,7 @@ def calculate_MVG(DTR, LTR, DVAL, LVAL):
     LLR = gd.logpdf_GAU_ND(DVAL, hParams_MVG[1][0], hParams_MVG[1][1]) - gd.logpdf_GAU_ND(DVAL, hParams_MVG[0][0],
                                                                                           hParams_MVG[0][1])
     PVAL = gd.predict_labels(DVAL=DVAL, TH=0, LLR=LLR, class1=0, class2=1)
-    print("MVG 2-Class problem - Error rate: {:.6f}%".format(gd.error_rate(PVAL, LVAL)))
+    print("MVG 2-Class problem - Error rate: {:.6f}%".format(error.error_rate(PVAL, LVAL)))
     return LLR
 
 
@@ -75,7 +76,7 @@ def calculate_Tied(DTR, LTR, DVAL, LVAL):
     LLR = gd.logpdf_GAU_ND(DVAL, hParams_Tied[1][0], hParams_Tied[1][1]) - gd.logpdf_GAU_ND(DVAL, hParams_Tied[0][0],
                                                                                             hParams_Tied[0][1])
     PVAL = gd.predict_labels(DVAL=DVAL, TH=0, LLR=LLR, class1=0, class2=1)
-    print("Tied 2-Class problem - Error rate: {:.6f}%".format(gd.error_rate(PVAL, LVAL)))
+    print("Tied 2-Class problem - Error rate: {:.6f}%".format(error.error_rate(PVAL, LVAL)))
     return LLR
 
 
@@ -84,7 +85,7 @@ def calculate_Naive(DTR, LTR, DVAL, LVAL):
     LLR = gd.logpdf_GAU_ND(DVAL, hParams_Naive[1][0], hParams_Naive[1][1]) - gd.logpdf_GAU_ND(DVAL, hParams_Naive[0][0],
                                                                                               hParams_Naive[0][1])
     PVAL = gd.predict_labels(DVAL=DVAL, TH=0, LLR=LLR, class1=0, class2=1)
-    print("Naive 2-Class problem - Error rate: {:.6f}%".format(gd.error_rate(PVAL, LVAL)))
+    print("Naive 2-Class problem - Error rate: {:.6f}%".format(error.error_rate(PVAL, LVAL)))
     return LLR
 
 

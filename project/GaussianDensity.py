@@ -36,10 +36,6 @@ def predict_labels(DVAL, TH, LLR, class1, class2):
     return PVAL
 
 
-def error_rate(PVAL, LVAL):
-    return ((PVAL != LVAL).sum() / float(LVAL.size) * 100)
-
-
 def log_likelihood(X, mu, C):
     return logpdf_GAU_ND(X, mu, C).sum()
 

@@ -27,6 +27,7 @@
 # print(result)
 import numpy as np
 import scipy.optimize
+import sklearn.datasets
 
 
 def vcol(x):
@@ -70,11 +71,19 @@ def split_db_2to1(D, L, seed=0):
     return (DTR, LTR), (DVAL, LVAL)
 
 
-def trainLogReg(DTR, LTR, l, prior=0.5, prior_weighted=False):
+def load_iris_binary():
+    D, L = sklearn.datasets.load_iris()['data'].T, sklearn.datasets.load_iris()['target']
+    D = D[:, L != 0]  # We remove setosa from D
+    L = L[L != 0]  # We remove setosa from L
+    L[L == 2] = 0  # We assign label 0 to virginica (was label 2)
+    return D, L
+
+
+def trainLogReg(DTR, LTR, lbd, prior=0.5, prior_weighted=False):
     def logreg_obj(v):
         w, b = v[0:-1], v[-1]
         ZTR = 2 * LTR - 1
-        reg = 0.5 * l * np.linalg.norm(w) ** 2
+        reg = 0.5 * lbd * np.linalg.norm(w) ** 2
         exp = (np.dot(w.T, DTR) + b)
         avg_risk = (np.logaddexp(0, -exp * ZTR)).mean()
         return reg + avg_risk
@@ -82,7 +91,7 @@ def trainLogReg(DTR, LTR, l, prior=0.5, prior_weighted=False):
     def logreg_obj_prior_weighted(v):
         w, b = v[0:-1], v[-1]
         ZTR = 2 * LTR - 1
-        reg = 0.5 * l * np.linalg.norm(w) ** 2
+        reg = 0.5 * lbd * np.linalg.norm(w) ** 2
         exp = (np.dot(w.T, DTR) + b)
         avg_risk_0 = np.logaddexp(0, -exp[LTR == 0] * ZTR[LTR == 0]).mean() * (1 - prior)
         avg_risk_1 = np.logaddexp(0, -exp[LTR == 1] * ZTR[LTR == 1]).mean() * prior
@@ -95,14 +104,15 @@ def trainLogReg(DTR, LTR, l, prior=0.5, prior_weighted=False):
     return xf
 
 
-def calculate_sllr(x, w, b, pi_emp):
+def calculate_sllr(x, w, b, pi_emp=0.5):
     s = np.dot(w.T, x) + b
     sllr = s - np.log(pi_emp / (1 - pi_emp))
     return sllr
 
 
 def calculate_error_rate(predictions, targets):
-    return np.mean(predictions != targets)
+    # return np.mean(predictions != targets)
+    return ((predictions != targets).sum() / float(targets.size) * 100)
 
 
 def compute_Pfn_Pfp_allThresholds_fast(llr, classLabels):
@@ -177,25 +187,30 @@ def compute_confusion_matrix(predictedLabels, classLabels):
     return M
 
 
-def compute_minDCF_actDCF(xf, LVAL, DVAL, pi_emp=0.5, Cfn=1, Cfp=1, prior=0.5):
+def compute_minDCF_actDCF(LTR, xf, LVAL, DVAL, pi_emp=0.5, Cfn=1, Cfp=1, prior=0.5):
     w = xf[:-1]
     b = xf[-1]
+    sval = np.dot(w.T, DVAL) + b
+    PVAL = (sval > 0) * 1
+    error_rate = calculate_error_rate(PVAL, LVAL)
+    pi_emp = (LTR == 1).sum() / LTR.size
     sllr = np.array([calculate_sllr(x, w, b, pi_emp) for x in DVAL.T])
     predictions = (sllr > 0).astype(int)
-    error_rate = calculate_error_rate(predictions, LVAL)
-    print("Error rate:", error_rate * 100, "%")
+    print("Error rate:", error_rate, "%")
     minDCF = compute_minDCF_binary_fast(sllr, LVAL, prior, Cfn, Cfp)
     print("minDCF:", minDCF)
     confusionMatrix = compute_confusion_matrix(predictions, LVAL)
     actDCF = computeDCF_Binary(confusionMatrix, prior, Cfn, Cfp, normalize=True)
+
     print("actDCF:", actDCF)
 
 
 if __name__ == '__main__':
-    D, L = load('iris.csv')
-    D = D[:, L != 0]  # We remove setosa from D
-    L = L[L != 0]  # We remove setosa from L
-    L[L == 2] = 0  # We assign label 0 to virginica (was label 2) return D, L
+    # D, L = load('iris.csv')
+    D, L = load_iris_binary()
+    # D = D[:, L != 0]  # We remove setosa from D
+    # L = L[L != 0]  # We remove setosa from L
+    # L[L == 2] = 0  # We assign label 0 to virginica (was label 2) return D, L
 
     (DTR, LTR), (DVAL, LVAL) = split_db_2to1(D, L)
 
@@ -203,26 +218,26 @@ if __name__ == '__main__':
     print("Binary logistic regression with prior = 0.5 and prior_weighted false")
     xf = trainLogReg(DTR, LTR, 10 ** -3)
     # print(xf)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
 
     xf = trainLogReg(DTR, LTR, 10 ** -1)
     # print(xf)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
 
     xf = trainLogReg(DTR, LTR, 1.0)
     # print(xf)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
 
     # Binary logistic regression with prior = 0.8 and prior_weighted true
     print("Binary logistic regression with prior = 0.8 and prior_weighted true")
     xf = trainLogReg(DTR, LTR, 10 ** -3, 0.8, True)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
-    print("prior=p_emp")
-    xf = trainLogReg(DTR, LTR, 10 ** -3, 0.5, True)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
+    # print("prior=p_emp")
+    # xf = trainLogReg(DTR, LTR, 10 ** -3, 0.5, True)
+    # compute_minDCF_actDCF(xf, LVAL, DVAL)
 
     xf = trainLogReg(DTR, LTR, 10 ** -1, 0.8, True)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
 
     xf = trainLogReg(DTR, LTR, 1.0, 0.8, True)
-    compute_minDCF_actDCF(xf, LVAL, DVAL)
+    compute_minDCF_actDCF(LTR, xf, LVAL, DVAL)
