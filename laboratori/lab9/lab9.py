@@ -107,14 +107,19 @@ def compute_confusion_matrix(predictedLabels, classLabels):
 if __name__ == '__main__':
     D, L = load_iris_binary()
     (DTR, LTR), (DVAL, LVAL) = split_db_2to1(D, L)
-    hParams = [{'K': 1, 'C': 0.1}, {'K': 1, 'C': 1.0}, {'K': 1, 'C': 10.0},
-               {'K': 10, 'C': 0.1}, {'K': 10, 'C': 1.0}, {'K': 10, 'C': 10.0}]
+    hParams = [
+        {'K': 1, 'C': 0.1},
+        {'K': 1, 'C': 1.0},
+        {'K': 1, 'C': 10.0},
+        {'K': 10, 'C': 0.1},
+        {'K': 10, 'C': 1.0},
+        {'K': 10, 'C': 10.0},
+    ]
 
     for hParam in hParams:
-        svm = SVM.SVM(hParam, kernel=None, prior=0.5)
+        print(hParam)
+        svm = SVM.SVM(hParam, kernel=None, prior=0)
         svmReturn = svm.train(DTR, LTR)
-        print("primal solution", svmReturn.primal)
-        # print("predict", svmReturn.predict(DVAL, labels=True))
         predictions = svmReturn.predict(DVAL, labels=True)
         print("error rate", calculate_error_rate(predictions, LVAL))
         llr = svmReturn.predict(DVAL)
@@ -123,4 +128,30 @@ if __name__ == '__main__':
         confusionMatrix = compute_confusion_matrix(predictions, LVAL)
         actDCF = computeDCF_Binary(confusionMatrix, 0.5, 1, 1, normalize=True)
         print("actDCF", actDCF)
+        primal_value, dual_value = svmReturn.compute_primal_dual_value()
+        print("primal value", primal_value)
+        print("dual value", dual_value)
         print("duality gap", svmReturn.compute_duality_gap())
+
+    hParams = [{'K': 0.0, 'C': 1.0, 'd': 2, 'c': 0, 'kernel': 'Polynomial'},
+               {'K': 1.0, 'C': 1.0, 'd': 2, 'c': 0, 'kernel': 'Polynomial'},
+               {'K': 0.0, 'C': 1.0, 'd': 2, 'c': 1, 'kernel': 'Polynomial'},
+               {'K': 1.0, 'C': 1.0, 'd': 2, 'c': 1, 'kernel': 'Polynomial'},
+               {'K': 0.0, 'C': 1.0, 'gamma': 1.0, 'kernel': 'RBF'},
+               {'K': 1.0, 'C': 1.0, 'gamma': 1.0, 'kernel': 'RBF'},
+               {'K': 0.0, 'C': 1.0, 'gamma': 10.0, 'kernel': 'RBF'},
+               {'K': 1.0, 'C': 1.0, 'gamma': 10.0, 'kernel': 'RBF'}]
+
+    for hParam in hParams:
+        print(hParam)
+        svm = SVM.SVM(hParam, kernel=hParam['kernel'], prior=0)
+        svmReturn = svm.train(DTR, LTR)
+        predictions = svmReturn.predict(DVAL, labels=True)
+        print("error rate", calculate_error_rate(predictions, LVAL))
+        llr = svmReturn.predict(DVAL)
+        minDCF = compute_minDCF_binary_fast(llr, LVAL, 0.5, 1, 1)
+        print("minDCF", minDCF)
+        confusionMatrix = compute_confusion_matrix(predictions, LVAL)
+        actDCF = computeDCF_Binary(confusionMatrix, 0.5, 1, 1, normalize=True)
+        print("actDCF", actDCF)
+        print("dual value", svmReturn.dual_value)
