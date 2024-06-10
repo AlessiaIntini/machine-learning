@@ -28,3 +28,41 @@ def plot_gaussian_density(D, m_ML, C_ML):
 
     plt.plot(XPlot.ravel(), np.exp(gd.logpdf_GAU_ND(ut.vrow(XPlot), m_ML, C_ML)))
     plt.xlim(-5, 5)
+
+
+def plot_minDCF_actDCF(minDCF, actDCF, title, xArray, m=0, xlabel='lambda', One=False):
+    if One == False:
+        plt.figure()
+        if m != 0:
+            title = title + " m = " + str(m)
+        plt.title(title)
+        plt.scatter(xArray, minDCF, label='minDCF', color='b')
+        plt.plot(xArray, minDCF, color='b')
+        plt.xlabel(xlabel)
+        plt.ylabel('minDCF value')
+        plt.xscale('log', base=10)
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.title(title)
+        plt.scatter(xArray, actDCF, label='actDCF', color='r')
+        plt.plot(xArray, actDCF, color='r')
+        plt.xlabel(xlabel)
+        plt.ylabel('actDCF value')
+        plt.xscale('log', base=10)
+        plt.legend()
+        plt.show()
+    else:
+        plt.figure()
+        plt.title(title)
+        plt.scatter(xArray, minDCF, label='minDCF', color='b')
+        plt.plot(xArray, minDCF, color='b')
+
+        plt.scatter(xArray, actDCF, label='actDCF', color='r')
+        plt.plot(xArray, actDCF, color='r')
+        plt.xlabel(xlabel)
+        plt.ylabel('actDCF value')
+        plt.xscale('log', base=10)
+        plt.legend()
+        plt.show()

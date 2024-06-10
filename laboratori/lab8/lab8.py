@@ -91,10 +91,14 @@ def trainLogReg(DTR, LTR, lbd, prior=0.5, prior_weighted=False):
     def logreg_obj_prior_weighted(v):
         w, b = v[0:-1], v[-1]
         ZTR = 2 * LTR - 1
+
+        wTrue = prior / (ZTR > 0).sum()
+        wFalse = (1 - prior) / (ZTR < 0).sum()
+
         reg = 0.5 * lbd * np.linalg.norm(w) ** 2
         exp = (np.dot(w.T, DTR) + b)
-        avg_risk_0 = np.logaddexp(0, -exp[LTR == 0] * ZTR[LTR == 0]).mean() * (1 - prior)
-        avg_risk_1 = np.logaddexp(0, -exp[LTR == 1] * ZTR[LTR == 1]).mean() * prior
+        avg_risk_0 = (np.logaddexp(0, -exp[LTR == 0] * ZTR[LTR == 0]) * wFalse).sum()
+        avg_risk_1 = (np.logaddexp(0, -exp[LTR == 1] * ZTR[LTR == 1]) * wTrue).sum()
         return reg + avg_risk_0 + avg_risk_1
 
     x0 = np.zeros(DTR.shape[0] + 1)
