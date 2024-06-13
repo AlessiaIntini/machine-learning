@@ -5,13 +5,13 @@ from sklearn.preprocessing import StandardScaler
 import BayesDecisionModel as bdm
 import Evaluation as e
 import GaussianModel as gm
-import LLR
+import LLR_Clf
 import PCA
 import ReadData as rd
-import SVM
+import SVM_Clf
 import plot as plt
 import matplotlib.pyplot as pl
-from LLR import LinearLogisticRegression
+from LLR_Clf import LinearLogisticRegression
 
 if __name__ == '__main__':
     D, L = rd.load('trainData.txt')
@@ -176,10 +176,10 @@ if __name__ == '__main__':
     # ##    Linear Logistic regression    ##
     # #################################### #
     #
-    # print("Linear Logistic regression with prior_weighted=False")
-    # ldbArray = np.logspace(-4, 2, 13)
-    # actDCF = []
-    # minDCF = []
+    print("Linear Logistic regression with prior_weighted=False")
+    ldbArray = np.logspace(-4, 2, 13)
+    actDCF = []
+    minDCF = []
     # for ldb in ldbArray:
     #     llr = LinearLogisticRegression(ldb, prior_weighted=False)
     #     current_xf = llr.trainLogReg(DTR, LTR)
@@ -241,51 +241,51 @@ if __name__ == '__main__':
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray, One=True)
     #
-    # # apply PCA
-    # print("Linear Logistic regression with PCA")
-    # for m in range(4, 7):
-    #     s, P = PCA.PCA_function(DTR, m)
-    #     DTR_PCA = np.dot(P.T, DTR)
-    #     DVAL_PCA = np.dot(P.T, DVAL)
-    #
-    #     actDCF = []
-    #     minDCF = []
-    #     for ldb in ldbArray:
-    #         llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
-    #         current_xf = llr.trainLogReg(DTR_PCA, LTR)
-    #         current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
-    #                                                                    pi_emp=sum(LTR == 1) / len(LTR),
-    #                                                                    prior=0.1)
-    #         actDCF.append(current_actDCF)
-    #         minDCF.append(current_minDCF)
-    #
-    #     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with PCA with', ldbArray, m)
-    #
-    # # apply PCA and Z-normalization
-    # print("Linear Logistic regression with PCA and Z-normalization")
-    # scaler = StandardScaler().fit(DTR)
-    # DTR_normalized = e.znormalized_features_training(DTR)
-    # DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
-    # for m in range(4, 7):
-    #     s, P = PCA.PCA_function(DTR_normalized, m)
-    #     DTR_PCA = np.dot(P.T, DTR_normalized)
-    #     DVAL_PCA = np.dot(P.T, DVAL_normalized)
-    #
-    #     actDCF = []
-    #     minDCF = []
-    #     for ldb in ldbArray:
-    #         llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
-    #         current_xf = llr.trainLogReg(DTR_PCA, LTR)
-    #         current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
-    #                                                                    pi_emp=(LTR == 1).sum() / len(LTR),
-    #                                                                    prior=0.1)
-    #
-    #         actDCF.append(current_actDCF)
-    #         minDCF.append(current_minDCF)
-    #
-    #     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with Z-normalization and PCA with', ldbArray,
-    #                            m)
-    #
+    # apply PCA
+    print("Linear Logistic regression with PCA")
+    for m in range(4, 7):
+        s, P = PCA.PCA_function(DTR, m)
+        DTR_PCA = np.dot(P.T, DTR)
+        DVAL_PCA = np.dot(P.T, DVAL)
+
+        actDCF = []
+        minDCF = []
+        for ldb in ldbArray:
+            llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+            current_xf = llr.trainLogReg(DTR_PCA, LTR)
+            current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
+                                                                       pi_emp=sum(LTR == 1) / len(LTR),
+                                                                       prior=0.1)
+            actDCF.append(current_actDCF)
+            minDCF.append(current_minDCF)
+
+        plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with PCA with', ldbArray, m)
+
+    # apply PCA and Z-normalization
+    print("Linear Logistic regression with PCA and Z-normalization")
+    scaler = StandardScaler().fit(DTR)
+    DTR_normalized = e.znormalized_features_training(DTR)
+    DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
+    for m in range(4, 7):
+        s, P = PCA.PCA_function(DTR_normalized, m)
+        DTR_PCA = np.dot(P.T, DTR_normalized)
+        DVAL_PCA = np.dot(P.T, DVAL_normalized)
+
+        actDCF = []
+        minDCF = []
+        for ldb in ldbArray:
+            llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+            current_xf = llr.trainLogReg(DTR_PCA, LTR)
+            current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
+                                                                       pi_emp=(LTR == 1).sum() / len(LTR),
+                                                                       prior=0.1)
+
+            actDCF.append(current_actDCF)
+            minDCF.append(current_minDCF)
+
+        plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with Z-normalization and PCA with', ldbArray,
+                               m)
+
     # # ########################
     # # ##      SVM          ###
     # # ########################
