@@ -8,10 +8,11 @@ import GaussianModel as gm
 import LLR_Clf
 import PCA
 import ReadData as rd
-import SVM_Clf
+import GMM_Clf as GMM
+import SVM_Clf as SVM
 import plot as plt
 import matplotlib.pyplot as pl
-from LLR_Clf import LinearLogisticRegression
+import LLR_Clf as LLR
 
 if __name__ == '__main__':
     D, L = rd.load('trainData.txt')
@@ -180,67 +181,98 @@ if __name__ == '__main__':
     ldbArray = np.logspace(-4, 2, 13)
     actDCF = []
     minDCF = []
-    # for ldb in ldbArray:
-    #     llr = LinearLogisticRegression(ldb, prior_weighted=False)
-    #     current_xf = llr.trainLogReg(DTR, LTR)
-    #     current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
-    #                                                                pi_emp=sum(LTR == 1) / len(LTR),
-    #                                                                prior=0.1)
-    #     actDCF.append(current_actDCF)
-    #     minDCF.append(current_minDCF)
-    #
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression no prior_weighted', ldbArray)
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression no prior_weighted', ldbArray, One=True)
-    #
+    minValue_minDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False}
+    minValue_actDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False}
+    for ldb in ldbArray:
+        llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False)
+        current_xf = llr.trainLogReg(DTR, LTR)
+        current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
+                                                                   pi_emp=sum(LTR == 1) / len(LTR),
+                                                                   prior=0.1)
+        if current_minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = current_minDCF
+            minValue_minDCF['lambda'] = ldb
+        if current_actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = current_actDCF
+            minValue_actDCF['lambda'] = ldb
+        actDCF.append(current_actDCF)
+        minDCF.append(current_minDCF)
+
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression no prior_weighted', ldbArray)
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression no prior_weighted', ldbArray, One=True)
+
     # print("Linear Logistic regression with prior_weighted=False only 50 sample")
     # ldbArray = np.logspace(-4, 2, 13)
     # actDCF = []
     # minDCF = []
     # for ldb in ldbArray:
-    #     llr = LinearLogisticRegression(ldb, prior_weighted=False)
+    #     llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False)
     #     current_xf = llr.trainLogReg(DTR[:, ::50], LTR[::50])
     #     current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
     #                                                                pi_emp=sum(LTR[::50] == 1) / len(LTR[::50]),
     #                                                                prior=0.1)
+    #     if current_minDCF < minValue_minDCF['min']:
+    #         minValue_minDCF['min'] = current_minDCF
+    #         minValue_minDCF['lambda'] = ldb
+    #     if current_actDCF < minValue_actDCF['min']:
+    #         minValue_actDCF['min'] = current_actDCF
+    #         minValue_actDCF['lambda'] = ldb
     #     actDCF.append(current_actDCF)
     #     minDCF.append(current_minDCF)
     #
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression no prior_weighted only 50 sample', ldbArray)
-    #
-    # print("Linear Logistic regression with prior_weighted=True pi_t=0.1")
-    # ldbArray = np.logspace(-4, 2, 13)
-    # actDCF = []
-    # minDCF = []
-    # for ldb in ldbArray:
-    #     llr = LinearLogisticRegression(ldb, prior_weighted=True, prior=0.1)
-    #     current_xf = llr.trainLogReg(DTR, LTR)
-    #     current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
-    #                                                                pi_emp=sum(LTR == 1) / len(LTR),
-    #                                                                prior=0.1)
-    #     actDCF.append(current_actDCF)
-    #     minDCF.append(current_minDCF)
-    #
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with prior_weighted pi_t=0.1', ldbArray)
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with prior_weighted pi_t=0.1', ldbArray,
-    #                        One=True)
-    #
-    # print("Linear Logistic regression with expanded features and no prior_weighted")
-    # DTR_expanded = np.concatenate([DTR, np.square(DTR)], axis=0)
-    # DVAL_expanded = np.concatenate([DVAL, np.square(DVAL)], axis=0)
-    # actDCF = []
-    # minDCF = []
-    # for ldb in ldbArray:
-    #     llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
-    #     current_xf = llr.trainLogReg(DTR_expanded, LTR)
-    #     current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_expanded,
-    #                                                                pi_emp=sum(LTR == 1) / len(LTR),
-    #                                                                prior=0.1)
-    #     actDCF.append(current_actDCF)
-    #     minDCF.append(current_minDCF)
-    #
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray)
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray, One=True)
-    #
+
+    print("Linear Logistic regression with prior_weighted=True pi_t=0.1")
+    ldbArray = np.logspace(-4, 2, 13)
+    actDCF = []
+    minDCF = []
+    for ldb in ldbArray:
+        llr = LLR.LinearLogisticRegression(ldb, prior_weighted=True, prior=0.1)
+        current_xf = llr.trainLogReg(DTR, LTR)
+        current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
+                                                                   pi_emp=sum(LTR == 1) / len(LTR),
+                                                                   prior=0.1)
+
+        if current_minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = current_minDCF
+            minValue_minDCF['lambda'] = ldb
+            minValue_minDCF['weight'] = True
+        if current_actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = current_actDCF
+            minValue_actDCF['lambda'] = ldb
+            minValue_minDCF['weight'] = True
+        actDCF.append(current_actDCF)
+        minDCF.append(current_minDCF)
+
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with prior_weighted pi_t=0.1', ldbArray)
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with prior_weighted pi_t=0.1', ldbArray,
+                           One=True)
+
+    print("Linear Logistic regression with expanded features and no prior_weighted")
+    DTR_expanded = np.concatenate([DTR, np.square(DTR)], axis=0)
+    DVAL_expanded = np.concatenate([DVAL, np.square(DVAL)], axis=0)
+    actDCF = []
+    minDCF = []
+    for ldb in ldbArray:
+        llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+        current_xf = llr.trainLogReg(DTR_expanded, LTR)
+        current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_expanded,
+                                                                   pi_emp=sum(LTR == 1) / len(LTR),
+                                                                   prior=0.1)
+        if current_minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = current_minDCF
+            minValue_minDCF['lambda'] = ldb
+            minValue_minDCF['expanded'] = True
+        if current_actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = current_actDCF
+            minValue_actDCF['lambda'] = ldb
+            minValue_minDCF['expanded'] = True
+        actDCF.append(current_actDCF)
+        minDCF.append(current_minDCF)
+
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray)
+    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with expanded features', ldbArray, One=True)
+
     # apply PCA
     print("Linear Logistic regression with PCA")
     for m in range(4, 7):
@@ -251,11 +283,19 @@ if __name__ == '__main__':
         actDCF = []
         minDCF = []
         for ldb in ldbArray:
-            llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+            llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
             current_xf = llr.trainLogReg(DTR_PCA, LTR)
             current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
                                                                        pi_emp=sum(LTR == 1) / len(LTR),
                                                                        prior=0.1)
+            if current_minDCF < minValue_minDCF['min']:
+                minValue_minDCF['min'] = current_minDCF
+                minValue_minDCF['lambda'] = ldb
+                minValue_minDCF['PCA'] = m
+            if current_actDCF < minValue_actDCF['min']:
+                minValue_actDCF['min'] = current_actDCF
+                minValue_actDCF['lambda'] = ldb
+                minValue_minDCF['PCA'] = m
             actDCF.append(current_actDCF)
             minDCF.append(current_minDCF)
 
@@ -274,26 +314,41 @@ if __name__ == '__main__':
         actDCF = []
         minDCF = []
         for ldb in ldbArray:
-            llr = LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+            llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
             current_xf = llr.trainLogReg(DTR_PCA, LTR)
             current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
                                                                        pi_emp=(LTR == 1).sum() / len(LTR),
                                                                        prior=0.1)
-
+            if current_minDCF < minValue_minDCF['min']:
+                minValue_minDCF['min'] = current_minDCF
+                minValue_minDCF['lambda'] = ldb
+                minValue_minDCF['PCA'] = m
+                minValue_minDCF['Z-norm'] = True
+            if current_actDCF < minValue_actDCF['min']:
+                minValue_actDCF['min'] = current_actDCF
+                minValue_actDCF['lambda'] = ldb
+                minValue_minDCF['PCA'] = m
+                minValue_minDCF['Z-norm'] = True
             actDCF.append(current_actDCF)
             minDCF.append(current_minDCF)
 
         plt.plot_minDCF_actDCF(minDCF, actDCF, 'Linear Logistic Regression with Z-normalization and PCA with', ldbArray,
                                m)
 
-    # # ########################
-    # # ##      SVM          ###
-    # # ########################
+    print('Result LLR')
+    print("Best minDCF", minValue_minDCF)
+    print("Best actDCF ", minValue_actDCF)
+
+    # ########################
+    # ##      SVM          ###
+    # ########################
     print("SVM")
     parameters = {'prior': 0.1, 'Cfn': 1, 'Cfp': 1}
     C_array = np.logspace(-5, 0, 11)
     minDCF_Array = []
     actDCF_Array = []
+    minValue_minDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
+    minValue_actDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
     K = 1.0
     # linear SVM
     print("Linear SVM")
@@ -313,6 +368,12 @@ if __name__ == '__main__':
         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
         actDCF_Array.append(actDCF)
+        if minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = minDCF
+            minValue_minDCF['C'] = C
+        if actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = actDCF
+            minValue_minDCF['C'] = C
         print("actDCF", actDCF)
         primal_value, dual_value = svmReturn.compute_primal_dual_value()
         print("primal value", primal_value)
@@ -343,6 +404,16 @@ if __name__ == '__main__':
         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
         actDCF_Array.append(actDCF)
+        if minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = minDCF
+            minValue_minDCF['C'] = C
+            minValue_minDCF['kernel'] = True
+            minValue_minDCF['type'] = 'Polynomial'
+        if actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = actDCF
+            minValue_minDCF['C'] = C
+            minValue_minDCF['kernel'] = True
+            minValue_minDCF['type'] = 'Polynomial'
         print("actDCF", actDCF)
         print("dual value", svmReturn.dual_value)
     plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C", One=True)
@@ -376,31 +447,108 @@ if __name__ == '__main__':
             actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
                                            normalize=True)
             actDCF_values.append(actDCF)
+            if minDCF < minValue_minDCF['min']:
+                minValue_minDCF['min'] = minDCF
+                minValue_minDCF['C'] = C
+                minValue_minDCF['kernel'] = True
+                minValue_minDCF['type'] = 'RBF'
+                minValue_minDCF['gamma'] = gamma
+            if actDCF < minValue_actDCF['min']:
+                minValue_actDCF['min'] = actDCF
+                minValue_minDCF['C'] = C
+                minValue_minDCF['kernel'] = True
+                minValue_minDCF['type'] = 'RBF'
+                minValue_minDCF['gamma'] = gamma
             print("actDCF", actDCF)
             print("dual value", svmReturn.dual_value)
         minDCF_matrix.append(minDCF_values)
         actDCF_matrix.append(actDCF_values)
 
-    color = ['b', 'g', 'r', 'c']
-    pl.figure()
-    pl.title("SVM RBF kernel")
-    for i, minDCF_values in enumerate(minDCF_matrix):
-        pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
+    print("Best minDCF", minValue_minDCF)
+    print("Best actDCF ", minValue_actDCF)
+    # color = ['b', 'g', 'r', 'c']
+    # pl.figure()
+    # pl.title("SVM RBF kernel")
+    # for i, minDCF_values in enumerate(minDCF_matrix):
+    #     pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
+    #
+    # pl.xlabel('C')
+    # pl.ylabel('minDCF value')
+    # pl.xscale('log', base=10)
+    # pl.legend()
+    # pl.show()
+    #
+    # color = ['b', 'g', 'r', 'c']
+    # pl.figure()
+    # pl.title("SVM RBF kernel")
+    # for i, actDCF_values in enumerate(actDCF_matrix):
+    #     pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
+    #
+    # pl.xlabel('C')
+    # pl.ylabel('actDCF value')
+    # pl.xscale('log', base=10)
+    # pl.legend()
+    # pl.show()
 
-    pl.xlabel('C')
-    pl.ylabel('minDCF value')
-    pl.xscale('log', base=10)
-    pl.legend()
-    pl.show()
+    # # ########################
+    # # ##       GMM         ###
+    # # ########################
+    covTypes = ['Full', 'Diag']
+    nComponents = [1, 2, 4, 8, 16, 32]
+    print("GMM with prior=0.1")
+    # for nc in nComponents:
+    #     print("nComponents ", nc)
+    #     for covType in covTypes:
+    #         print(" covType is ", covType)
+    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+    #         gmm.train(DTR, LTR)
+    #         llr = gmm.predict(DVAL)
+    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+    #         print("minDCF", minDCF)
+    #         predictions = gmm.predict(DVAL, labels=True)
+    #         confusionMatrix = bdm.compute_confusion_matrix(predictions, LVAL)
+    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+    #         print("actDCF", actDCF)
 
-    color = ['b', 'g', 'r', 'c']
-    pl.figure()
-    pl.title("SVM RBF kernel")
-    for i, actDCF_values in enumerate(actDCF_matrix):
-        pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
+    print("GMM with different log odds")
+    log_odds_values = np.linspace(-4, 4, 21)
+    minDCF_values = []
+    actDCF_values = []
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
 
-    pl.xlabel('C')
-    pl.ylabel('actDCF value')
-    pl.xscale('log', base=10)
-    pl.legend()
-    pl.show()
+    for covType in covTypes:
+        print(" covType is ", covType)
+        for nc in nComponents:
+            print("nComponents ", nc)
+            gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+            gmm.train(DTR, LTR)
+            for log_odds in log_odds_values:
+                prior = 1 / (1 + np.exp(-log_odds))
+                llr = gmm.predict(DVAL)
+                minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+                print("minDCF", minDCF)
+                if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+                minDCF_values.append(minDCF)
+                predictions = gmm.predict(DVAL, labels=True)
+                th = -np.log((prior * 1) / ((1 - prior) * 1))
+                predictedLabels = np.int32(llr > th)
+                confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+                actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+                if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+                print("actDCF", actDCF)
+                actDCF_values.append(actDCF)
+            # pl.figure()
+            # pl.plot(log_odds_values, minDCF_values, 'b')
+            # pl.plot(log_odds_values, actDCF_values, 'r')
+            # pl.ylim([None, 0.4])
+            # pl.xlabel('Log Odds')
+            # pl.ylabel('DCF values')
+            # pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
+            # pl.legend(['minDCF', 'actDCF'])
+            # pl.show()
+            # minDCF_values = []
+            # actDCF_values = []
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
