@@ -44,7 +44,7 @@ class SVM:
         self.N = Dtrain.shape[1]
         self.Ltrain_z = self.Ltrain * 2 - 1
         self.Ltrain_z_matrix = self.Ltrain_z.reshape(-1, 1) * self.Ltrain_z.reshape(1, -1)
-        self.bounds = np.array([(0, self.C)] * Ltrain.shape[0])
+        self.bounds = [(0, self.C) for i in self.Ltrain]
 
         if self.prior != 0:
             empP = (self.Ltrain == 1).sum() / len(self.Ltrain)
@@ -60,17 +60,22 @@ class SVM:
                 return
             self.H = self.Ltrain_z_matrix * ker
         else:
-            self.expandedD = np.vstack((Dtrain, self.K * np.ones(self.N)))
-            G = np.dot(self.expandedD.T, self.expandedD)
-            self.H = G * self.Ltrain_z_matrix
+            # self.expandedD = np.vstack((Dtrain, self.K * np.ones(self.N)))
+            self.expandedD = np.vstack([Dtrain, np.ones((1, Dtrain.shape[1])) * self.K])
+            # G = np.dot(self.expandedD.T, self.expandedD)
+            # self.H = G * self.Ltrain_z_matrix
+            self.H = np.dot(self.expandedD.T, self.expandedD) * self.Ltrain_z.reshape(self.Ltrain_z.size,
+                                                                                      1) * self.Ltrain_z.reshape(1,
+                                                                                                                 self.Ltrain_z.size)
 
         self.alpha, self.primal, _ = scipy.optimize.fmin_l_bfgs_b(func=self.__LDc_obj,
                                                                   bounds=self.bounds,
                                                                   x0=np.zeros(Dtrain.shape[1]),
-                                                                  factr=1.0,
-                                                                  pgtol=1e-8)
+                                                                  factr=1.0)
         if self.kernelType is None:
-            self.wc = np.sum(self.alpha * self.Ltrain_z * self.expandedD, axis=1)
+            self.wc = np.sum(
+                self.alpha.reshape(1, self.alpha.size) * self.Ltrain_z.reshape(1, self.alpha.size) * self.expandedD,
+                axis=1)
 
         self.dual_value = - self.primal
         return self
@@ -97,8 +102,10 @@ class SVM:
                 return
         else:
             # self.wc = np.sum(self.alpha * self.Ltrain_z * self.expandedD, axis=1)
-            self.w, self.b = self.wc[:-1], self.wc[-1::]
-            self.S = np.dot(self.w.T, Dtest) + self.b * self.K
+            # self.w, self.b = self.wc[:-1], self.wc[-1::]
+            self.w, self.b = self.wc[0:self.Dtrain.shape[0]], self.wc[-1] * self.K
+            # self.S = np.dot(self.w.T, Dtest) + self.b * self.K
+            self.S = (vrow(self.w) @ Dtest + self.b).ravel() * self.K
 
         if labels is True:
             predicted_labels = np.where(self.S > 0, 1, 0)
