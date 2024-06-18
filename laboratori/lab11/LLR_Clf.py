@@ -39,13 +39,9 @@ class LinearLogisticRegression:
         obj_function = self.__logreg_obj if self.prior_weighted is False else self.__logreg_obj_prior_weighted
         self.x, f, d = scipy.optimize.fmin_l_bfgs_b(func=obj_function,
                                                     x0=np.zeros(self.Dtrain.shape[0] + 1),
-                                                    approx_grad=True,
-                                                    iprint=0)
+                                                    approx_grad=True)
 
         return self.x
-
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
 
     def get_model_parameters(self):
         w, b = self.x[0:-1], self.x[-1]
