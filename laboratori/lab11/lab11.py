@@ -129,6 +129,7 @@ if __name__ == '__main__':
     score1 = np.load('data/scores_1.npy')
     score2 = np.load('data/scores_2.npy')
     labels = np.load('data/labels.npy')
+    print(score1)
 
     eval_score1 = np.load('data/eval_scores_1.npy')
     eval_score2 = np.load('data/eval_scores_2.npy')

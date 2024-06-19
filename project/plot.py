@@ -3,6 +3,7 @@ import numpy as np
 
 import GaussianDensity as gd
 import ReadData as ut
+import BayesDecisionModel as bdm
 
 
 def hist(D, L, features, label, bins=10):
@@ -66,3 +67,18 @@ def plot_minDCF_actDCF(minDCF, actDCF, title, xArray, m=0, xlabel='lambda', One=
         plt.xscale('log', base=10)
         plt.legend()
         plt.show()
+
+
+def bayesPlot(S, L, left=-3, right=3, npts=21):
+    effPriorLogOdds = np.linspace(left, right, npts)
+    effPriors = 1.0 / (1.0 + np.exp(-effPriorLogOdds))
+    actDCF = []
+    minDCF = []
+    for effPrior in effPriors:
+        th = -np.log((effPrior * 1) / ((1 - effPrior) * 1))
+        predictedLabels = np.int32(S > th)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, L)
+        actDCF_current = bdm.computeDCF_Binary(confusionMatrix, effPrior, 1, 1, normalize=True)
+        actDCF.append(actDCF_current)
+        minDCF.append(bdm.compute_minDCF_binary(S, L, effPrior, 1.0, 1.0))
+    return effPriorLogOdds, actDCF, minDCF

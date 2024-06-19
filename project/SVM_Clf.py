@@ -32,11 +32,15 @@ class SVM:
         return ker
 
     def __RBF_kernel(self, X1, X2):
-        x = np.repeat(X1, X2.shape[1], axis=1)
-        y = np.tile(X2, X1.shape[1])
-        ker = np.exp(
-            -self.gamma * np.linalg.norm(x - y, axis=0).reshape(X1.shape[1], X2.shape[1]) ** 2) + self.K ** 2
-        return ker
+        # x = np.repeat(X1, X2.shape[1], axis=1)
+        # y = np.tile(X2, X1.shape[1])
+        # ker = np.exp(
+        #     -self.gamma * np.linalg.norm(x - y, axis=0).reshape(X1.shape[1], X2.shape[1]) ** 2) + self.K ** 2
+        # return ker
+        D1Norms = (X1 ** 2).sum(0)
+        D2Norms = (X2 ** 2).sum(0)
+        Z = vcol(D1Norms) + vrow(D2Norms) - 2 * np.dot(X1.T, X2)
+        return np.exp(-self.gamma * Z)
 
     def train(self, Dtrain, Ltrain):
         self.Dtrain = Dtrain
@@ -105,7 +109,7 @@ class SVM:
             # self.w, self.b = self.wc[:-1], self.wc[-1::]
             self.w, self.b = self.wc[0:self.Dtrain.shape[0]], self.wc[-1] * self.K
             # self.S = np.dot(self.w.T, Dtest) + self.b * self.K
-            self.S = (vrow(self.w) @ Dtest + self.b).ravel() * self.K
+            self.S = (vrow(self.w) @ Dtest + self.b).ravel()  # * self.K
 
         if labels is True:
             predicted_labels = np.where(self.S > 0, 1, 0)

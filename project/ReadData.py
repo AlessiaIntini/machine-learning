@@ -51,5 +51,4 @@ def split_db_2to1(D, L, seed=0):
     DVAL = D[:, idxTest]
     LTR = L[idxTrain]
     LVAL = L[idxTest]
-
     return (DTR, LTR), (DVAL, LVAL)

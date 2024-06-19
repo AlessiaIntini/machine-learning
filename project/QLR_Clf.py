@@ -42,7 +42,8 @@ class QuadraticLogisticRegression:
         self.x, f, d = scipy.optimize.fmin_l_bfgs_b(func=obj_function,
                                                     x0=np.zeros(self.Dtrain_exp.shape[0] + 1),
                                                     approx_grad=True,
-                                                    iprint=0)
+                                                    # iprint=0
+                                                    )
         return self.x
 
     def __vectorize(self, M):
@@ -56,7 +57,7 @@ class QuadraticLogisticRegression:
             D_exp[:, i:i + 1] = np.vstack((self.__vectorize(np.dot(xi, xi.T)), xi))
         return D_exp
 
-    def predict(self, Dtest, labels=True):
+    def predict(self, Dtest, label=True):
         w, b = self.x[0:-1], self.x[-1]
         Dtest_exp = self.__expand_features_space(Dtest)
         S = np.zeros((Dtest_exp.shape[1]))
@@ -64,11 +65,24 @@ class QuadraticLogisticRegression:
             xi = Dtest_exp[:, i:i + 1]
             s = np.dot(w.T, xi) + b
             S[i] = s
-        if labels:
+        if label:
             LP = S > 0
             return LP
         else:
             return S
+
+    def predictThreshold(self, Dtest, threshold):
+        w = self.x[:-1]
+        b = self.x[-1]
+        sval = np.dot(w.T, self.__expand_features_space(Dtest)) + b
+
+        return np.int32(sval > threshold)
+
+    def calculateS(self, DVAL):
+        w = self.x[:-1]
+        b = self.x[-1]
+        sval = np.dot(w.T, self.__expand_features_space(DVAL)) + b
+        return sval
 
     def compute_minDCF_actDCF(self, LVAL, DVAL, pi_emp, Cfn=1, Cfp=1, prior=0.5):
         w = self.x[:-1]

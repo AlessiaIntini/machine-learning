@@ -36,11 +36,22 @@ class LinearLogisticRegression:
         self.DTR = DTR
         self.LTR = LTR
         x0 = np.zeros(DTR.shape[0] + 1)
-        xf = scipy.optimize.fmin_l_bfgs_b(
+        self.xf = scipy.optimize.fmin_l_bfgs_b(
             func=self.__logreg_obj_prior_weighted if self.prior_weighted else self.__logreg_obj,
             x0=x0,
-            approx_grad=True, iprint=0)[0]
-        return xf
+            approx_grad=True,
+            # iprint=0
+        )[0]
+        return self.xf
+
+    def predict(self, DVAL, label=False, threshold=0):
+        w = self.xf[:-1]
+        b = self.xf[-1]
+        sval = np.dot(w.T, DVAL) + b
+        if label:
+            return np.int32(sval > threshold)
+        else:
+            return sval
 
 
 def compute_minDCF_actDCF(xf, LVAL, DVAL, pi_emp, Cfn=1, Cfp=1, prior=0.5):
