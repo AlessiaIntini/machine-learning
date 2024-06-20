@@ -463,13 +463,13 @@ if __name__ == '__main__':
     #         actDCF_values.append(actDCF)
     #         if minDCF < minValue_minDCF['min']:
     #             minValue_minDCF['min'] = minDCF
-    #             minValue_minDCF['C'] = C
+    #             minValue_minDCF['C'] = c
     #             minValue_minDCF['kernel'] = True
     #             minValue_minDCF['type'] = 'RBF'
     #             minValue_minDCF['gamma'] = gamma
     #         if actDCF < minValue_actDCF['min']:
     #             minValue_actDCF['min'] = actDCF
-    #             minValue_actDCF['C'] = C
+    #             minValue_actDCF['C'] = c
     #             minValue_actDCF['kernel'] = True
     #             minValue_actDCF['type'] = 'RBF'
     #             minValue_actDCF['gamma'] = gamma
@@ -525,19 +525,19 @@ if __name__ == '__main__':
     #         predictions = gmm.predict(DVAL, labels=True)
     #         confusionMatrix = bdm.compute_confusion_matrix(predictions, LVAL)
     #         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #         if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+    #         if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
     #         print("actDCF", actDCF)
     #
     # print("minimum value of minDCF", minValue_minDCF)
     # print("minimum value of actDCF", minValue_actDCF)
-
+    #
     # print("GMM with different log odds")
     # log_odds_values = np.linspace(-4, 4, 21)
     # minDCF_values = []
     # actDCF_values = []
     # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
     # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-
+    #
     # for covType in covTypes:
     #     print(" covType is ", covType)
     #     for nc in nComponents:
@@ -556,7 +556,7 @@ if __name__ == '__main__':
     #             predictedLabels = np.int32(llr > th)
     #             confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
     #             actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
-    #             if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+    #             if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
     #             print("actDCF", actDCF)
     #             actDCF_values.append(actDCF)
     # pl.figure()
@@ -570,7 +570,7 @@ if __name__ == '__main__':
     # pl.show()
     # minDCF_values = []
     # actDCF_values = []
-
+    #
     # print("minimum value of minDCF", minValue_minDCF)
     # print("minimum value of actDCF", minValue_actDCF)
 
@@ -582,54 +582,220 @@ if __name__ == '__main__':
     SAMEFIGPLOTS = True
     if SAMEFIGPLOTS:
         fig = pl.figure(figsize=(16, 9))
-        axes = fig.subplots(3, 3, sharex='all')
-        axes[2, 0].axis('off')
+        axes = fig.subplots(2, 2, sharex='all')
         fig.suptitle('Single fold')
     else:
         axes = np.array([[pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
                          [pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
                          [None, pl.figure().gca(), pl.figure().gca()]])
 
-    print("Single fold")
-
-    # choose best configuration for LLR, SVM and GMM
-    # LLR best configuration lambda= 0.00031622776601683794, expanded= True, so quadratic logistic regression
+    print("QLR")
     qlr = QLR.QuadraticLogisticRegression(0.00031622776601683794, prior_weighted=False, prior=pT)
     xf = qlr.train(DTR, LTR)
     w, b = xf[:-1], xf[-1]
     scoreQLR = qlr.calculateS(DVAL)
-    print(scoreQLR)
     th = -np.log((pT * 1) / ((1 - pT) * 1))
     labelQLR = qlr.predictThreshold(DVAL, th)
-    print(labelQLR)
 
     minDCF = bdm.compute_minDCF_binary(scoreQLR, LVAL, pT, 1, 1)
     confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreQLR > th), LVAL)
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
-    print("minDCF", minDCF)
-    print("actDCF", actDCF)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreQLR, LVAL)
+    axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle=':', label='minDCF no cal')
+    axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-.', label='actDCF no cal')
 
-    midpoint = DVAL.shape[1] // 2
-    DCAL, DVAL = DVAL[:, :midpoint], DVAL[:, midpoint:]
+    # midpoint = len(scoreQLR) // 3
+    # S_CAL, S_VAL = scoreQLR[:midpoint], scoreQLR[midpoint:]
+    # L_CAL, L_VAL = LVAL[:midpoint], LVAL[midpoint:]
+    #
+    # # Trasforma i punteggi di calibrazione per usarli con la LLR
+    # S_CAL = S_CAL.reshape(1, -1)
+    # S_VAL = S_VAL.reshape(1, -1)
+    #
+    # xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(S_CAL, L_CAL)
+    # w, b = xf[:-1], xf[-1]
+    #
+    # calibrated_SVAL = (w.T @ S_VAL + b - np.log(pT / (1 - pT))).ravel()
+    #
+    # minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_SVAL, L_VAL, pT, 1, 1)
+    # th = -np.log((pT * 1) / ((1 - pT) * 1))
+    # confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > th), L_VAL)
+    # actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    # print("Single fold")
+    # print(f"minDCF Calibrated: {minDCF_calibrated}")
+    # print(f"actDCF Calibrated: {actDCF_calibrated}")
+    # logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_SVAL, L_VAL)
+    # axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
+    # axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
+    # axes[0, 0].set_ylim(0.0, 0.8)
+    # axes[0, 0].set_title('QLR - calibration validation')
+    # axes[0, 0].legend()
+    # pl.show()
 
-    midpoint = len(LVAL) // 2
-    LCAL, LVAL = LVAL[:midpoint], LVAL[midpoint:]
+    print("K-fold")
+    KFOLD = 5
+    calibrated_value_QLR = []
+    calibrated_label_QLR = []
+    for foldIdx in range(KFOLD):
+        SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreQLR, foldIdx)
+        labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+            rd.vrow(SCAL), labels_CAL)
+        w, b = xf[:-1], xf[-1]
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_value_QLR.append(calibrated_SVAL)
+        calibrated_label_QLR.append(labels_VAL)
 
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
-        DCAL, LCAL)
-    w, b = xf[:-1], xf[-1]
-    calibrated_SVAL = (w.T @ DVAL + b - np.log(pT / (1 - pT))).ravel()
-    minDCF = bdm.compute_minDCF_binary(calibrated_SVAL, LVAL, pT, 1, 1)
-    th = -np.log((pT * 1) / ((1 - pT) * 1))
-    confusionMatrix = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > 0), LVAL)
-    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
-    print("minDCF", minDCF)
-    print("actDCF", actDCF)
+    calibrated_value_QLR = np.hstack(calibrated_value_QLR)
+    calibrated_label_QLR = np.hstack(calibrated_label_QLR)
+    minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_value_QLR, calibrated_label_QLR, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_value_QLR > th), calibrated_label_QLR)
+    actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print(f"minDCF Calibrated: {minDCF_calibrated}")
+    print(f"actDCF Calibrated: {actDCF_calibrated}")
 
-    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_SVAL, LVAL)
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_QLR, calibrated_label_QLR)
     axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
     axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
     axes[0, 0].set_ylim(0.0, 0.8)
-    axes[0, 0].set_title('LLR - calibration validation')
+    axes[0, 0].set_title('QLR - calibration validation')
     axes[0, 0].legend()
+
+    print("SVM")
+    hParam = {'K': 1, 'C': 100.0, 'kernel': 'RBF', 'gamma': 0.1}
+    svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+    svmReturn = svm.train(DTR, LTR)
+    scoreSVM = svmReturn.predict(DVAL)
+    labelSVM = svmReturn.predict(DVAL, labels=True)
+
+    minDCF = bdm.compute_minDCF_binary(scoreSVM, LVAL, pT, 1, 1)
+    confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreSVM > th), LVAL)
+    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreSVM, LVAL)
+    axes[0, 1].plot(logOdds, minDCF, color='C1', linestyle=':', label='minDCF no cal')
+    axes[0, 1].plot(logOdds, actDCF, color='C1', linestyle='-.', label='actDCF no cal')
+
+    print("K-fold")
+    calibrated_value_SVM = []
+    calibrated_label_SVM = []
+    for foldIdx in range(KFOLD):
+        SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreSVM, foldIdx)
+        labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
+
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+            rd.vrow(SCAL), labels_CAL)
+        w, b = xf[:-1], xf[-1]
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_value_SVM.append(calibrated_SVAL)
+        calibrated_label_SVM.append(labels_VAL)
+
+    calibrated_value_SVM = np.hstack(calibrated_value_SVM)
+    calibrated_label_SVM = np.hstack(calibrated_label_SVM)
+    minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_value_SVM, calibrated_label_SVM, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_value_SVM > th), calibrated_label_SVM)
+    actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print(f"minDCF Calibrated: {minDCF_calibrated}")
+    print(f"actDCF Calibrated: {actDCF_calibrated}")
+
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_SVM, calibrated_label_SVM)
+    axes[0, 1].plot(logOdds, minDCF, color='C1', linestyle='--', label='minDCF cal')
+    axes[0, 1].plot(logOdds, actDCF, color='C1', linestyle='-', label='actDCF cal')
+    axes[0, 1].set_ylim(0.0, 0.8)
+    axes[0, 1].set_title('SVM - calibration validation')
+    axes[0, 1].legend()
+
+    print("GMM")
+    covType = 'Diag'
+    nComponents = 32
+    gmm = GMM.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=covType)
+    gmm.train(DTR, LTR)
+    scoreGMM = gmm.predict(DVAL)
+    labelGMM = gmm.predict(DVAL, labels=True)
+    minDCF = bdm.compute_minDCF_binary(scoreGMM, LVAL, pT, 1, 1)
+    confusionMatrix = bdm.compute_confusion_matrix(labelGMM, LVAL)
+    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreGMM, LVAL)
+    axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF no cal')
+    axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-.', label='actDCF no cal')
+
+    print("K-fold")
+    calibrated_value_GMM = []
+    calibrated_label_GMM = []
+    for foldIdx in range(KFOLD):
+        SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreGMM, foldIdx)
+        labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
+
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+            rd.vrow(SCAL), labels_CAL)
+        w, b = xf[:-1], xf[-1]
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_value_GMM.append(calibrated_SVAL)
+        calibrated_label_GMM.append(labels_VAL)
+
+    calibrated_value_GMM = np.hstack(calibrated_value_GMM)
+    calibrated_label_GMM = np.hstack(calibrated_label_GMM)
+    minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_value_GMM, calibrated_label_GMM, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_value_GMM > th), calibrated_label_GMM)
+    actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print(f"minDCF Calibrated: {minDCF_calibrated}")
+    print(f"actDCF Calibrated: {actDCF_calibrated}")
+
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_GMM, calibrated_label_GMM)
+    axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF cal')
+    axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-', label='actDCF cal')
+    axes[1, 0].set_ylim(0.0, 0.4)
+    axes[1, 0].set_title('GMM - calibration validation')
+    axes[1, 0].legend()
+
+    print("Fusion")
+    fusedScore = []
+    fusedLabels = []
+
+    for foldIdx in range(KFOLD):
+        SCAL_QLR, SVAL_QLR = e.extract_train_val_folds_from_ary(scoreQLR, foldIdx)
+        SCAL_SVM, SVAL_SVM = e.extract_train_val_folds_from_ary(scoreSVM, foldIdx)
+        SCAL_GMM, SVAL_GMM = e.extract_train_val_folds_from_ary(scoreGMM, foldIdx)
+        labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
+
+        SCAL = np.vstack([SCAL_QLR, SCAL_SVM, SCAL_GMM])
+
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(SCAL, labels_CAL)
+        w, b = xf[:-1], xf[-1]
+        SVAL = np.vstack([SVAL_QLR, SVAL_SVM, SVAL_GMM])
+        calibrated_SVAL = (w.T @ SVAL + b - np.log(pT / (1 - pT))).ravel()
+
+        fusedScore.append(calibrated_SVAL)
+        fusedLabels.append(labels_VAL)
+
+    fusedScore = np.hstack(fusedScore)
+    fusedLabels = np.hstack(fusedLabels)
+    minDCF_calibrated = bdm.compute_minDCF_binary(fusedScore, fusedLabels, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(fusedScore > th), fusedLabels)
+    actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print(f"minDCF Calibrated: {minDCF_calibrated}")
+    print(f"actDCF Calibrated: {actDCF_calibrated}")
+
+    # now do comparison with target application
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_QLR, calibrated_label_QLR)
+    axes[1, 1].set_title('Fusion - validation')
+    axes[1, 1].plot(logOdds, minDCF, color='C0', linestyle='--', label='QLR-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C0', linestyle='-', label='QLR-actDCF')
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_SVM, calibrated_label_SVM)
+    axes[1, 1].plot(logOdds, minDCF, color='C1', linestyle='--', label='SVM-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C1', linestyle='-', label='SVM-actDCF')
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_GMM, calibrated_label_GMM)
+    axes[1, 1].plot(logOdds, minDCF, color='C2', linestyle='--', label='GMM-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C2', linestyle='-', label='GMM-actDCF')
+
+    logOdds, actDCF, minDCF = plt.bayesPlot(fusedScore, fusedLabels)
+    axes[1, 1].plot(logOdds, minDCF, color='C3', linestyle='--', label='Fusion-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C3', linestyle='-', label='Fusion-actDCF')
+    axes[1, 1].set_ylim(0.0, 0.45)
+    axes[1, 1].legend()
     pl.show()
