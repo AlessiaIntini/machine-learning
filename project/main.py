@@ -16,7 +16,7 @@ import LLR_Clf as LLR
 import QLR_Clf as QLR
 
 if __name__ == '__main__':
-    D, L = rd.load('trainData.txt')
+    D, L = rd.load('Data/trainData.txt')
     (DTR, LTR), (DVAL, LVAL) = rd.split_db_2to1(D, L)
     # ########################
     # ## FEATURES ANALYSIS ###
@@ -799,3 +799,82 @@ if __name__ == '__main__':
     axes[1, 1].set_ylim(0.0, 0.45)
     axes[1, 1].legend()
     pl.show()
+
+    # ########################
+    # ##    EVALUATION     ###
+    # ########################
+    print("Evaluation")
+    evalData, evalLabels = rd.load("data/evalData.txt")
+    scoreQLR_eval = qlr.calculateS(evalData)
+    labelQLR_eval = qlr.predictThreshold(evalData, th)
+
+    print("QLR")
+    minDCF = bdm.compute_minDCF_binary(scoreQLR_eval, evalLabels, pT, 1, 1)
+    confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreQLR_eval > th), evalLabels)
+    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+
+    # calibrated
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreQLR), LVAL)
+    w, b = xf[:-1], xf[-1]
+    calibrated_scoreQLR_eval = (w.T @ rd.vrow(scoreQLR_eval) + b - np.log(pT / (1 - pT))).ravel()
+
+    minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreQLR_eval, evalLabels, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreQLR_eval > th), evalLabels)
+    actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print("minDCF Calibrated: ", minDCF_calibrated_eval)
+    print("actDCF Calibrated: ", actDCF_calibrated_eval)
+
+    print("GMM")
+    scoreGMM_eval = gmm.predict(evalData)
+    labelGMM_eval = gmm.predict(evalData, labels=True)
+    minDCF = bdm.compute_minDCF_binary(scoreGMM_eval, evalLabels, pT, 1, 1)
+    confusionMatrix = bdm.compute_confusion_matrix(labelGMM_eval, evalLabels)
+    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreGMM), LVAL)
+    w, b = xf[:-1], xf[-1]
+    calibrated_scoreGMM_eval = (w.T @ rd.vrow(scoreGMM_eval) + b - np.log(pT / (1 - pT))).ravel()
+
+    minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreGMM_eval, evalLabels, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreGMM_eval > th), evalLabels)
+    actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print("minDCF Calibrated: ", minDCF_calibrated_eval)
+    print("actDCF Calibrated: ", actDCF_calibrated_eval)
+
+    print("SVM")
+    scoreSVM_eval = svmReturn.predict(evalData)
+    labelSVM_eval = svmReturn.predict(evalData, labels=True)
+
+    minDCF = bdm.compute_minDCF_binary(scoreSVM_eval, evalLabels, pT, 1, 1)
+    confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreSVM_eval > th), evalLabels)
+    actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
+    print("minDCF no calibrated", minDCF)
+    print("actDCF no calibrated", actDCF)
+
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreSVM), LVAL)
+    w, b = xf[:-1], xf[-1]
+    calibrated_scoreSVM_eval = (w.T @ rd.vrow(scoreSVM_eval) + b - np.log(pT / (1 - pT))).ravel()
+
+    minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreSVM_eval, evalLabels, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreSVM_eval > th), evalLabels)
+    actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print("minDCF Calibrated: ", minDCF_calibrated_eval)
+    print("actDCF Calibrated: ", actDCF_calibrated_eval)
+
+    print("Fusion")
+    fusion_score = np.vstack([scoreQLR, scoreSVM, scoreGMM])
+
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(fusion_score, LVAL)
+    w, b = xf[:-1], xf[-1]
+    score_eval = np.vstack([scoreQLR_eval, scoreSVM_eval, scoreGMM_eval])
+    calibrated_SVAL = (w.T @ score_eval + b - np.log(pT / (1 - pT))).ravel()
+
+    minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_SVAL, evalLabels, pT, 1, 1)
+    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > th), evalLabels)
+    actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    print("minDCF Calibrated: ", minDCF_calibrated_eval)
+    print("actDCF Calibrated: ", actDCF_calibrated_eval)
