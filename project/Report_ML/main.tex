@@ -13,7 +13,14 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tcolorbox}
 \usepackage{fancyhdr}
-
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=30mm,
+ right=30mm,
+ top=30mm,
+}
 \colorlet{LightGray}{White!90!Periwinkle}
 \colorlet{LightOrange}{Orange!15}
 \colorlet{LightGreen}{Green!15}
@@ -130,7 +137,13 @@ Analyzing the pairwise averages and variances of the features, we can make some 
 \end{itemize}
 
 \section{Dimensionality reduction}
+Dimensionality reduction is useful in this context to compute a mapping from an n-dimensional feature space to an m-dimensional space; it is applied because it can compress information, remove noise and simplify classification.
 \subsection{PCA}
+PCA is an unsupervised dimensionality reduction technique that, given a centered dataset \(X = \{x_1, \ldots, x_k\}\), it aims to find the subspace of \(R^n\) that allows to preserve most of the information, i.e. the directions with the highest variance.
+We start by calculating the covariance matrix:
+\[
+\mathbf{C} = \frac{1}{K} \sum_{i} (x_i - \bar{x})(x_i - \bar{x})^T
+\]
 \subsection{LDA}
 \section{Multivariate Gaussian Density}
 

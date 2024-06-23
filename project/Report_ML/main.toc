@@ -2,7 +2,7 @@
 \contentsline {section}{\numberline {1}Dataset Analysis}{3}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Training and evaluation sets}{3}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Features analysis}{3}{subsection.1.2}%
-\contentsline {section}{\numberline {2}Dimensionality reduction}{5}{section.2}%
+\contentsline {section}{\numberline {2}Dimensionality reduction}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}PCA}{5}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}LDA}{5}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Multivariate Gaussian Density}{5}{section.3}%

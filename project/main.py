@@ -28,13 +28,13 @@ if __name__ == '__main__':
     ## FEATURES ANALYSIS ###
     ########################
     # fa.plot_features(D, L)
-    fa.plot_single_feature(D, L)
-    fa.plot_features_pairwise(D, L)
+    # fa.plot_single_feature(D, L)
+    # fa.plot_features_pairwise(D, L)
 
     ########################
     ## DIM REDUCTION #######
     ########################
-    # dr.Dim_red(D, L)
+    dr.Dim_red(D, L)
 
     # Classification
 
