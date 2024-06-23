@@ -12,11 +12,15 @@
 \usepackage{framed}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tcolorbox}
+\usepackage{fancyhdr}
 
 \colorlet{LightGray}{White!90!Periwinkle}
 \colorlet{LightOrange}{Orange!15}
 \colorlet{LightGreen}{Green!15}
-
+\pagestyle{fancy}
+\fancyhf{} % Pulisce l'header e il footer predefiniti
+\renewcommand{\headrulewidth}{0pt} % Opzionale: rimuove la linea orizzontale dall'header
+\fancyhead[C]{\textbf{MLPR Project:\\ Fingerprint spoofing detection}} % Titolo centrato nell'header
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
 
 \declaretheoremstyle[name=Theorem,]{thmsty}
@@ -69,18 +73,18 @@
 \newpage
 
 % ------------------------------------------------------------------------------
-
+\noindent\textbf{The goal of project is to perform a binary classification on fingerprint spoofing detection, that is to identify genuine vs counterfeit fingerprint images. The dataset consists of labeled samples corresponding to the genuine (True, label 1) class and the fake (False, label 0) class, the data is 6-dimensional.}
 \section{Dataset Analysis}
-The project task consists of a binary classification problem. The goal is to perform fingerprint spoofing detection, i.e. to identify genuine vs counterfeit fingerprint images. The dataset consists of labeled samples corresponding to the genuine (True, label 1) class and the fake (False, label 0) class. The samples are computed by a feature extractor that summarizes high-level characteristics of a fingerprint image. The data is 6-dimensional.
-
 \subsection{Training and evaluation sets}
-
-
-
+The datasets provided contain 6000 samples; the first 6 values in each row represent the features, while the last value is the label. Specifically they are: 
+\begin{itemize}
+    \item Training Set: 2990 samples beloging to the Fake class (label 0) and 3010 samples belonging to the Genuine class (label 1)
+    \item Evaluation Set: 3010 samples beloging to the Fake class (label 0) and 2990 samples belonging to the Genuine class (label 1)
+\end{itemize}
+We will use the Training Set to perform all the analysis, during this phase the dataset is divided to use about 60\% of it as the training dataset and the remaining 40\% for validation. 
+After this step, the most promising models were chosen and the evaluation dataset was used to evaluate them and make the final considerations.
 \subsection{Features analysis}
-LAB2\\
-i dati erano già centrati ma è stata applicata una normalizzazione che però è impercettibile\\
-Domande
+
 \begin{itemize}
     \item Feature 1 and feature 2\\
         Yes the class overlap feature 1 in range x [-2.665,2.237], y[0,0.315] and for feature 2 in range x [-2.670,3.000] and y[0,0.325].\\
@@ -99,18 +103,35 @@ Domande
         Modes of hist in feature 5 for true value is y 0.572 for x in [-1.211,-0.783], while for feature also for true value 6 y 0.553, x [-1.273,-0.817]\\
 \end{itemize}
 
-\subsection{Citation}
+\section{Dimensionality reduction}
+\subsection{PCA}
+\subsection{LDA}
+\section{Multivariate Gaussian Density}
 
-This is a citation\cite{Eg}.
+\section{Classification model analysis}
+\subsection{Gaussian Models}
+\subsubsection{MVG Gaussian Classifier}
+\subsubsection{Naive Bayes Classifier}
+\subsubsection{Tied Bayes Classifier}
+\subsubsection{Gaussian Models Comparison}
+\subsection{Logistic Regression Classifier}
+\subsubsection{Quadratic Logistic Regression(QLR)}
+\subsection{SVM Classifier}
+\subsubsection{Linear SVM}
+\subsubsection{Kernel SVM}
+\subsection{GMM Classifier}
+\section{Score Calibration}
+\subsection{Calibration Analysis on Selected Models}
+\subsection{Calibrating Scores for Selected Models}
+\section{Experimental Results}
+\subsection{Calibration on evaluation score}
+\subsection{Considerations}
+\section{Conclusions}
+
 
 \newpage
 
-% ------------------------------------------------------------------------------
-% Reference and Cited Works
-% ------------------------------------------------------------------------------
 
-\bibliographystyle{IEEEtran}
-\bibliography{References.bib}
 
 % ------------------------------------------------------------------------------
 
