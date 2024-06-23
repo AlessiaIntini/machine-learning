@@ -21,6 +21,7 @@
 \fancyhf{} % Pulisce l'header e il footer predefiniti
 \renewcommand{\headrulewidth}{0pt} % Opzionale: rimuove la linea orizzontale dall'header
 \fancyhead[C]{\textbf{MLPR Project:\\ Fingerprint spoofing detection}} % Titolo centrato nell'header
+\fancyfoot[C]{\thepage}
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}
 
 \declaretheoremstyle[name=Theorem,]{thmsty}
@@ -84,23 +85,48 @@ The datasets provided contain 6000 samples; the first 6 values in each row repre
 We will use the Training Set to perform all the analysis, during this phase the dataset is divided to use about 60\% of it as the training dataset and the remaining 40\% for validation. 
 After this step, the most promising models were chosen and the evaluation dataset was used to evaluate them and make the final considerations.
 \subsection{Features analysis}
+We can start to analize all features, here is the graph of each feature, through these histograms it is shown how each feature is distributed:\\
+\begin{figure}[ht]
 
+        \centering
+        \includegraphics[width=0.5\textwidth]{./img/AllFeatures.png}
+        \caption{All features}
+        \label{fig:AllFeatures}
+\end{figure}  
+\\
+By plotting a histogram for each feature, separately for the Fake and Genuine classes, it is possible to show whether the samples follow a Gaussian distribution and to what extent. 
+Thus, we can say that some features follow a Gaussian distribution. Furthermore, it can be seen that features 4 and 5 may be the most discriminating features based on their ability to separate the data of the two classes.\\
+\begin{figure}[ht]
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./img/image2.png}
+        \caption{Distribution of feature pairs}
+        \label{fig:PairFeatures}
+    \end{minipage}
+    \hfill % Aggiunge uno spazio orizzontale tra le due minipage se necessario
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \begin{tabular}{ccc}
+            \hline
+            Feature & Media & Varianza \\ \hline
+            1 & 0.00170711 & 1.00134304 \\
+            2 & 0.00503903 & 0.9983527 \\
+            3 & -0.00560753 & 1.0024818 \\
+            4 & 0.00109537 & 0.99029389\\
+            5 & -0.00700025 & 1.00119747 \\
+            6 & 0.00910515 & 0.99722374 \\ \hline
+        \end{tabular}
+        \caption{Mean and variance for each features}
+        \label{tab:mean-variance}
+    \end{minipage}
+\end{figure}
+    \\
+After making these calculations we can conclude that the data are already centered since all features have mean close to zero.\\
+Analyzing the pairwise averages and variances of the features, we can make some observations:  
 \begin{itemize}
-    \item Feature 1 and feature 2\\
-        Yes the class overlap feature 1 in range x [-2.665,2.237], y[0,0.315] and for feature 2 in range x [-2.670,3.000] and y[0,0.325].\\
-        The mean are similar in two feature, one is 0.00170711 and for feature two is 0.00503903.\\
-        Yes the variance is similar 1.00134304, 0.9983527.\\
-        Modes of hist in feature 1 for false value is y 0.541 for x in [-0.213,0.276], while for feature 2 is also for false value y 0.516, x [-0.402,0.165]\\
-    \item Feature 3 and feature 4\\
-         Yes the class overlap feature 3 in range x [-2.009,1.190], y[0,0.309] and for feature 4 in range x [-1.684,1.816] and y[0,0.371].\\
-         The mean are similar in two feature, one is -0.00560753 and for feature two is 0.00109537.\\
-        Yes the variance is similar 1.0024818 , 0.99029389.\\
-        Modes of hist in feature 3 for false value is y 0.517 for x in [-1.063,-0.568], while for feature 4 is also for false value y 0.525, x [0.290,0.783]\\
-    \item Feature 5 and feature 6\\
-         Yes the class overlap feature 5 in range x [-2.066,2.004], y[0,0.282] and for feature 6 in range x [-2.000,2.180] and y[0,0.301].\\
-         The mean are similar in two feature, one is -0.00700025 and for feature two is 0.00910515.\\
-        Yes the variance is similar 1.00119747 , 0.99722374.\\
-        Modes of hist in feature 5 for true value is y 0.572 for x in [-1.211,-0.783], while for feature also for true value 6 y 0.553, x [-1.273,-0.817]\\
+    \item Feature 1 and Feature 2: These two features have averages very close to zero, indicating that their values are similarly distributed around zero. However, the variance of Feature 2 is slightly lower than that of Feature 1, indicating that the values of Feature 2 are slightly less dispersed than those of Feature 1.  
+    \item Feature 3 and Feature 4: Feature 3 has a negative mean, while Feature 4 has a positive mean. This might indicate that the values of Feature 3 tend to be lower than those of Feature 4. Also, the variance of Feature 3 is slightly higher than that of Feature 4, indicating that the values of Feature 3 are more dispersed than those of Feature 4.  
+    \item Feature 5 and Feature 6: Feature 5 has a negative mean, while Feature 6 has a positive mean. This might indicate that the values of Feature 5 tend to be lower than those of Feature 6. Also, the variance of Feature 5 is slightly higher than that of Feature 6, indicating that the values of Feature 5 are more dispersed than those of Feature 6. 
 \end{itemize}
 
 \section{Dimensionality reduction}
