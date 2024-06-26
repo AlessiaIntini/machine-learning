@@ -152,8 +152,7 @@ where \( \mathbf{U} \) is the matrix of eigenvectors and \( \Sigma  \) is the di
 \mathbf{y_i} = \mathbf{P^T} (x_i - \bar{x})
 \end{equation}
 P is the matrix corresponding to the m columns of U associated with the m highest eigenvalues of C.
-At this point to choose which is the best value of m we need to check how much total variance in the data we are able to retain using different values of m.\\
-\\
+At this point to choose which is the best value of m we need to check how much total variance in the data we are able to retain using different values of m.
 To do this evaluation, it was decided to represent on a graph the variance of the data as m increases, i.e., we exploited that each eigenvalue corresponds to the variance along the corresponding axis, and the eigenvalues are the elements of the diagonal of the matrix \(\Sigma\) . The percentage will be calculated as the ratio of the sum of the first m eigenvalues to the sum of all eigenvalues.
 \\
 \begin{figure}[ht]
@@ -162,8 +161,20 @@ To do this evaluation, it was decided to represent on a graph the variance of th
     \includegraphics[width=0.5\textwidth]{./img/variance.png}
     \caption{Variance of data for each m values}
     \label{fig:variance}
-\end{figure}  
+\end{figure} 
+\\
+It is clear from Figure 4 that values of \( m<5\) rapidly decrease the amount of variance retained in the data. Removing a feature is probably the best choice, since this way the percentage of variance remains fairly high.\\
 \subsection{LDA}
+LDA is a supervised dimensionality reduction technique that aims to find the subspace that maximizes the separation between classes. \\
+To compute the transformation matrix \( W \) we need to compute between-class and within-class covariance matrices.
+\begin{equation}
+\mathbf{S}_b =\frac{1}{N}\sum_{c=1}^{K} n_c (\mu_c - \mu)(\mu_c - \mu)^T
+\end{equation}
+\begin{equation}
+    \mathbf{S}_w = \frac{1}{N}\sum_{c=1}^{K} \sum_{i=1}^{n_c} (x_{c,i} - \mu_i)(x_{c,i} - \mu_i)^T
+    \end{equation}
+where \( \mu_c \) is the mean of the c-th class, \( \mu \) is the mean of all the data, and \( n_c \) is the number of samples in the c-th class.\\
+The LDA directions can be computed solving the generalized eigenvalue problem \(S_b w=\lambda S_w w\), usually to solve the generalized eigenvalue problem we transform the \(S_w\) matrix into an identity matrix and then solve the eigenvalue problem for the other \(S_b \) matrix. This process allows us to find the discriminant vectors \(w\) that maximize the separation between the classes.
 \section{Multivariate Gaussian Density}
 
 \section{Classification model analysis}

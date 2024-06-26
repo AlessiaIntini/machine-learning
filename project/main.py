@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Classification
 
-    # dr.classification(DTR, LTR, DVAL, LVAL)
+    dr.classification(DTR, LTR, DVAL, LVAL)
 
     ########################
     ## Gausian Density ####
