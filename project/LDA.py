@@ -33,11 +33,11 @@ def compute_Sv_Sb(D, L):
 
 def LDA_function(D, L, m):
     # compute Sw and Sb
-    print("D", D)
-    print("L", L)
+    # print("D", D)
+    # print("L", L)
     Sw, Sb = compute_Sv_Sb(D, L)
-    print("Sw", Sw)
-    print("Sb", Sb)
+    # print("Sw", Sw)
+    # print("Sb", Sb)
     # compute the eigenvalues and eigenvectors of Sw^-1*Sb
     s, U = scipy.linalg.eigh(Sb, Sw)
     W = U[:, ::-1][:, 0:m]

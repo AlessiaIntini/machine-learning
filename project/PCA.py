@@ -6,12 +6,12 @@ import ReadData as ut
 def PercentageVariance(EigenValues):
     eigenvalues = EigenValues[::-1]
     ratio = np.array([])
-    print("Eigenvalues:", eigenvalues)
+    # print("Eigenvalues:", eigenvalues)
     sum = np.sum(eigenvalues)
     for i in range(0, len(eigenvalues)):
         M = np.sum(eigenvalues[:i + 1])
         ratio = np.append(ratio, M / sum * 100)
-        print("Percentuale di varianza spiegata da PC", i + 1, ":", M / sum * 100)
+        # print("Percentuale di varianza spiegata da PC", i + 1, ":", M / sum * 100)
     return ratio
 
 

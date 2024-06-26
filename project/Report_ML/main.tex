@@ -162,7 +162,7 @@ To do this evaluation, it was decided to represent on a graph the variance of th
     \label{fig:variance}
 \end{figure} 
 
-It is clear from Figure 4 that values of \( m<5\) rapidly decrease the amount of variance retained in the data. Removing a feature is probably the best choice, since this way the percentage of variance remains fairly high.
+It is clear from Figure~\ref{fig:variance} that values of \( m<5\) rapidly decrease the amount of variance retained in the data. Removing a feature is probably the best choice, since this way the percentage of variance remains fairly high.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./img/PCA.png}
@@ -182,7 +182,20 @@ To compute the transformation matrix \( W \) we need to compute between-class an
     \mathbf{S}_w = \frac{1}{N}\sum_{c=1}^{K} \sum_{i=1}^{n_c} (x_{c,i} - \mu_i)(x_{c,i} - \mu_i)^T
     \end{equation}
 where \( \mu_c \) is the mean of the c-th class, \( \mu \) is the mean of all the data, and \( n_c \) is the number of samples in the c-th class.\\
-The LDA directions can be computed solving the generalized eigenvalue problem \(S_b w=\lambda S_w w\), usually to solve the generalized eigenvalue problem we transform the \(S_w\) matrix into an identity matrix and then solve the eigenvalue problem for the other \(S_b \) matrix. This process allows us to find the discriminant vectors \(w\) that maximize the separation between the classes.
+The LDA directions can be computed solving the generalized eigenvalue problem \(S_b w=\lambda S_w w\), usually to solve the generalized eigenvalue problem we transform the \(S_w\) matrix into an identity matrix and then solve the eigenvalue problem for the other \(S_b \) matrix. This process allows us to find the discriminant vectors \(w\) that maximize the separation between the classes.\\
+In LDA, the maximum number of discriminant directions or dimensions that can be obtained is always equal to C-1 where C is the number of classes. This is because the goal of the LDA is to find the directions that maximize the separation between the classes. 
+In our case having only two classes the LDA can find at most one direction that maximizes the separation between these two classes.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./img/LDA.png}
+    \caption{LDA for first direction}
+    \label{fig:LDA}
+\end{figure} 
+Looking at the results of LDA, in Figure~\ref{fig:LDA}, we can see that it cannot find an optimal direction that gives us a better separation of classes than the results shown previously.
+\subsection{Classification}
+Subsequent to applying dimensionality reduction techniques we used LDA to perform classification, in fact after finding the hyperplane on the training data and projecting the validation data into the new space we used different thresholds to perform classification.
+\subsubsection{Classification with LDA}
+\subsubsection{Classifier with pre-processed data (PCA) and LDA}
 \section{Multivariate Gaussian Density}
 
 \section{Classification model analysis}

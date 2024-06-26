@@ -6,7 +6,8 @@ import ReadData as ut
 import BayesDecisionModel as bdm
 
 
-def hist(D, L, features, label, bins=10):
+def hist(D, L, features, label, title="", bins=10):
+    if title != " ": plt.title(title)
     D0 = D[features, L == 0]
     plt.hist(D0, label='Fake', density=True, alpha=0.5, bins=bins)
     D1 = D[features, L == 1]
@@ -15,7 +16,8 @@ def hist(D, L, features, label, bins=10):
     plt.legend(['Fake', 'Genuine'])
 
 
-def scatter(D, L, features1, features2, label1, label2):
+def scatter(D, L, features1, features2, label1, label2, title=""):
+    if title != " ": plt.title(title)
     plt.scatter(D[features1, L == 0], D[features2, L == 0], label='Fake', alpha=0.5)
     plt.scatter(D[features1, L == 1], D[features2, L == 1], label='Genuine', alpha=0.5)
     plt.xlabel(label1)
