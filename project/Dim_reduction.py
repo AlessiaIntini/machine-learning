@@ -19,18 +19,17 @@ def Dim_red(D, L):
     DP = np.dot(P.T, D)
     # print("DP",DP)
     plt.figure("PCA and LDA", figsize=(8, 8))
-
+    plt.suptitle('PCA')
     plt.subplot(2, 2, 1)
-    plt.title("PCA")
     plot.scatter(DP, L, 0, 1, "PC1", "PC2")
-    plt.subplot(2, 2, 3)
+    plt.subplot(2, 2, 2)
     plot.hist(DP, L, 0, "PC1")
-
+    plt.subplots_adjust(hspace=0.5)
     W_LDA = LDA.LDA_function(D, L, 2)
     WP_LDA = np.dot(W_LDA.T, D)
     plt.subplot(2, 2, 4)
     plot.hist(WP_LDA, L, 0, "1st direction")
-    plt.subplot(2, 2, 2)
+    plt.subplot(2, 2, 3)
     # LDA in first two directions
     plt.title("LDA ")
     plot.scatter(WP_LDA, L, 0, 1, "1st direction", "2nd direction")

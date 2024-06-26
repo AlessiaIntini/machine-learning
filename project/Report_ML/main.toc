@@ -4,7 +4,7 @@
 \contentsline {subsection}{\numberline {1.2}Features analysis}{3}{subsection.1.2}%
 \contentsline {section}{\numberline {2}Dimensionality reduction}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}PCA}{5}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}LDA}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}LDA}{6}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Multivariate Gaussian Density}{7}{section.3}%
 \contentsline {section}{\numberline {4}Classification model analysis}{7}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Gaussian Models}{7}{subsection.4.1}%

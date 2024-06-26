@@ -27,9 +27,9 @@ if __name__ == '__main__':
     ########################
     ## FEATURES ANALYSIS ###
     ########################
-    # fa.plot_features(D, L)
-    # fa.plot_single_feature(D, L)
-    # fa.plot_features_pairwise(D, L)
+    fa.plot_features(D, L)
+    fa.plot_single_feature(D, L)
+    fa.plot_features_pairwise(D, L)
 
     ########################
     ## DIM REDUCTION #######
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Classification
 
-    dr.classification(DTR, LTR, DVAL, LVAL)
+    # dr.classification(DTR, LTR, DVAL, LVAL)
 
     ########################
     ## Gausian Density ####
