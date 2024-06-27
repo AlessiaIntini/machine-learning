@@ -116,7 +116,7 @@ Thus, we can say that some features follow a Gaussian distribution. Furthermore,
         \centering
         \begin{tabular}{ccc}
             \hline
-            Feature & Media & Varianza \\ \hline
+            Feature & Mean & Variance \\ \hline
             1 & 0.00170711 & 1.00134304 \\
             2 & 0.00503903 & 0.9983527 \\
             3 & -0.00560753 & 1.0024818 \\
@@ -194,8 +194,31 @@ In our case having only two classes the LDA can find at most one direction that 
 Looking at the results of LDA, in Figure~\ref{fig:LDA}, we can see that it cannot find an optimal direction that gives us a better separation of classes than the results shown previously.
 \subsection{Classification}
 Subsequent to applying dimensionality reduction techniques we used LDA to perform classification, in fact after finding the hyperplane on the training data and projecting the validation data into the new space we used different thresholds to perform classification.
-\subsubsection{Classification with LDA}
-\subsubsection{Classifier with pre-processed data (PCA) and LDA}
+There are two different methods that have been used to calculate the threshold value:
+\begin{itemize}
+
+\item The first method calculates the average of the LDA values for the two classes and uses the average of these two averages as the threshold. This method is simpler, but does not take into account the distribution of the data or the classification error rate. In fact, it may not provide an optimal threshold if the data are not well balanced or if the distributions of the two classes overlap significantly.
+\item The second method uses a more sophisticated approach to determine the threshold. Instead of simply calculating the mean, a range of possible threshold values are examined and the one that minimizes the classification error rate is chosen. This method is more computationally heavy, but can lead to a more accurate threshold and a lower classification error rate.  
+\end{itemize}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcc}
+    \hline
+    \textbf{Methods} & \textbf{Number of errors} & \textbf{Error rate (\%)} \\
+    \hline
+    LDA - First threshold & 275 & 13.75 \\
+    LDA - Second threshold & 184 & 9.2 \\
+    \hline
+    PCA(m=6)+LDA - First threshold & 186 & 9.3 \\
+    PCA(m=5)+LDA - First threshold & 186 & 9.3 \\
+    PCA(m=6)+LDA - Second threshold & 184 & 9.2 \\
+    PCA(m=5)+LDA - Second threshold & 185 & 9.25 \\
+    \hline
+    \end{tabular}
+    \caption{LDA and PCA+LDA results with different threshold}
+    \label{tab:resultsPCALDA}
+\end{table}
+As can be seen from the Table~\ref{tab:resultsPCALDA} there is not much real improvement by applying PCA as pre-processing before LDA and that the classification error turns out to be quite high so good classification is not performed using LDA or the combination of LDA with PCA.
 \section{Multivariate Gaussian Density}
 
 \section{Classification model analysis}

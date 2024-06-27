@@ -6,8 +6,6 @@
 \contentsline {subsection}{\numberline {2.1}PCA}{5}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}LDA}{6}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Classification}{7}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Classification with LDA}{8}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Classifier with pre-processed data (PCA) and LDA}{8}{subsubsection.2.3.2}%
 \contentsline {section}{\numberline {3}Multivariate Gaussian Density}{8}{section.3}%
 \contentsline {section}{\numberline {4}Classification model analysis}{8}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Gaussian Models}{8}{subsection.4.1}%

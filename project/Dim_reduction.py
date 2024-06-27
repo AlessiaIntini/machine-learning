@@ -48,10 +48,21 @@ def classification(DTR, LTR, DVAL, LVAL):
     plot.hist(DVAL_LDA, LVAL, 0, "1st direction", bins=10)
     plt.show()
 
-    # threshold=(DTR_LDA[0,LTR==0]).mean()+(DTR_LDA[0,LTR==1]).mean()/2.0
+    print("LDA")
+    print("Result with first threshold")
+    threshold = (DTR_LDA[0, LTR == 0]).mean() + (DTR_LDA[0, LTR == 1]).mean() / 2.0
+    PVAL = np.zeros(shape=LVAL.shape, dtype=np.int32)
+    PVAL[DVAL_LDA[0] >= threshold] = 1
+    PVAL[DVAL_LDA[0] < threshold] = 0
+
+    diff = np.abs(PVAL - LVAL).sum()
+    print("number of error", diff)
+    error_rate = (diff / len(LVAL)) * 100
+    print("Error rate after lda %:", error_rate)
     best_threshold = None
     best_error_rate = float('inf')
 
+    print("Result with second threshold")
     for threshold in np.linspace(DTR_LDA.min(), DTR_LDA.max(), 100):
         PVAL = np.zeros(shape=LVAL.shape, dtype=np.int32)
         PVAL[DVAL_LDA[0] >= threshold] = 1
@@ -72,7 +83,7 @@ def classification(DTR, LTR, DVAL, LVAL):
     print("Error rate after lda %:", error_rate)
 
     # apply PCA and after LDA
-    s, P = PCA.PCA_function(DTR, 6)
+    s, P = PCA.PCA_function(DTR, 5)
 
     DTR_PCA = np.dot(P.T, DTR)
     DVAL_PCA = np.dot(P.T, DVAL)
@@ -89,7 +100,19 @@ def classification(DTR, LTR, DVAL, LVAL):
     plot.hist(DVAL_LDA, LVAL, 0, "1st direction", bins=10)
     plt.show()
 
-    # threshold = (DTR_LDA[0, LTR == 0].mean() + DTR_LDA[0, LTR == 1].mean()) / 2.0
+    print("PCA and LDA")
+    print("Result with first threshold")
+    threshold = (DTR_LDA[0, LTR == 0].mean() + DTR_LDA[0, LTR == 1].mean()) / 2.0
+
+    PVAL = np.zeros(shape=LVAL.shape, dtype=np.int32)
+    PVAL[DVAL_LDA[0] >= threshold] = 1
+    PVAL[DVAL_LDA[0] < threshold] = 0
+
+    diff = np.abs(PVAL - LVAL).sum()
+    print("number of error", diff)
+    print("len(LVAL)", len(LVAL))
+    error_rate = (diff / len(LVAL)) * 100
+    print("Error rate after pca and lda%:", error_rate)
 
     best_threshold = None
     best_error_rate = float('inf')
