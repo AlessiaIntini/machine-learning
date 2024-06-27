@@ -136,7 +136,6 @@ Analyzing the pairwise averages and variances of the features, we can make some 
     \item Feature 3 and Feature 4: Feature 3 has a negative mean, while Feature 4 has a positive mean. This might indicate that the values of Feature 3 tend to be lower than those of Feature 4. Also, the variance of Feature 3 is slightly higher than that of Feature 4, indicating that the values of Feature 3 are more dispersed than those of Feature 4.  
     \item Feature 5 and Feature 6: Feature 5 has a negative mean, while Feature 6 has a positive mean. This might indicate that the values of Feature 5 tend to be lower than those of Feature 6. Also, the variance of Feature 5 is slightly higher than that of Feature 6, indicating that the values of Feature 5 are more dispersed than those of Feature 6. 
 \end{itemize}
-
 \section{Dimensionality reduction}
 Dimensionality reduction is useful in this context to compute a mapping from an n-dimensional feature space to an m-dimensional space; it is applied because it can compress information, remove noise and simplify classification.
 \subsection{PCA}
@@ -197,8 +196,8 @@ Subsequent to applying dimensionality reduction techniques we used LDA to perfor
 There are two different methods that have been used to calculate the threshold value:
 \begin{itemize}
 
-\item The first method calculates the average of the LDA values for the two classes and uses the average of these two averages as the threshold. This method is simpler, but does not take into account the distribution of the data or the classification error rate. In fact, it may not provide an optimal threshold if the data are not well balanced or if the distributions of the two classes overlap significantly.
-\item The second method uses a more sophisticated approach to determine the threshold. Instead of simply calculating the mean, a range of possible threshold values are examined and the one that minimizes the classification error rate is chosen. This method is more computationally heavy, but can lead to a more accurate threshold and a lower classification error rate.  
+\item \textbf{First Threshold}: The first method calculates the average of the LDA values for the two classes and uses the average of these two averages as the threshold. This method is simpler, but does not take into account the distribution of the data or the classification error rate. In fact, it may not provide an optimal threshold if the data are not well balanced or if the distributions of the two classes overlap significantly.
+\item \textbf{Second Threshold}: The second method uses a more sophisticated approach to determine the threshold. Instead of simply calculating the mean, a range of possible threshold values are examined and the one that minimizes the classification error rate is chosen. This method is more computationally heavy, but can lead to a more accurate threshold and a lower classification error rate.  
 \end{itemize}
 \begin{table}[H]
     \centering
@@ -219,11 +218,32 @@ There are two different methods that have been used to calculate the threshold v
     \label{tab:resultsPCALDA}
 \end{table}
 As can be seen from the Table~\ref{tab:resultsPCALDA} there is not much real improvement by applying PCA as pre-processing before LDA and that the classification error turns out to be quite high so good classification is not performed using LDA or the combination of LDA with PCA.
-\section{Multivariate Gaussian Density}
 
+\section{Multivariate Gaussian Density}
+The multivariate Gaussian distribution is a generalization of the multidimensional Gaussian normal distribution. It is used to describe the probability of a vector of continuous random variables that can be correlated with each other.\\
+The multivariate Gaussian distribution in d dimensions is characterized by a vector of averages \(\mu\)  and a covariance matrix \(\Sigma\). The probability density function of the multivariate Gaussian distribution is given by:
+\begin{equation}
+    \mathcal{N}(x|\mu,\Sigma ) = \frac{1}{(2\pi)^{M/2}|\Sigma|^{1/2}} \exp\left(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right)
+\end{equation}
+Very often to prevent numerical problems due to exponentiation of large numbers, it is usually recommended to work on the logarithm of the density:
+\begin{equation}
+    \log \mathcal{N}(x|\mu,\Sigma ) = - \frac{M}{2} \log(2\pi) -\frac{1}{2} \log |\Sigma| - \frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu) 
+\end{equation}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./img/GaussianDensity.jpeg}
+    \caption{Gaussian density}
+    \label{fig:gaussianD}
+\end{figure} 
+The curve we can observe on the graph in Figure~\ref{fig:gaussianD} represents the Gaussian probability density calculated from the data. If the data actually follow a Gaussian distribution, then the curve should fit the histogram of the data well. When this happens we can say that the Gaussian model is a good fit for the data while if the Gaussian curve does not fit the histogram well, then the Gaussian model may not be the most appropriate model for that data.\\
+We can observe that feature 1, feature 2, feature 3 and feature 4 fit the model well and follow a Gaussian distribution.
 \section{Classification model analysis}
+To perform the classification obviously we had to divide the training dataset into a part for training and a part for validation.
 \subsection{Gaussian Models}
-\subsubsection{MVG Gaussian Classifier}
+The first class of models we will analyze is that of Gaussian generative models. A simple model is to assume that our data, given a class, can be described by a Gaussian distribution:
+\begin{equation}
+    p(x|y=c) = \mathcal{N}(x|\mu_c,\Sigma_c)
+\end{equation}
 \subsubsection{Naive Bayes Classifier}
 \subsubsection{Tied Bayes Classifier}
 \subsubsection{Gaussian Models Comparison}

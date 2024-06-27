@@ -43,48 +43,48 @@ if __name__ == '__main__':
     ########################
     ## Gausian Density ####
     ########################
-    # gd.apply_ML(D, L)
+    gd.apply_ML(D, L)
 
     ########################
     ## Gausian Models ####
     ########################
     # features 1,2,3,4,5,6
-    # print("Features 1,2,3,4,5,6")
-    # DTR_mvg = gm.calculate_MVG(DTR, LTR, DVAL, LVAL)
-    # DTR_naive = gm.calculate_Naive(DTR, LTR, DVAL, LVAL)
-    # DTR_Tied = gm.calculate_Tied(DTR, LTR, DVAL, LVAL)
-    #
-    # # Correlation
-    # gm.correlation(DTR, LTR)
-    #
-    # # feature 1,2,3,4
-    # print("Features 1,2,3,4")
-    # gm.calculate_MVG(DTR[:4], LTR, DVAL[:4], LVAL)
-    # gm.calculate_Naive(DTR[:4], LTR, DVAL[:4], LVAL)
-    # gm.calculate_Tied(DTR[:4], LTR, DVAL[:4], LVAL)
-    #
-    # # feature 1,2
-    # print("Features 1,2")
-    # gm.calculate_MVG(DTR[:2], LTR, DVAL[:2], LVAL)
-    # gm.calculate_Naive(DTR[:2], LTR, DVAL[:2], LVAL)
-    # gm.calculate_Tied(DTR[:2], LTR, DVAL[:2], LVAL)
-    #
-    # # feature 3,4
-    # print("Features 3,4")
-    # gm.calculate_MVG(DTR[2:4], LTR, DVAL[2:4], LVAL)
-    # gm.calculate_Naive(DTR[2:4], LTR, DVAL[2:4], LVAL)
-    # gm.calculate_Tied(DTR[2:4], LTR, DVAL[2:4], LVAL)
-    #
-    # # apply PCA+MVG
-    #
-    # for i in range(1, 7):
-    #     s, P = PCA.PCA_function(DTR, i)
-    #     print("PCA+MVG, m=", i)
-    #     DTR_PCA = np.dot(P.T, DTR)
-    #     DVAL_PCA = np.dot(P.T, DVAL)
-    #     DTR_mvgPCA = gm.calculate_MVG(DTR_PCA, LTR, DVAL_PCA, LVAL)
-    #     DTR_naivePCA = gm.calculate_Naive(DTR_PCA, LTR, DVAL_PCA, LVAL)
-    #     DTR_tiedPCA = gm.calculate_Tied(DTR_PCA, LTR, DVAL_PCA, LVAL)
+    print("Features 1,2,3,4,5,6")
+    DTR_mvg = gm.calculate_MVG(DTR, LTR, DVAL, LVAL)
+    DTR_naive = gm.calculate_Naive(DTR, LTR, DVAL, LVAL)
+    DTR_Tied = gm.calculate_Tied(DTR, LTR, DVAL, LVAL)
+
+    # Correlation
+    gm.correlation(DTR, LTR)
+
+    # feature 1,2,3,4
+    print("Features 1,2,3,4")
+    gm.calculate_MVG(DTR[:4], LTR, DVAL[:4], LVAL)
+    gm.calculate_Naive(DTR[:4], LTR, DVAL[:4], LVAL)
+    gm.calculate_Tied(DTR[:4], LTR, DVAL[:4], LVAL)
+
+    # feature 1,2
+    print("Features 1,2")
+    gm.calculate_MVG(DTR[:2], LTR, DVAL[:2], LVAL)
+    gm.calculate_Naive(DTR[:2], LTR, DVAL[:2], LVAL)
+    gm.calculate_Tied(DTR[:2], LTR, DVAL[:2], LVAL)
+
+    # feature 3,4
+    print("Features 3,4")
+    gm.calculate_MVG(DTR[2:4], LTR, DVAL[2:4], LVAL)
+    gm.calculate_Naive(DTR[2:4], LTR, DVAL[2:4], LVAL)
+    gm.calculate_Tied(DTR[2:4], LTR, DVAL[2:4], LVAL)
+
+    # apply PCA+MVG
+
+    for i in range(1, 7):
+        s, P = PCA.PCA_function(DTR, i)
+        print("PCA+MVG, m=", i)
+        DTR_PCA = np.dot(P.T, DTR)
+        DVAL_PCA = np.dot(P.T, DVAL)
+        DTR_mvgPCA = gm.calculate_MVG(DTR_PCA, LTR, DVAL_PCA, LVAL)
+        DTR_naivePCA = gm.calculate_Naive(DTR_PCA, LTR, DVAL_PCA, LVAL)
+        DTR_tiedPCA = gm.calculate_Tied(DTR_PCA, LTR, DVAL_PCA, LVAL)
 
     # #################################### #
     # ## Bayes Decision Model Evaluation  ##
