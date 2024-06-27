@@ -242,8 +242,48 @@ To perform the classification obviously we had to divide the training dataset in
 \subsection{Gaussian Models}
 The first class of models we will analyze is that of Gaussian generative models. A simple model is to assume that our data, given a class, can be described by a Gaussian distribution:
 \begin{equation}
-    p(x|y=c) = \mathcal{N}(x|\mu_c,\Sigma_c)
+    f_{x|C}(x|c) = \mathcal{N}(x|\mu_c,\Sigma_c)
 \end{equation}
+Since this is a binary classification task, we will assign a probability score to each sample in terms of the log-posterior class likelihood ratio:
+\begin{equation}
+    \log \frac{P(C=1|x)}{P(C=0|x)} = \log \frac{P(x|C=1)P(C=1)}{P(x|C=0)P(C=0)}
+\end{equation}
+\begin{table}[H]
+    \centering
+    \caption{Error Rates for Different Models and Features}
+    \label{tab:error_rates}
+    \begin{tabular}{lllr}
+    \hline
+    \textbf{Features} & \textbf{Model} & \textbf{Error Rate (\%)} \\
+    \hline
+    \multicolumn{3}{c}{no PCA} \\
+    \hline
+    1,2,3,4 & MVG & 7.95 \\
+    1,2,3,4 & Naive &  7.65 \\
+    1,2,3,4 & Tied &  9.50 \\
+    \hline
+    1,2 & MVG &  36.50 \\
+    1,2 & Naive &  36.30 \\
+    1,2 & Tied &  49.45 \\
+    \hline
+    3,4 & MVG &  9.45 \\
+    3,4 & Naive &  9.45 \\
+    3,4 & Tied &  9.40 \\
+    \hline
+    \multicolumn{3}{c}{PCA m= 5} \\
+    \hline
+    & MVG & 7.10 \\
+    & Naive & 8.75 \\
+    & Tied &  9.30 \\
+    \hline
+    \multicolumn{3}{c}{PCA m= 6} \\
+    \hline
+    & MVG &  7.00 \\
+    & Naive &  8.90 \\
+    & Tied &  9.30 \\
+    \hline
+    \end{tabular}
+    \end{table}
 \subsubsection{Naive Bayes Classifier}
 \subsubsection{Tied Bayes Classifier}
 \subsubsection{Gaussian Models Comparison}
