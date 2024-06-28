@@ -1,9 +1,10 @@
 import numpy as np
 import scipy
-
+import seaborn
 import Evaluation as error
 import GaussianDensity as gd
 import ReadData as ut
+import matplotlib.pyplot as plt
 
 
 def compute_log_likelihood(D, hParams):
@@ -89,6 +90,24 @@ def calculate_Naive(DTR, LTR, DVAL, LVAL):
     return LLR
 
 
+def heatmap(DT, LT, plt, title):
+    fig, axs = plt.subplots(1, 3)
+    seaborn.heatmap(np.corrcoef(DT), linewidth=0.2, cmap="Greys", square=True, cbar=False, ax=axs[0])
+    seaborn.heatmap(np.corrcoef(DT[:, LT == 0]), linewidth=0.2, cmap="Blues", square=True, cbar=False, ax=axs[1])
+    seaborn.heatmap(np.corrcoef(DT[:, LT == 1]), linewidth=0.2, cmap="Oranges", square=True, cbar=False, ax=axs[2])
+
+    # Get the number of features
+    num_features = DT.shape[0]
+
+    # Create a list of feature numbers starting from 1
+    feature_nums = list(range(1, num_features + 1))
+
+    # Set the x and y tick labels for each subplot
+    for ax in axs:
+        ax.set_xticklabels(feature_nums)
+        ax.set_yticklabels(feature_nums)
+
+
 def correlation(DTR, LTR):
     hParams_MVG = compute_mu_c_MVG(DTR, LTR)
 
@@ -100,6 +119,10 @@ def correlation(DTR, LTR):
 
     Corr0 = C0 / (ut.vcol(C0.diagonal() ** 0.5) * ut.vrow(C0.diagonal() ** 0.5))
     Corr1 = C1 / (ut.vcol(C1.diagonal() ** 0.5) * ut.vrow(C1.diagonal() ** 0.5))
+
+    heatmap(DTR, LTR, plt, "Correlation")
+    plt.show()
+
     for i in range(Corr0.shape[0]):
         row_Corr0 = ' '.join('{:<10.2f}'.format(x) for x in Corr0[i])
         print("Corr0[{}]: {} ".format(i, row_Corr0))

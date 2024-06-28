@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.17)  27 JUN 2024 19:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.17)  28 JUN 2024 19:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -507,6 +507,25 @@ Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
 \f@nch@O@erf=\skip64
 \f@nch@O@olf=\skip65
 \f@nch@O@orf=\skip66
+) (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
+ (/usr/local/texlive/2024/texmf-dist/tex/latex/tools/array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen265
+\ar@mcellbox=\box71
+\extrarowheight=\dimen266
+\NC@list=\toks49
+\extratabsurround=\skip67
+\backup@length=\skip68
+\ar@cellbox=\box72
+)
+\TX@col@width=\dimen267
+\TX@old@table=\dimen268
+\TX@old@col=\dimen269
+\TX@target=\dimen270
+\TX@delta=\dimen271
+\TX@cols=\count308
+\TX@ftn=\toks50
 )
 
 Package geometry Warning: Over-specification in `h'-direction.
@@ -515,58 +534,62 @@ Package geometry Warning: Over-specification in `h'-direction.
 Package thmtools Info: Key `name' (with value `Theorem')
 (thmtools)             is not a known style key.
 (thmtools)             Will pass this to every \declaretheorem
-(thmtools)             that uses `style=thmsty' on input line 35.
-\c@theorem=\count308
+(thmtools)             that uses `style=thmsty' on input line 36.
+\c@theorem=\count309
 Package thmtools Info: Key `name' (with value `Proposition')
 (thmtools)             is not a known style key.
 (thmtools)             Will pass this to every \declaretheorem
-(thmtools)             that uses `style=prosty' on input line 40.
+(thmtools)             that uses `style=prosty' on input line 41.
 Package thmtools Info: Key `name' (with value `Principle')
 (thmtools)             is not a known style key.
 (thmtools)             Will pass this to every \declaretheorem
-(thmtools)             that uses `style=prcpsty' on input line 44.
+(thmtools)             that uses `style=prcpsty' on input line 45.
 
 Package geometry Warning: Over-specification in `h'-direction.
     `width' (397.48499pt) is ignored.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count309
-\l__pdf_internal_box=\box71
-) (./main.aux)
+\l__color_backend_stack_int=\count310
+\l__pdf_internal_box=\box73
+) (./main.aux
+
+LaTeX Warning: Label `fig:AllFeatures' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 60.
-LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
  (/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count310
-\scratchdimen=\dimen265
-\scratchbox=\box72
-\nofMPsegments=\count311
-\nofMParguments=\count312
-\everyMPshowfont=\toks49
-\MPscratchCnt=\count313
-\MPscratchDim=\dimen266
-\MPnumerator=\count314
-\makeMPintoPDFobject=\count315
-\everyMPtoPDFconversion=\toks50
+\scratchcounter=\count311
+\scratchdimen=\dimen272
+\scratchbox=\box74
+\nofMPsegments=\count312
+\nofMParguments=\count313
+\everyMPshowfont=\toks51
+\MPscratchCnt=\count314
+\MPscratchDim=\dimen273
+\MPnumerator=\count315
+\makeMPintoPDFobject=\count316
+\everyMPtoPDFconversion=\toks52
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -607,16 +630,16 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 60.
+Package hyperref Info: Link coloring OFF on input line 61.
 (./main.out) (./main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 80.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 80.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -634,12 +657,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
 [2]
-<./img/AllFeatures.png, id=151, 422.07687pt x 426.09187pt>
+<./img/AllFeatures.png, id=161, 422.07687pt x 426.09187pt>
 File: ./img/AllFeatures.png Graphic file (type png)
 <use ./img/AllFeatures.png>
 Package pdftex.def Info: ./img/AllFeatures.png  used on input line 100.
 (pdftex.def)             Requested size: 213.39568pt x 215.4315pt.
-<./img/image2.png, id=153, 757.83125pt x 760.8425pt>
+<./img/image2.png, id=163, 757.83125pt x 760.8425pt>
 File: ./img/image2.png Graphic file (type png)
 <use ./img/image2.png>
 Package pdftex.def Info: ./img/image2.png  used on input line 110.
@@ -661,20 +684,26 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
 [4 <./img/image2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 146--151
+<./img/correlazione.png, id=179, 543.02875pt x 186.6975pt>
+File: ./img/correlazione.png Graphic file (type png)
+<use ./img/correlazione.png>
+Package pdftex.def Info: ./img/correlazione.png  used on input line 146.
+(pdftex.def)             Requested size: 341.43437pt x 117.39214pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 150--155
 
  []
 
-<./img/variance.png, id=169, 631.86063pt x 470.25688pt>
-File: ./img/variance.png Graphic file (type png)
-<use ./img/variance.png>
-Package pdftex.def Info: ./img/variance.png  used on input line 159.
-(pdftex.def)             Requested size: 213.39568pt x 158.81607pt.
-<./img/PCA.png, id=171, 571.13374pt x 319.1925pt>
-File: ./img/PCA.png Graphic file (type png)
-<use ./img/PCA.png>
-Package pdftex.def Info: ./img/PCA.png  used on input line 167.
-(pdftex.def)             Requested size: 298.75264pt x 166.96489pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 150--155
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--168
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -682,11 +711,30 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[5 <./img/variance.png>]
-<./img/LDA.png, id=186, 677.53125pt x 326.21875pt>
+[5 <./img/correlazione.png>]
+<./img/variance.png, id=193, 631.86063pt x 470.25688pt>
+File: ./img/variance.png Graphic file (type png)
+<use ./img/variance.png>
+Package pdftex.def Info: ./img/variance.png  used on input line 176.
+(pdftex.def)             Requested size: 213.39568pt x 158.81607pt.
+<./img/PCA.png, id=195, 571.13374pt x 319.1925pt>
+File: ./img/PCA.png Graphic file (type png)
+<use ./img/PCA.png>
+Package pdftex.def Info: ./img/PCA.png  used on input line 184.
+(pdftex.def)             Requested size: 298.75264pt x 166.96489pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 22.54448pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.54448pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
+
+[6 <./img/variance.png> <./img/PCA.png>]
+<./img/LDA.png, id=206, 677.53125pt x 326.21875pt>
 File: ./img/LDA.png Graphic file (type png)
 <use ./img/LDA.png>
-Package pdftex.def Info: ./img/LDA.png  used on input line 189.
+Package pdftex.def Info: ./img/LDA.png  used on input line 206.
 (pdftex.def)             Requested size: 298.75264pt x 143.8453pt.
 
 
@@ -696,7 +744,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[6 <./img/PCA.png>]
+[7 <./img/LDA.png>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -704,11 +752,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[7 <./img/LDA.png>]
-<./img/GaussianDensity.jpeg, id=206, 722.7pt x 406.51875pt>
+[8]
+<./img/GaussianDensity.jpeg, id=226, 722.7pt x 406.51875pt>
 File: ./img/GaussianDensity.jpeg Graphic file (type jpg)
 <use ./img/GaussianDensity.jpeg>
-Package pdftex.def Info: ./img/GaussianDensity.jpeg  used on input line 234.
+Package pdftex.def Info: ./img/GaussianDensity.jpeg  used on input line 252.
 (pdftex.def)             Requested size: 298.75264pt x 168.05081pt.
 
 
@@ -718,7 +766,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[8 <./img/GaussianDensity.jpeg>]
+[9 <./img/GaussianDensity.jpeg>]
+Underfull \hbox (badness 10000) in paragraph at lines 272--277
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -726,7 +778,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[9]
+[10]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -734,27 +786,39 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[10] (./main.aux)
+[11]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 22.54448pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.54448pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
+
+[12] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 5419B6BEA2D58826DA356E9C1E2506B9;4226.
+(rerunfilecheck)             Checksum: BA34AB691210AFF28F2863E143FE4CF8;4576.
  ) 
 Here is how much of TeX's memory you used:
- 22264 strings out of 474116
- 414447 string characters out of 5743682
- 1938187 words of memory out of 5000000
- 44189 multiletter control sequences out of 15000+600000
+ 22405 strings out of 474116
+ 416688 string characters out of 5743682
+ 1943187 words of memory out of 5000000
+ 44313 multiletter control sequences out of 15000+600000
  567494 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  83i,12n,87p,617b,482s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (10 pages, 1909714 bytes).
+Output written on main.pdf (12 pages, 1945813 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
- 247 compressed objects within 3 object streams
- 55 named destinations out of 1000 (max. 500000)
- 251 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 333 PDF objects out of 1000 (max. 8388607)
+ 277 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
+ 272 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -512,75 +512,77 @@ if __name__ == '__main__':
     # pl.legend()
     # pl.show()
 
-    # # ########################
-    # # ##       GMM         ###
-    # # ########################
-    # covTypes = ['Full', 'Diag']
-    # nComponents = [1, 2, 4, 8, 16, 32]
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # print("GMM with prior=0.1")
-    # for nc in nComponents:
-    #     print("nComponents ", nc)
-    #     for covType in covTypes:
-    #         print(" covType is ", covType)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         llr = gmm.predict(DVAL)
-    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-    #         if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #         print("minDCF", minDCF)
-    #         predictions = gmm.predict(DVAL, labels=True)
-    #         confusionMatrix = bdm.compute_confusion_matrix(predictions, LVAL)
-    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #         if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #         print("actDCF", actDCF)
-    #
-    # print("minimum value of minDCF", minValue_minDCF)
-    # print("minimum value of actDCF", minValue_actDCF)
-    #
-    # print("GMM with different log odds")
-    # log_odds_values = np.linspace(-4, 4, 21)
-    # minDCF_values = []
-    # actDCF_values = []
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-    #
-    # for covType in covTypes:
-    #     print(" covType is ", covType)
-    #     for nc in nComponents:
-    #         print("nComponents ", nc)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         for log_odds in log_odds_values:
-    #             prior = 1 / (1 + np.exp(-log_odds))
-    #             llr = gmm.predict(DVAL)
-    #             minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
-    #             print("minDCF", minDCF)
-    #             if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #             minDCF_values.append(minDCF)
-    #             predictions = gmm.predict(DVAL, labels=True)
-    #             th = -np.log((prior * 1) / ((1 - prior) * 1))
-    #             predictedLabels = np.int32(llr > th)
-    #             confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #             actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
-    #             if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #             print("actDCF", actDCF)
-    #             actDCF_values.append(actDCF)
-    # pl.figure()
-    # pl.plot(log_odds_values, minDCF_values, 'b')
-    # pl.plot(log_odds_values, actDCF_values, 'r')
-    # pl.ylim([None, 0.4])
-    # pl.xlabel('Log Odds')
-    # pl.ylabel('DCF values')
-    # pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
-    # pl.legend(['minDCF', 'actDCF'])
-    # pl.show()
-    # minDCF_values = []
-    # actDCF_values = []
-    #
-    # print("minimum value of minDCF", minValue_minDCF)
-    # print("minimum value of actDCF", minValue_actDCF)
+    # ########################
+    # ##       GMM         ###
+    # ########################
+    covTypes = ['Full', 'Diag']
+    prior = 0.1
+    nComponents = [1, 2, 4, 8, 16, 32]
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+    print("GMM with prior=0.1")
+    for nc in nComponents:
+        print("nComponents ", nc)
+        for covType in covTypes:
+            print(" covType is ", covType)
+            gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+            gmm.train(DTR, LTR)
+            llr = gmm.predict(DVAL)
+            minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+            if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+            print("minDCF", minDCF)
+            th = -np.log((prior * 1) / ((1 - prior) * 1))
+            predictedLabels = np.int32(llr > th)
+            confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+            actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+            if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
+            print("actDCF", actDCF)
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
+
+    print("GMM with different log odds")
+    log_odds_values = np.linspace(-4, 4, 21)
+    minDCF_values = []
+    actDCF_values = []
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+
+    for covType in covTypes:
+        print(" covType is ", covType)
+        for nc in nComponents:
+            print("nComponents ", nc)
+            gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+            gmm.train(DTR, LTR)
+            for log_odds in log_odds_values:
+                prior = 1 / (1 + np.exp(-log_odds))
+                llr = gmm.predict(DVAL)
+                minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+                print("minDCF", minDCF)
+                if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+                minDCF_values.append(minDCF)
+                predictions = gmm.predict(DVAL, labels=True)
+                th = -np.log((prior * 1) / ((1 - prior) * 1))
+                predictedLabels = np.int32(llr > th)
+                confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+                actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+                if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
+                print("actDCF", actDCF)
+                actDCF_values.append(actDCF)
+            pl.figure()
+            pl.plot(log_odds_values, minDCF_values, 'b')
+            pl.plot(log_odds_values, actDCF_values, 'r')
+            pl.ylim([None, 0.4])
+            pl.xlabel('Log Odds')
+            pl.ylabel('DCF values')
+            pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
+            pl.legend(['minDCF', 'actDCF'])
+            pl.show()
+            minDCF_values = []
+            actDCF_values = []
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
 
     ##########################
     # ##   CALIBRATION     ###

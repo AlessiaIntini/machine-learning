@@ -15,6 +15,7 @@
 \usepackage{fancyhdr}
 \usepackage{geometry}
 \usepackage{float}
+\usepackage{tabularx}
 \geometry{
  a4paper,
  total={170mm,257mm},
@@ -95,7 +96,6 @@ After this step, the most promising models were chosen and the evaluation datase
 \subsection{Features analysis}
 We can start to analize all features, here is the graph of each feature, through these histograms it is shown how each feature is distributed:\\
 \begin{figure}[ht]
-
         \centering
         \includegraphics[width=0.5\textwidth]{./img/AllFeatures.png}
         \caption{All features}
@@ -136,6 +136,23 @@ Analyzing the pairwise averages and variances of the features, we can make some 
     \item Feature 3 and Feature 4: Feature 3 has a negative mean, while Feature 4 has a positive mean. This might indicate that the values of Feature 3 tend to be lower than those of Feature 4. Also, the variance of Feature 3 is slightly higher than that of Feature 4, indicating that the values of Feature 3 are more dispersed than those of Feature 4.  
     \item Feature 5 and Feature 6: Feature 5 has a negative mean, while Feature 6 has a positive mean. This might indicate that the values of Feature 5 tend to be lower than those of Feature 6. Also, the variance of Feature 5 is slightly higher than that of Feature 6, indicating that the values of Feature 5 are more dispersed than those of Feature 6. 
 \end{itemize}
+\subsection{Features correlation}
+We can show how correlated the features are by using a heatmap that shows a darker color within the cells for which there is a high correlation between feature i and feature j. The correlation between feature x and feature y is calculated using Pearson's coefficient:
+\begin{equation}
+    Corr_{i,j} = \frac{Cov(i,j)}{\sqrt{Var(i)}\sqrt{Var(j)}}  
+\end{equation}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./img/correlazione.png}
+    \caption{Correlation features: gray scale indicates the correlation between whole dataset, blue is for Fake class and orange for Genuine class}
+    \label{fig:AllFeatures}
+\end{figure} 
+Most of the features do not appear to be particularly correlated; in fact, most of the values in the correlation matrix are close to zero.\\
+\\
+Since the features do not appear to be strongly correlated since precisely the values are close to zero. This suggests to us that each feature carries unique information that could be useful for classification. Therefore, it is most likely that in PCA we will use a value of m as high as possible, possibly equal to the number of features in this way it will be possible to preserve as much of the information in the data as possible.\\
+\\
+While in the case of Naive Bayes model and Full Covariance Gaussian Model could have similar performance because the features appear to be not strongly correlated. While in the case of the Tied model, which shares the covariance matrix between the classes, it may not have very good performance since the features are not strongly correlated.
+
 \section{Dimensionality reduction}
 Dimensionality reduction is useful in this context to compute a mapping from an n-dimensional feature space to an m-dimensional space; it is applied because it can compress information, remove noise and simplify classification.
 \subsection{PCA}
@@ -193,7 +210,8 @@ In our case having only two classes the LDA can find at most one direction that 
 Looking at the results of LDA, in Figure~\ref{fig:LDA}, we can see that it cannot find an optimal direction that gives us a better separation of classes than the results shown previously.
 \subsection{Classification}
 Subsequent to applying dimensionality reduction techniques we used LDA to perform classification, in fact after finding the hyperplane on the training data and projecting the validation data into the new space we used different thresholds to perform classification.
-There are two different methods that have been used to calculate the threshold value:
+After applying dimensionality reduction techniques, we used LDA to perform classification; in fact, after finding the hyperplane on the training data and projecting the validation data into the new space these new data values can be used as scores by comparing them with different thresholds to perform classification, if the value exceeds the threshold it is associated with the label 1 while if it is lower 0.
+Two different methods were used to calculate the threshold value:
 \begin{itemize}
 
 \item \textbf{First Threshold}: The first method calculates the average of the LDA values for the two classes and uses the average of these two averages as the threshold. This method is simpler, but does not take into account the distribution of the data or the classification error rate. In fact, it may not provide an optimal threshold if the data are not well balanced or if the distributions of the two classes overlap significantly.
@@ -246,47 +264,101 @@ The first class of models we will analyze is that of Gaussian generative models.
 \end{equation}
 Since this is a binary classification task, we will assign a probability score to each sample in terms of the log-posterior class likelihood ratio:
 \begin{equation}
-    \log \frac{P(C=1|x)}{P(C=0|x)} = \log \frac{P(x|C=1)P(C=1)}{P(x|C=0)P(C=0)}
+    llr(x_t) = \log \;r(x_t) = \log \frac{P(C=h_1|x_t)}{P(C=h_0|x_t)}
 \end{equation}
+This expression can be expanded writing:
+\begin{equation}
+    llr(x_t) = \log \frac{f_{X|C}(x_t|C=h_1)}{f_{X|C}(x_t|C=h_1)} + \frac{\pi }{1-\pi }
+\end{equation}
+where \( f_{X|C}(x_t|c)=\mathcal{N}(x|\mu_c,\Sigma_c)\)\\\\
+It is necessary to find the parameters \(\theta \), \(\mu_c\) and \(\Sigma_c \); this can be done by maximizing the log-likelihood.\\ Parameter estimation is part of the training phase and is therefore performed on the training part of the dataset.
+While the estimation phase is to calculate the likelihood ratio for each sample and compare it to a threshold, which will be set at 0(th=0) in this step. After doing this, the error rate can be calculated to evaluate the classification. 
+This analysis has been done on different Gaussian models, the difference between these models is the way the parameters \((\mu_c ,\Sigma_c )\) are calculated, more specifically \(\Sigma_c\).
+\subsubsection{MVG Gaussian Classifier}
+The first model we will analyze is the multivariate Gaussian classifier; in this model the covariance matrix is assumed to be different for each class. The parameters \(\mu_c\) and \(\Sigma_c\) are estimated by maximizing the log-likelihood of the training data. Thus they can be obtained as:
+\begin{equation}
+    \mu_c^* = \frac{1}{N_c} \sum_{i|c_i=C} x_{i} \;\;\;\;\; \sigma_c^* = \frac{1}{N_c} \sum_{i|c_i=C} (x_{i} - \mu_c)(x_{i} - \mu_c)^T
+\end{equation}
+\subsubsection{Naive Bayes Classifier}
+The Naive Bayes hypothesis simplifies the MVG full covariance model. In fact, if we know that the different components of our characteristics are approximately independent, we can simplify the estimation by assuming that the distribution of x|C can be factorized on its components.\\
+The parameters then become:
+\begin{equation}
+    \mu_{c,[j]}^* = \frac{1}{N_c} \sum_{i|c_i=C} x_{i,[j]} \;\;\;\;\; \sigma_{c,[j]}^* = \frac{1}{N_c} \sum_{i|c_i=C} (x_{i,[j]} - \mu_{c,[j]})^2
+\end{equation}
+The Naïve Bayes classifier corresponds to the MVG full covariance classifier with a diagonal covariance matrix.
+\subsubsection{Tied Bayes Classifier}
+Another common Gaussian Model is Tied Model, it assumes that the covariance matrix is the same for all classes, but each class still has its own mean.
+It assumes that:
+\begin{equation}
+    f_{X|C}(x|c) = \mathcal{N}(x|\mu_c,\Sigma)
+\end{equation}
+While the parameters are estimated as:
+\begin{equation}
+    \mu_c^* = \frac{1}{N_c} \sum_{i|c_i=C} x_{i} \;\;\;\;\; \Sigma^* = \frac{1}{N} \sum_{c} \sum_{i|c_i=C} (x_{i} - \mu_c)(x_{i} - \mu_c)^T
+\end{equation}
+where \(N= \sum_{c=1}^{k}Nc\), that is the number of all samples.\\
+This model is strongly related to LDA, if considering the binary log-likelihood ratio of the tied model we obtain a linear decision function:
+\begin{equation}
+    llr(x_t) = log \frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)}= x^Tb+c
+\end{equation}
+where b and c are functions of class means and covariance matrix. On the other hand, projecting
+over the LDA subspace is, up to a scaling factor k, given by:
+\begin{equation}
+   w^tx=k x^T \Lambda (\mu_1-\mu_0)
+\end{equation}
+
+where \( \Lambda(\mu_1-\mu_0)=b\). The LDA assumption that all the classes have the same within class covariance matrix is related to the assumption done for the tied model.
+\subsubsection{Gaussian Models Comparison}
+At this point placing the \( P(C = 1) = P(C = 0) = 1/2\), classification was performed as can be seen in Table~\ref{tab:error_ratesMVG} using Gaussian models. 
 \begin{table}[H]
     \centering
-    \caption{Error Rates for Different Models and Features}
-    \label{tab:error_rates}
-    \begin{tabular}{lllr}
+    \begin{tabularx}{0.6\textwidth}{>{\centering\arraybackslash}l>{\centering\arraybackslash}X>{\centering\arraybackslash}X} 
     \hline
     \textbf{Features} & \textbf{Model} & \textbf{Error Rate (\%)} \\
     \hline
     \multicolumn{3}{c}{no PCA} \\
     \hline
-    1,2,3,4 & MVG & 7.95 \\
-    1,2,3,4 & Naive &  7.65 \\
-    1,2,3,4 & Tied &  9.50 \\
+    1,2,3,4,5,6 & Full Cov & 7.00 \\
+    1,2,3,4,5,6 & Naïve Bayes &  7.20 \\
+    1,2,3,4,5,6 & Tied Cov &  9.30 \\
     \hline
-    1,2 & MVG &  36.50 \\
-    1,2 & Naive &  36.30 \\
+    1,2,3,4 & Full Cov & 7.95 \\
+    1,2,3,4 & Naïve Bayes &  7.65 \\
+    1,2,3,4 & Tied Cov &  9.50 \\
+    \hline
+    1,2 & Full Cov &  36.50 \\
+    1,2 & Naïve Bayes &  36.30 \\
     1,2 & Tied &  49.45 \\
     \hline
-    3,4 & MVG &  9.45 \\
-    3,4 & Naive &  9.45 \\
-    3,4 & Tied &  9.40 \\
+    3,4 & Full Cov &  9.45 \\
+    3,4 & Naïve Bayes &  9.45 \\
+    3,4 & Tied Cov &  9.40 \\
     \hline
     \multicolumn{3}{c}{PCA m= 5} \\
     \hline
-    & MVG & 7.10 \\
-    & Naive & 8.75 \\
-    & Tied &  9.30 \\
+    1,2,3,4,5,6 & Full Cov & 7.10 \\
+    1,2,3,4,5,6 & Naïve Bayes & 8.75 \\
+    1,2,3,4,5,6 & Tied Cov &  9.30 \\
     \hline
     \multicolumn{3}{c}{PCA m= 6} \\
     \hline
-    & MVG &  7.00 \\
-    & Naive &  8.90 \\
-    & Tied &  9.30 \\
+    1,2,3,4,5,6 & Full Cov &  7.00 \\
+    1,2,3,4,5,6 & Naïve Bayes &  8.90 \\
+    1,2,3,4,5,6 & Tied Cov &  9.30 \\
     \hline
-    \end{tabular}
+    \end{tabularx}
+    \caption{Error Rates for Different Models and Features}
+    \label{tab:error_ratesMVG}
     \end{table}
-\subsubsection{Naive Bayes Classifier}
-\subsubsection{Tied Bayes Classifier}
-\subsubsection{Gaussian Models Comparison}
+Comparing the results with Table~\ref{tab:resultsPCALDA} , where LDA had been used for classification we can observe that for certain configurations there was an improvement. This could be due to the fact that this method is able to classify better and thus recognize the point to which class it belongs.
+Analyzing the data provided in Table~\ref{tab:error_ratesMVG} we can make some considerations about the features used for classification:
+\begin{itemize}
+    \item \textbf{Features (1,2,3,4,5,6)}: the classification error is relatively low for all models, this may suggest that all features provide useful information.
+    \item \textbf{Features (1,2,3,4)}: the classification error increases slightly, so it can be said that features 5 and 6 probably contain useful classification information.
+    \item \textbf{Features (1,2),(3,4)}: the classification error increases significantly in the case of features(1,2) because they do not contain particularly important information for classification. While for (3,4),the error remains similar to the others , this might indicate that these two features are particularly informative for classification.  
+\end{itemize}
+ 
+
 \subsection{Logistic Regression Classifier}
 \subsubsection{Quadratic Logistic Regression(QLR)}
 \subsection{SVM Classifier}
