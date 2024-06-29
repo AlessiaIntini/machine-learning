@@ -272,6 +272,9 @@ It is defined as follows:
 where \(P_{fn}=\frac{FN}{FN+FP}\) and \(P_{fp}=\frac{FP}{FP+TP}\).\\
 \\
 From the Equation~\ref{eq:DCF}  it is possible to find \textbf{minDCF} and \textbf{actDCF}, and different thresholds are used to calculate these. In fact in the case of minDCF one uses as a threshold the one that minimizes DCF and there are several methods to be able to find it. Whereas for actDCF you use as a threshold:
+\begin{equation}
+    t'=-\log{\frac{\tilde{\pi}}{1-\tilde{\pi}}}
+\end{equation}
 
 \section{Classification model analysis}
 To perform the classification obviously we had to divide the training dataset into a part for training and a part for validation.
