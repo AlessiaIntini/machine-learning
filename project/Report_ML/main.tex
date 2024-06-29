@@ -16,6 +16,7 @@
 \usepackage{geometry}
 \usepackage{float}
 \usepackage{tabularx}
+\usepackage{array}
 \geometry{
  a4paper,
  total={170mm,257mm},
@@ -258,7 +259,7 @@ The curve we can observe on the graph in Figure~\ref{fig:gaussianD} represents t
 We can observe that feature 1, feature 2, feature 3 and feature 4 fit the model well and follow a Gaussian distribution.
 \section{Model evaluation for classification}
 To understand which model is the most promising and gives us the best results, we divided the dataset as mentioned above into a part for training and a part for validation. This way we can test our model on data other than the training data.\\
-We have considered different types of applications with various priorities (\( \tilde{\pi}\)), while the cost of different types of errors \((C_fn,C_fp)\) are always considered the same in all applications i.e., they will be set at 1.0. The target application chosen to be balanced will be:
+We considered different types of applications i.e. various values of (\( \tilde{\pi},C_{fn},C_{fp})\). The target application chosen to be balanced will be:
 \begin{equation}
     (\tilde{\pi},C_fp,C_fn) = (0.1,1,1)
 \end{equation}
@@ -379,8 +380,33 @@ Analyzing the data provided in Table~\ref{tab:error_ratesMVG} we can make some c
     \item \textbf{Features (1,2,3,4)}: the classification error increases slightly, so it can be said that features 5 and 6 probably contain useful classification information.
     \item \textbf{Features (1,2),(3,4)}: the classification error increases significantly in the case of features(1,2) because they do not contain particularly important information for classification. While for (3,4),the error remains similar to the others , this might indicate that these two features are particularly informative for classification.  
 \end{itemize}
- 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \textbf{Model}  & \textbf{Full Cov} & \textbf{Naïve Bayes} & \textbf{Tied Cov} \\ \hline
+    \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 1, 1)}} \\   \hline
+    \textbf{actDCF} & 0.141913 & 0.174987 & 0.186044 \\
+    \textbf{minDCF} & 0.133144 & 0.173691 & 0.181163 \\ \hline
+     \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.90, 1, 1)}} \\   \hline
+    \textbf{actDCF} & 0.398041 & 0.466014 & 0.462558 \\
+    \textbf{minDFC} & 0.351238 & 0.434044 & 0.445132 \\ \hline
+    \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.10, 1, 1)}} \\   \hline
+    \textbf{actDCF} & 0.304147 & 0.393017 & 0.405066 \\
+    \textbf{minDFC} & 0.273825 & 0.354471 & 0.364823 \\ \hline
+    \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 1, 9)}} \\   \hline
+    \textbf{actDCF} & 0.304147 & 0.393017 & 0.405066 \\
+    \textbf{minDFC} & 0.273825 & 0.354471 & 0.364823 \\ \hline
 
+    \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 9, 1)}} \\   \hline
+    \textbf{actDCF} & 0.398041 & 0.466014 & 0.462558 \\
+    \textbf{minDFC} & 0.351238 & 0.434044 & 0.445132 \\ \hline
+
+
+    \end{tabular}
+    \caption{minDCF and actDCF for Different Models and Configurations}
+    \label{tab:model_comparison}
+    \end{table}
 \subsection{Logistic Regression Classifier}
 \subsubsection{Quadratic Logistic Regression(QLR)}
 \subsection{SVM Classifier}
