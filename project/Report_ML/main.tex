@@ -237,6 +237,7 @@ Two different methods were used to calculate the threshold value:
 \end{table}
 As can be seen from the Table~\ref{tab:resultsPCALDA} there is not much real improvement by applying PCA as pre-processing before LDA and that the classification error turns out to be quite high so good classification is not performed using LDA or the combination of LDA with PCA.
 
+
 \section{Multivariate Gaussian Density}
 The multivariate Gaussian distribution is a generalization of the multidimensional Gaussian normal distribution. It is used to describe the probability of a vector of continuous random variables that can be correlated with each other.\\
 The multivariate Gaussian distribution in d dimensions is characterized by a vector of averages \(\mu\)  and a covariance matrix \(\Sigma\). The probability density function of the multivariate Gaussian distribution is given by:
@@ -249,14 +250,32 @@ Very often to prevent numerical problems due to exponentiation of large numbers,
 \end{equation}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./img/GaussianDensity.jpeg}
+    \includegraphics[width=0.8\textwidth]{./img/GaussianDensity.jpeg}
     \caption{Gaussian density}
     \label{fig:gaussianD}
 \end{figure} 
 The curve we can observe on the graph in Figure~\ref{fig:gaussianD} represents the Gaussian probability density calculated from the data. If the data actually follow a Gaussian distribution, then the curve should fit the histogram of the data well. When this happens we can say that the Gaussian model is a good fit for the data while if the Gaussian curve does not fit the histogram well, then the Gaussian model may not be the most appropriate model for that data.\\
 We can observe that feature 1, feature 2, feature 3 and feature 4 fit the model well and follow a Gaussian distribution.
+\section{Model evaluation for classification}
+To understand which model is the most promising and gives us the best results, we divided the dataset as mentioned above into a part for training and a part for validation. This way we can test our model on data other than the training data.\\
+We have considered different types of applications with various priorities (\( \tilde{\pi}\)), while the cost of different types of errors \((C_fn,C_fp)\) are always considered the same in all applications i.e., they will be set at 1.0. The target application chosen to be balanced will be:
+\begin{equation}
+    (\tilde{\pi},C_fp,C_fn) = (0.1,1,1)
+\end{equation}
+The objective of the following analysis is to choose the model with the best performance. Performance will be measured in terms of normalized minimum detection costs. This technique would allow us to discriminate the best performing model for our target application by providing an assessment of how well the model can detect the class to which it belongs. 
+\\
+It is defined as follows:
+\begin{equation}
+    DCF_u= \sum_{k=0}^{K-1} \frac{\pi_k}{N_k} \sum_{i|c_i=k}C(c_i^*|k)=\pi_TC_{fn} P_{fn}+(1-\pi_T)C_{fp}P_{fp} 
+\end{equation}
+\label{eq:DCF}
+where \(P_{fn}=\frac{FN}{FN+FP}\) and \(P_{fp}=\frac{FP}{FP+TP}\).\\
+\\
+From the Equation~\ref{eq:DCF}  it is possible to find \textbf{minDCF} and \textbf{actDCF}, and different thresholds are used to calculate these. In fact in the case of minDCF one uses as a threshold the one that minimizes DCF and there are several methods to be able to find it. Whereas for actDCF you use as a threshold:
+
 \section{Classification model analysis}
 To perform the classification obviously we had to divide the training dataset into a part for training and a part for validation.
+
 \subsection{Gaussian Models}
 The first class of models we will analyze is that of Gaussian generative models. A simple model is to assume that our data, given a class, can be described by a Gaussian distribution:
 \begin{equation}
