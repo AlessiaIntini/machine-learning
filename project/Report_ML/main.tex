@@ -391,35 +391,113 @@ The prior value represents the a priori probability of the positive class, so if
     \textbf{Model}  & \textbf{Full Cov} & \textbf{Naïve Bayes} & \textbf{Tied Cov} \\ \hline
     \rowcolor{yellow}
     \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 1, 1)}} \\   \hline
-    \textbf{actDCF} & 0.141913 & 0.174987 & 0.186044 \\
-    \textbf{minDCF} & 0.133144 & 0.173691 & 0.181163 \\ \hline
+    \textbf{actDCF} & 0.139929 & 0.143929 & 0.186044 \\
+    \textbf{minDCF} & 0.133016 & 0.131128 & 0.181244\\ \hline
     \rowcolor{yellow}
      \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.90, 1, 1)}} \\   \hline
-    \textbf{actDCF} & 0.398041 & 0.466014 & 0.462558 \\
-    \textbf{minDFC} & 0.351238 & 0.434044 & 0.445132 \\ \hline
+    \textbf{actDCF} & 0.400058 & 0.389257 & 0.462558 \\
+    \textbf{minDFC} & 0.342309 & 0.350950 & 0.4421083 \\ \hline
     \rowcolor{yellow}
     \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.10, 1, 1)}} \\   \hline
-    \textbf{actDCF} & 0.304147 & 0.393017 & 0.405066 \\
-    \textbf{minDFC} & 0.273825 & 0.354471 & 0.364823 \\ \hline
+    \textbf{actDCF} & 0.304147 & 0.302163 & 0.405066 \\
+    \textbf{minDFC} & 0.262913 & 0.256960 & 0.364823 \\ \hline
+
     \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 1, 9)}} \\   \hline
-    \textbf{actDCF} & 0.304147 & 0.393017 & 0.405066 \\
-    \textbf{minDFC} & 0.273825 & 0.354471 & 0.364823 \\ \hline
+    \textbf{actDCF} & 0.305140 & 0.302163 & 0.406058 \\
+    \textbf{minDFC} & 0.262913 & 0.256960 & 0.362839 \\ \hline
 
     \multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 9, 1)}} \\   \hline
-    \textbf{actDCF} & 0.398041 & 0.466014 & 0.462558 \\
-    \textbf{minDFC} & 0.351238 & 0.434044 & 0.445132 \\ \hline
+    \textbf{actDCF} & 0.400058 & 0.389257 & 0.462558 \\
+    \textbf{minDFC} & 0.342309 & 0.350950 & 0.445132 \\ \hline
     \end{tabular}
     \caption{minDCF and actDCF for Different Models and configurations}
     \label{tab:model_comparison}
     \end{table}
     So it can be seen from the Table~\ref{tab:model_comparison} that:
     \begin{itemize}
-        \item When the value of Prior increases (from 0.50 to 0.90), a worsening of the models can be seen. This is due to the fact that the model is penalizing false negatives more heavily. This also happens when Prior decreases and therefore you are penalizing false positives more heavily.
-        \item When Cfp increases to 9.00 , the actDCF and minDCF of all models do not change compared to the case when Cfp is 1.00. This suggests that increasing the cost of false positives does not have a significant impact on model performance.  While
-        if Cfn increases to 9.00 , the DCFAct and minDCF of all models increase compared to the case where Cfn is 1.00, from this we can derive that the increase in the cost of false negatives worsens the performance of the models.
+        \item When the value of Prior increases (from 0.50 to 0.90), a worsening of the models can be seen. This is due to the fact that the model is penalizing false negatives more heavily. This also happens when Prior decreases(from 0.50 to 0.10) and therefore you are penalizing false positives more heavily.
+        \item When \(C_{fp}\) or \(C_{fn}\) increase to 9.00, the actDCF and minDCF of all models worsen compared with the case when \(C_{fp}\) and \(C_{fn}\) were 1.00. However, it is possible to see the increase in the cost of false positives has less significant impact on the performance of the model so this suggests that the increase in the cost of false positives affects the model less.  While in the case of the cost of false negatives this has a higher impact so from this it can be inferred that increasing the cost of false negatives worsens the performance of the models.
     \end{itemize}
-We now focus on the three applications that have different effective priors (0.1, 0.5, 0.9) and with costs of errors equal to 1.00.\\
+We now focus on the three applications that have different effective priors (0.1, 0.5, 0.9) and with costs of errors equal to 1.00 and we can, we can consider PCA as pre-processing.\\
+\begin{table}[H]
+\centering
+\begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+\hline
+\textbf{Model}  & \textbf{Full Cov} & \textbf{Naïve Bayes} & \textbf{Tied Cov} \\ \hline\hline
+\multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.50, 1, 1)}} \\   \hline
+\multicolumn{4}{c}{\textbf{no PCA}}\\  \hline
+\textbf{actDCF} & 0.139929 & 0.143929 & 0.186044 \\
+\textbf{minDCF} & 0.133016 & 0.131128 & 0.181244\\ \hline
+\multicolumn{4}{c}{\textbf{PCA}}\\  \hline
+\multicolumn{4}{c}{m=5}\\  \hline
+\textbf{actDCF} & 0.141913 & 0.174987 & 0.186044 \\
+\textbf{minDCF} & 0.133144 & 0.173691 & 0.181163\\ \hline
+\multicolumn{4}{c}{m=6}\\  \hline
+\textbf{actDCF} & 0.139929 & 0.177995 & 0.186028 \\
+\textbf{minDCF} & 0.130168 & 0.172699 & 0.181244\\ \hline\hline
+
+\multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.90, 1, 1)}} \\   \hline
+\multicolumn{4}{c}{\textbf{no PCA}}\\  \hline
+\textbf{actDCF} & 0.400058 & 0.389257 & 0.462558 \\
+\textbf{minDFC} & 0.342309 & 0.350950 & 0.4421083 \\ \hline
+\multicolumn{4}{c}{\textbf{PCA}}\\  \hline
+\multicolumn{4}{c}{m=5}\\  \hline
+\textbf{actDCF} & 0.398041 & 0.466014 & 0.462558 \\
+\textbf{minDCF} & 0.351238 & 0.434044 & 0.445132 \\ \hline
+\multicolumn{4}{c}{m=6}\\  \hline
+\textbf{actDCF} & 0.400058 & 0.451181 &  0.462558\\
+\textbf{minDCF} & 0.342309 & 0.435915 & 0.442108\\ \hline\hline
+
+\multicolumn{4}{c}{\textbf{Application(\(\pi_T,C_{fn},C_{fp}\)) : (0.10, 1, 1)}} \\   \hline
+\multicolumn{4}{c}{\textbf{no PCA}}\\  \hline
+\textbf{actDCF} & 0.304147 & 0.302163 & 0.405066 \\
+\textbf{minDFC} & 0.262913 & 0.256960 & 0.364823 \\ \hline
+\multicolumn{4}{c}{\textbf{PCA}}\\  \hline
+\multicolumn{4}{c}{m=5}\\  \hline
+\textbf{actDCF} & 0.304147 & 0.393017 & 0.405066 \\
+\textbf{minDFC} & 0.273825 & 0.354470 & 0.364823 \\ \hline
+\multicolumn{4}{c}{m=6}\\  \hline
+\textbf{actDCF} & 0.305140 & 0.392025 & 0.406058 \\
+\textbf{minDCF} & 0.262913 & 0.353479 & 0.362839\\ \hline
+\end{tabular}
+\caption{minDCF and actDCF for Different Models and configurations with and without PCA}
+\label{tab:model_chooseApp}
+\end{table}
+\begin{itemize}
+    \item From this first analysis, we can infer that the worst model is Tied Covariance (Tied Cov), as we had already assumed by analyzing the correlation of features since in this model the features are assumed to be correlated and in our case they are not strongly correlated.
+\item We can see that after applying PCA, actDCF and minDCF remain unchanged or in some cases even worsen, which could indicate that the reduction in dimensionality removed some important information from the data that was useful for classification. That is, the components (or dimensions) that have been removed might contain discriminative information that helps the model distinguish between classes, or the transformation might break the assumptions made for the models under analysis and thus we might get an inaccurate estimate that worsens performance.
+\item According to different applications the full Covariance and naive bayes model have similar performance, however, both have some strengths and weaknesses.
+The Full Covariance model considers all correlations between features, so it may be able to capture more complex relationships between features, but this may lead to overfitting and also may be computationally heavier. On the other hand, on the other hand, the Naive Bayes model assumes that all features are independent of each other which might not be entirely true in our situation but it gets us good performance and might be a simplification, this however is less computationally heavy.
+\item The application that has the best calibration, that is, where minDCF and actDCF are as close as possible is the one with the \(\pi_T=0.5\) both in the case where there is no pca application and the one where there is. In this case we can say that there is a good calibration for almost all models, while in the case of the other priors there is no good calibration.
+\end{itemize}
     
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/full.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/naive.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/tied.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Confronto tra i modelli: Full Covariance, Naive Bayes, e Tied Covariance} % Aggiungi una caption unica qui
+    \label{fig:models_comparison} % Aggiungi un'etichetta unica qui
+\end{figure}
+Best Gaussian Model analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\begin{itemize}
+    \item \textbf{PCA}: Model Full Covariance with PCA(m=6)
+    \item \textbf{No PCA}:Model Naive Bayes 
+\end{itemize}
+
+
     
 \subsection{Logistic Regression Classifier}
 \subsubsection{Quadratic Logistic Regression(QLR)}

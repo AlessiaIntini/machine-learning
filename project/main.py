@@ -132,7 +132,7 @@ if __name__ == '__main__':
             bdm.compute_minDCF_binary(DTR_mvgPCA[best_m['MVG']], LVAL, prior, 1.0, 1.0, returnThreshold=False))
 
     matplotlib.pyplot.figure()
-    matplotlib.pyplot.title('MVG')
+    matplotlib.pyplot.title('Full Covariance')
     matplotlib.pyplot.plot(effPriorLogOdds, DCF, label='DCF', color='r')
     matplotlib.pyplot.plot(effPriorLogOdds, minDCF, label='minDCF', color='b')
     matplotlib.pyplot.xlabel('log odds prior')
@@ -152,7 +152,7 @@ if __name__ == '__main__':
             bdm.compute_minDCF_binary(DTR_naivePCA[best_m['naive']], LVAL, prior, 1.0, 1.0, returnThreshold=False))
 
     matplotlib.pyplot.figure()
-    matplotlib.pyplot.title('Naive')
+    matplotlib.pyplot.title('Naïve Bayes')
     matplotlib.pyplot.plot(effPriorLogOdds, DCF, label='DCF', color='r')
     matplotlib.pyplot.plot(effPriorLogOdds, minDCF, label='minDCF', color='b')
     matplotlib.pyplot.xlabel('log odds prior')
@@ -172,7 +172,7 @@ if __name__ == '__main__':
             bdm.compute_minDCF_binary(DTR_tiedPCA[best_m['tied']], LVAL, prior, 1.0, 1.0, returnThreshold=False))
 
     matplotlib.pyplot.figure()
-    matplotlib.pyplot.title('Tied')
+    matplotlib.pyplot.title('Tied Covariance')
     matplotlib.pyplot.plot(effPriorLogOdds, DCF, label='DCF', color='r')
     matplotlib.pyplot.plot(effPriorLogOdds, minDCF, label='minDCF', color='b')
     matplotlib.pyplot.xlabel('log odds prior')
