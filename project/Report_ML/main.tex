@@ -494,12 +494,41 @@ The Full Covariance model considers all correlations between features, so it may
 Best Gaussian Model analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
     \item \textbf{PCA}: Model Full Covariance with PCA(m=6)
-    \item \textbf{No PCA}:Model Naive Bayes 
+    \item \textbf{No PCA}: Model Naive Bayes 
 \end{itemize}
-
-
-    
 \subsection{Logistic Regression Classifier}
+Logistic Regression is a discriminative classification model that makes no assumptions about the distribution of the data, but tries to find a hyperplane that maximizes the posterior likelihood. 
+Starting from the results obtained from the Tied Gaussian that provides log-likelihood ratios that are linear functions of our data we can write it as:
+\begin{equation}
+    llr(x) =\log{\frac{P(C=h_1|x)}{P(C=h_0|x)}}=\log{\frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)}}+\log{\frac{\pi}{1-\pi}}= w^Tx + b
+\end{equation}
+All prior information has been absorbed in the bias term b, given w and b we can compute the expression for the posterior class probability:
+\begin{equation}
+    P(C=h_1|x,w,b)=\frac{e^{(w^Tx+b)}}{1+e^{(w^Tx-b)}}=\sigma(w^Tx+b)
+\end{equation}
+where \(\sigma=\frac{1}{1-e^{-x}}\) is the sigmoid function.\\
+This equation provides a model that allows computing the posterior prabilities for h1 and h0, the model assumes that decision rules are linear surfaces orthogonal to the vector \textbf{w} and the model parameters are \((\textbf{w},b)\).
+\subsubsection{Linear Logistic Regression(LLR)}
+We are going to look for the minimizer of the function:
+\begin{equation}
+    \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
+        z_i = 
+        \begin{cases} 
+          1 & \text{if } c_i=1 \\
+          -1 & \text{if } c_i=0
+        \end{cases}
+\end{equation}
+where \(\lambda\)  is an hyperparameter that represents the regularization term (or norm penalty), that has been introduced to make the problem solvable in case of linearly separable classes.\\
+\\
+It's also possible use prior-weighted logistic regression model that allows us to simulate different priors for class 1. So the objective function becomes: 
+\begin{equation}
+    \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \xi_i\log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
+        \xi_i = 
+        \begin{cases} 
+          \frac{\pi_T}{n_T} & \text{if } z_i=+1 (c_i=1) \\
+          \frac{1-\pi_T}{n_F} & \text{if } z_i=-1 (c_i=0)
+        \end{cases}
+\end{equation}
 \subsubsection{Quadratic Logistic Regression(QLR)}
 \subsection{SVM Classifier}
 \subsubsection{Linear SVM}
