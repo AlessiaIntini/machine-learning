@@ -88,14 +88,15 @@ class QuadraticLogisticRegression:
         w = self.x[:-1]
         b = self.x[-1]
         sval = np.dot(w.T, self.__expand_features_space(DVAL)) + b
-        th = -np.log((prior * Cfn) / ((1 - prior) * Cfp))
-        predictedLabels = np.int32(sval > th)
+        predictedLabels = np.int32(sval > 0)
         error_rate = e.error_rate(predictedLabels, LVAL)
         print("Error rate:", error_rate, "%")
         sValLLR = sval - np.log(pi_emp / (1 - pi_emp))
+        th = -np.log((prior * Cfn) / ((1 - prior) * Cfp))
+        predictedLabels = np.int32(sval > th)
         minDCF = bdm.compute_minDCF_binary(sValLLR, LVAL, prior, Cfn, Cfp)
         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
         actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, Cfn, Cfp, normalize=True)
-
+        print("minDCF:", minDCF)
         print("actDCF:", actDCF)
         return minDCF, actDCF

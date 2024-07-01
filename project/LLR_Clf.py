@@ -58,14 +58,15 @@ def compute_minDCF_actDCF(xf, LVAL, DVAL, pi_emp, Cfn=1, Cfp=1, prior=0.5):
     w = xf[:-1]
     b = xf[-1]
     sval = np.dot(w.T, DVAL) + b
-    th = -np.log((prior * Cfn) / ((1 - prior) * Cfp))
-    predictedLabels = np.int32(sval > th)
+    predictedLabels = np.int32(sval > 0)
     error_rate = e.error_rate(predictedLabels, LVAL)
     print("Error rate:", error_rate, "%")
     sValLLR = sval - np.log(pi_emp / (1 - pi_emp))
+    th = -np.log((prior * Cfn) / ((1 - prior) * Cfp))
+    predictedLabels = np.int32(sval > th)
     minDCF = bdm.compute_minDCF_binary(sValLLR, LVAL, prior, Cfn, Cfp)
     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
     actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, Cfn, Cfp, normalize=True)
-
+    print("minDCF:", minDCF)
     print("actDCF:", actDCF)
     return minDCF, actDCF

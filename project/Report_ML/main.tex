@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{xcolor}
 \usepackage{framed}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{tcolorbox}
@@ -508,7 +509,7 @@ All prior information has been absorbed in the bias term b, given w and b we can
 \end{equation}
 where \(\sigma=\frac{1}{1-e^{-x}}\) is the sigmoid function.\\
 This equation provides a model that allows computing the posterior prabilities for h1 and h0, the model assumes that decision rules are linear surfaces orthogonal to the vector \textbf{w} and the model parameters are \((\textbf{w},b)\).
-\subsubsection{Linear Logistic Regression(LLR)}
+\subsubsection{Binary Logistic Regression}
 We are going to look for the minimizer of the function:
 \begin{equation}
     \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
@@ -529,7 +530,120 @@ It's also possible use prior-weighted logistic regression model that allows us t
           \frac{1-\pi_T}{n_F} & \text{if } z_i=-1 (c_i=0)
         \end{cases}
 \end{equation}
-\subsubsection{Quadratic Logistic Regression(QLR)}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/LLR_noW1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/LLR_noW2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/LLR_noW3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Binary Logistic Regression Model non prior-weighted} % Aggiungi una caption unica qui
+    \label{fig:LLR_model} % Aggiungi un'etichetta unica qui
+\end{figure}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_noW501.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}%
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_noW502.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_noW503.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \caption{Binary Logistic Regression Model non prior-weighted(50 samples)} % Aggiungi una caption unica qui
+        \label{fig:LLR_model_50} % Aggiungi un'etichetta unica qui
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W1.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}%
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W2.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.3\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W3.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \caption{Binary Logistic Regression Model with prior-weighted \(\pi_T=0.1\)} % Aggiungi una caption unica qui
+        \label{fig:LLR_model_W} % Aggiungi un'etichetta unica qui
+    \end{figure}
+
+Now we can analyze the results of the binary logistic regression model on the primary application \(\pi_T=0.1\).
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
+    \textbf{\(10^{-4}\)} &  \textcolor{red}{0.363975} & \textcolor{red}{0.402089} \\
+    \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+    \textbf{\(10^{-2}\)} & 0.361143 & 0.413002 \\
+    \textbf{\(10^{-1}\)} &  0.364119 & 0.851190 \\\hline\hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted (50 samples)}} \\   \hline
+    \textbf{\(10^{-4}\)} & 0.446604 & 0.93146\\
+    \textbf{\(10^{-3}\)} & 0.448733 & 0.704077 \\
+    \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
+    \textbf{\(10^{-1}\)} & 0.398842 & 0.780898\\\hline\hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression with prior-weighted \(\pi_T=0.1\)}} \\   \hline
+    \textbf{\(10^{-4}\)} & 0.372056 & 0.672763\\
+    \textbf{\(10^{-3}\)} & 0.369928 & 0.709469\\
+    \textbf{\(10^{-2}\)} & 0.362983 & 0.890873\\
+    \textbf{\(10^{-1}\)} & 0.364823  & 1.0\\\hline\hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
+    \multicolumn{3}{c}{m=5}\\  \hline
+    \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
+    \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
+    \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
+    \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
+    \multicolumn{3}{c}{m=6}\\  \hline
+    \textbf{\(10^{-4}\)} & \textcolor{red}{0.363975} & \textcolor{red}{0.402089}\\
+    \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+    \textbf{\(10^{-2}\)} & 0.361143 & 0.456781\\
+    \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:LLR}
+    \end{table}
+\subsubsection{Quadratic Logistic Regression}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
+    \textbf{\(10^{-4}\)} &  0.260224 & 0.275809 \\
+    \textbf{\(10^{-3}\)} & 0.258656 & 0.276514 \\
+    \textbf{\(10^{-2}\)} & 0.248736 & 0.345382 \\
+    \textbf{\(10^{-1}\)} &  0.246607 & 0.751984 \\\hline\hline
+    
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:LLR}
+    \end{table}
 \subsection{SVM Classifier}
 \subsubsection{Linear SVM}
 \subsubsection{Kernel SVM}
