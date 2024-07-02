@@ -238,32 +238,39 @@ if __name__ == '__main__':
     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted (50 samples)', ldbArray)
     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted (50 samples)', ldbArray,
                            One=True)
-    print("Binary Logistic regression with prior-weighted pi_t=0.1")
+
+    # weight = [0.1, 0.5, 0.8]
+    weight = [0.1]
     ldbArray = np.logspace(-4, 2, 13)
     actDCF = []
     minDCF = []
-    for ldb in ldbArray:
-        print("lambda: ", ldb)
-        llr = LLR.LinearLogisticRegression(ldb, prior_weighted=True, prior=0.1)
-        current_xf = llr.trainLogReg(DTR, LTR)
-        current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
-                                                                   pi_emp=sum(LTR == 1) / len(LTR),
-                                                                   prior=0.1)
+    for w in weight:
+        print("Binary Logistic regression with prior-weighted pi_t", w)
+        for ldb in ldbArray:
+            print("lambda: ", ldb)
+            llr = LLR.LinearLogisticRegression(ldb, prior_weighted=True, prior=w)
+            current_xf = llr.trainLogReg(DTR, LTR)
+            current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL,
+                                                                       pi_emp=sum(LTR == 1) / len(LTR),
+                                                                       prior=0.1)
 
-        if current_minDCF < minValue_minDCF['min']:
-            minValue_minDCF['min'] = current_minDCF
-            minValue_minDCF['lambda'] = ldb
-            minValue_minDCF['weight'] = True
-        if current_actDCF < minValue_actDCF['min']:
-            minValue_actDCF['min'] = current_actDCF
-            minValue_actDCF['lambda'] = ldb
-            minValue_actDCF['weight'] = True
-        actDCF.append(current_actDCF)
-        minDCF.append(current_minDCF)
+            if current_minDCF < minValue_minDCF['min']:
+                minValue_minDCF['min'] = current_minDCF
+                minValue_minDCF['lambda'] = ldb
+                minValue_minDCF['weight'] = True
+            if current_actDCF < minValue_actDCF['min']:
+                minValue_actDCF['min'] = current_actDCF
+                minValue_actDCF['lambda'] = ldb
+                minValue_actDCF['weight'] = True
+            actDCF.append(current_actDCF)
+            minDCF.append(current_minDCF)
 
-    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with prior-weighted pi_t=0.1', ldbArray)
-    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with prior-weighted pi_t=0.1', ldbArray,
-                           One=True)
+        plt.plot_minDCF_actDCF(minDCF, actDCF, ('Binary Logistic Regression with prior-weighted pi_t', w), ldbArray)
+        plt.plot_minDCF_actDCF(minDCF, actDCF, ('Binary Logistic Regression with prior-weighted pi_t', w), ldbArray,
+                               One=True)
+        ldbArray = np.logspace(-4, 2, 13)
+        actDCF = []
+        minDCF = []
 
     print("Quadratic Logistic regression non prior-weighted")
     DTR_expanded = np.concatenate([DTR, np.square(DTR)], axis=0)

@@ -492,7 +492,7 @@ The Full Covariance model considers all correlations between features, so it may
     \caption{Confronto tra i modelli: Full Covariance, Naive Bayes, e Tied Covariance} % Aggiungi una caption unica qui
     \label{fig:models_comparison} % Aggiungi un'etichetta unica qui
 \end{figure}
-Best Gaussian Model analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\underline{Best Gaussian Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
     \item \textbf{PCA}: Model Full Covariance with PCA(m=6)
     \item \textbf{No PCA}: Model Naive Bayes 
@@ -510,6 +510,7 @@ All prior information has been absorbed in the bias term b, given w and b we can
 where \(\sigma=\frac{1}{1-e^{-x}}\) is the sigmoid function.\\
 This equation provides a model that allows computing the posterior prabilities for h1 and h0, the model assumes that decision rules are linear surfaces orthogonal to the vector \textbf{w} and the model parameters are \((\textbf{w},b)\).
 \subsubsection{Binary Logistic Regression}
+\subsubsection*{Binary Logistic Regression non prior-weighted}
 We are going to look for the minimizer of the function:
 \begin{equation}
     \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
@@ -521,16 +522,6 @@ We are going to look for the minimizer of the function:
 \end{equation}
 where \(\lambda\)  is an hyperparameter that represents the regularization term (or norm penalty), that has been introduced to make the problem solvable in case of linearly separable classes.\\
 \\
-It's also possible use prior-weighted logistic regression model that allows us to simulate different priors for class 1. So the objective function becomes: 
-\begin{equation}
-    \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \xi_i\log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
-        \xi_i = 
-        \begin{cases} 
-          \frac{\pi_T}{n_T} & \text{if } z_i=+1 (c_i=1) \\
-          \frac{1-\pi_T}{n_F} & \text{if } z_i=-1 (c_i=0)
-        \end{cases}
-\end{equation}
-
 \begin{figure}[H]
     \centering
     \begin{minipage}{.3\textwidth}
@@ -571,6 +562,43 @@ It's also possible use prior-weighted logistic regression model that allows us t
         \caption{Binary Logistic Regression Model non prior-weighted(50 samples)} % Aggiungi una caption unica qui
         \label{fig:LLR_model_50} % Aggiungi un'etichetta unica qui
     \end{figure}
+    Now we can analyze the results of the binary logistic regression model on the primary application \(\pi_T=0.1\).
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+        \hline
+        \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+        \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
+        \textbf{\(10^{-4}\)} &  0.363975 & 0.402089 \\
+        \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.413002 \\
+        \textbf{\(10^{-1}\)} &  0.364119 & 0.851190 \\\hline\hline
+        \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted (50 samples)}} \\   \hline
+        \textbf{\(10^{-4}\)} & 0.446604 & 0.93146\\
+        \textbf{\(10^{-3}\)} & 0.448733 & 0.704077 \\
+        \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
+        \textbf{\(10^{-1}\)} & 0.398842 & 0.780898\\\hline
+        \end{tabular}
+        \caption{minDCF and actDCF}
+        \label{tab:LLR}
+        \end{table}
+        \begin{itemize}
+            \item Using only 50 samples, we can see that using a limited number of samples can significantly affect the logistic regression model and could lead to misleading outcomes that are not 
+                representative of the entire dataset. 
+                In fact, the \(\lambda\) values for which we get better performance turn out to be different from those obtained in the table~\Ref{tab:LLR} in the section 'Binary Logistic Regression non prior-weighted model' where we used the entire dataset. From this we can conclude that there is a need to use as many samples as possible for training in order to obtain a more accurate model.
+            \end{itemize}
+\subsubsection*{Binary Logistic Regression with prior-weighted}
+It's also possible use prior-weighted logistic regression model that allows us to simulate different priors for class 1. So the objective function becomes: 
+\begin{equation}
+    \mathbf{J}(w,b)=\frac{\lambda}{2} ||w||^2 + \frac{1}{n} \sum_{i=1}^{n} \xi_i\log({1+e^{-z_i(w^Tx_i+b)}}),\;\;\;\;
+        \xi_i = 
+        \begin{cases} 
+          \frac{\pi_T}{n_T} & \text{if } z_i=+1 (c_i=1) \\
+          \frac{1-\pi_T}{n_F} & \text{if } z_i=-1 (c_i=0)
+        \end{cases}
+\end{equation}
+
+
     \begin{figure}[H]
         \centering
         \begin{minipage}{.3\textwidth}
@@ -588,7 +616,7 @@ It's also possible use prior-weighted logistic regression model that allows us t
             \includegraphics[width=\linewidth]{./img/LLR_W3.png}
             % Rimuovi la caption e l'etichetta da qui
         \end{minipage}
-        \caption{Binary Logistic Regression Model with prior-weighted \(\pi_T=0.1\)} % Aggiungi una caption unica qui
+        \caption{Binary Logistic Regression Model with prior-weighted prior=0.1} % Aggiungi una caption unica qui
         \label{fig:LLR_model_W} % Aggiungi un'etichetta unica qui
     \end{figure}
 
@@ -598,52 +626,129 @@ Now we can analyze the results of the binary logistic regression model on the pr
     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
     \hline
     \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
-    \textbf{\(10^{-4}\)} &  \textcolor{red}{0.363975} & \textcolor{red}{0.402089} \\
-    \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
-    \textbf{\(10^{-2}\)} & 0.361143 & 0.413002 \\
-    \textbf{\(10^{-1}\)} &  0.364119 & 0.851190 \\\hline\hline
-    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted (50 samples)}} \\   \hline
-    \textbf{\(10^{-4}\)} & 0.446604 & 0.93146\\
-    \textbf{\(10^{-3}\)} & 0.448733 & 0.704077 \\
-    \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
-    \textbf{\(10^{-1}\)} & 0.398842 & 0.780898\\\hline\hline
-    \multicolumn{3}{c}{\textbf{Binary Logistic Regression with prior-weighted \(\pi_T=0.1\)}} \\   \hline
+    \multicolumn{3}{c}{\textbf{Binary Logistic Regression with prior-weighted }} \\   \hline
+    \multicolumn{3}{c}{\(\pi_T\) = 0.1}\\  \hline
     \textbf{\(10^{-4}\)} & 0.372056 & 0.672763\\
     \textbf{\(10^{-3}\)} & 0.369928 & 0.709469\\
-    \textbf{\(10^{-2}\)} & 0.362983 & 0.890873\\
-    \textbf{\(10^{-1}\)} & 0.364823  & 1.0\\\hline\hline
-    \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
-    \multicolumn{3}{c}{m=5}\\  \hline
-    \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
-    \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
-    \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
-    \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
-    \multicolumn{3}{c}{m=6}\\  \hline
-    \textbf{\(10^{-4}\)} & \textcolor{red}{0.363975} & \textcolor{red}{0.402089}\\
-    \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
-    \textbf{\(10^{-2}\)} & 0.361143 & 0.456781\\
-    \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
+    \textbf{\(10^{-2}\)} & \textcolor{red}{0.362983} & 0.890873\\
+    \textbf{\(10^{-1}\)} & 0.364823  & 1.0\\\hline
     \end{tabular}
     \caption{minDCF and actDCF}
-    \label{tab:LLR}
+    \label{tab:LLR_W}
     \end{table}
+\begin{itemize}
+    \item In logistic regression, prior is a parameter that represents our a priori knowledge about the distribution of labels in the dataset. 
+In other words, it is the probability that a random sample belongs to a certain class before we have seen the data.  
+So in our current case we use the prior to weight the samples during model training. In particular, samples in the higher priority class receive a higher weight than those in the lower priority class. 
+This can be useful if the dataset is unbalanced, the choice of the prior must be made at the beginning and this choice can affect the model a lot, in fact we may even have a worsening of the model. 
+\item In our case for example we do not see a significant model worsening, in fact our dataset is not particularly unbalanced, so we can see a significant worsening of the actDCF by applying binary logistic regression with prior-weighted \(\pi_T=0.1\).
+\end{itemize}
+\subsubsection*{Binary Logistic Regression with Pre-Processing (PCA)}
+We can now analyze the results obtained by applying the model after applying PCA, always using \(\pi_T=0.1\)
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+        \hline
+        \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+        \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
+        \multicolumn{3}{c}{m=5}\\  \hline
+        \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
+        \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
+        \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
+        \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
+        \multicolumn{3}{c}{m=6}\\  \hline
+        \textbf{\(10^{-4}\)} & 0.363975 &0.402089\\
+        \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.456781\\
+        \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
+        \end{tabular}
+        \caption{minDCF and actDCF}
+        \label{tab:LLR_PCA}
+        \end{table}
+
+   We can conclude by looking at the table that the application of PCA does not give a significant improvement, as noted earlier, but we can state that performance remains constant.
+
 \subsubsection{Quadratic Logistic Regression}
+Now we can analyze training on a Quadratic Logistic Regression model by performing features expansion. We can write log-likelihood ratio as:
+\begin{equation}
+    \log{\frac{P(C=h_1|x)}{P(C=h_0|x)}}=x^TAx+b^Tx+c=s(\textbf{x},\textbf{A},\textbf{b},\textbf{c})
+\end{equation}
+This expression is quadratic in x but it's linear in A and b. We could rewrite it to obtain a decision function that is linear for the expanded features space but quadratic in original features space.\\
+We can write features expansion as:
+\begin{equation}
+    \Phi(x)= 
+    \begin{bmatrix}
+        vec(xx^T) \\
+        x
+    \end{bmatrix},
+    \;\;
+    w=
+    \begin{bmatrix}
+        vec(A) \\
+        b
+    \end{bmatrix}
+\end{equation}
+where vec(X) is the operator that stacks the columns of X into a single column vector. In this way we can write the posterio log-likelihood as:
+\begin{equation}
+    s(x,w,c)=s^T\phi(x)+c
+\end{equation}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/QLR1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/QLR2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/QLR3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Quadratic Logistic Regression} % Aggiungi una caption unica qui
+    \label{fig:QLR_model} % Aggiungi un'etichetta unica qui
+\end{figure}
+  
 \begin{table}[H]
     \centering
     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
     \hline
-    \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-    \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
+    \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
     \textbf{\(10^{-4}\)} &  0.260224 & 0.275809 \\
     \textbf{\(10^{-3}\)} & 0.258656 & 0.276514 \\
     \textbf{\(10^{-2}\)} & 0.248736 & 0.345382 \\
-    \textbf{\(10^{-1}\)} &  0.246607 & 0.751984 \\\hline\hline
+    \textbf{\(10^{-1}\)} & \textcolor{red}{ 0.246607 }& 0.751984 \\\hline
     
     \end{tabular}
     \caption{minDCF and actDCF}
-    \label{tab:LLR}
+    \label{tab:QLR}
     \end{table}
+
+ The quadratic model can help us extract correlations between features that cannot be extracted by a linear model, in our case we can see that Quadratic Logistic Regression performs better than Binary Logistic Regression with and without prior-weighted.
+
+\subsubsection*{Conclusion for Binary Logistic Regression}
+\begin{itemize}
+    \item For all the various models represented in
+    Figure ~\ref{fig:LLR_model} ,
+    Figure ~\ref{fig:LLR_model_W} ,
+    Figure ~\ref{fig:QLR_model} ,
+    it can be seen that \(\lambda\) significantly affects actDCF and minDCF. In fact, it can be seen that for values greater than \(10^{-1}\) there is significant degradation. It is necessary to remember that a larger value of \(\lambda\) may lead to overgeneralization which may lead to underfitting, while for too small values of it there may be low generalization and thus there may be overfitting. Based on this analysis, large values of \(\lambda\) were excluded in the tables showing the different values of minDCF and actDCF for lambda ranging from \(10^{-4}\) to \(10^{-1}\).
+\item After doing various analyses we can see which are the optimal values of lambda as mentioned above 
+and which model gives the best performance comparing for now the minDCF, also the difference we can see between minDCF and actDCF suggests i that the models do not have a good calibration.
+In our case quadratic logistic regression seems to give the best results, so we can draw that we need the model to be able to capture nonlinear relationships between variables and thus be able to find nonlinear separations rules in the feature space.
+\item From the results we can observe that in fact we get better results with a relatively higher lambda so we can conclude that we need more regularization to prevent overfitting.
+\end{itemize}
+\underline{Logistic Regression Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\begin{itemize}
+    \item \textbf{Quadratic Logistic Regression} with \(\lambda=10^{-1}\), no prior-weighted
+\end{itemize}
+
+
+
 \subsection{SVM Classifier}
 \subsubsection{Linear SVM}
 \subsubsection{Kernel SVM}
