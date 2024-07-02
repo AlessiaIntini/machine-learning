@@ -22,9 +22,9 @@
 \geometry{
  a4paper,
  total={170mm,257mm},
- left=30mm,
- right=30mm,
- top=30mm,
+ left=20mm,
+ right=20mm,
+ top=10mm,
 }
 \colorlet{LightGray}{White!90!Periwinkle}
 \colorlet{LightOrange}{Orange!15}
@@ -744,14 +744,78 @@ In our case quadratic logistic regression seems to give the best results, so we 
 \end{itemize}
 \underline{Logistic Regression Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
-    \item \textbf{Quadratic Logistic Regression} with \(\lambda=10^{-1}\), no prior-weighted
+    \item \textbf{Quadratic Logistic Regression} with \(\lambda=(0.0316228\approxeq 10^{-1})\), no prior-weighted
 \end{itemize}
-
-
 
 \subsection{SVM Classifier}
 \subsubsection{Linear SVM}
+Support Vector Machines are linear classifiers that look for maximum margin separation hyperplanes.
+\\The primal formulation of the soft-margin SVM problem consists in minimizing the function:
+\begin{equation}
+    \mathbf{J}(w,b)= \frac{1}{2}||w||^2 + C\sum_{i=1}^{N}max(0,1-z_i(w^Tx_i+b))
+\end{equation}
+where N is the number of training samples, C is the regularization parameter, and \(z_i\) is the margin of the i-th sample.\\
+The dual formulation of the problem is:
+\begin{equation}
+    \mathbf{J}(\alpha)= - \frac{1}{2} \alpha^T \;\textbf{H} \;\alpha + \alpha^T \textbf{1} \;\;\;\;\;\;1\leq \alpha_i\leq C,\;\; \forall i \in \{1,...,N\},\;\; \sum_{i=1}^{n}\alpha_i z_i=0
+\end{equation}
+where H is \(H_{ij}=z_iz_jx_i^Tx_j\) and the dual solution is the maximizer of \(J^D(\alpha)\).\\
+Primal and dual solutions are releted through:
+\begin{equation}
+    w^*=\sum_{i=1}^{N}\alpha_i^* z_i x_i
+\end{equation}
+In addition it's possible to rewrite dual problem as minimization of:
+\begin{equation}
+   \hat{\mathbf{L}}(\alpha)=-\mathbf{J}(\alpha)= \frac{1}{2} \alpha^T \;\textbf{H} \;\alpha - \alpha^T \textbf{1}
+\end{equation}
+and it can be minimize by L-BFGS-B algorithm.
+After that we have calculated the optimal \(\alpha\) we can compute \(w^*\).
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_L1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_L2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_L3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{SVM} % Aggiungi una caption unica qui
+    \label{fig:SVM} % Aggiungi un'etichetta unica qui
+\end{figure}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \textbf{C}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+    \multicolumn{3}{c}{\textbf{Linear SVM with K=1.0}} \\   \hline
+    \textbf{\(10^{-5}\)} & 1.0 & 1.0  \\
+    \textbf{\(10^{-4}\)} & 0.363975 & 1.0\\
+    \textbf{\(10^{-3}\)} & 0.361991 & 0.959325\\
+    \textbf{\(10^{-2}\)} & 0.361991 & 0.671770\\
+    \textbf{\(10^{-1}\)} & 0.358167 & 0.516161\\
+    \textbf{\(10^{0}\)}  & 0.358167 & 0.489375\\\hline
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:SVM_linear}
+    \end{table}
 \subsubsection{Kernel SVM}
+SVMs allow nonlinear classification through the kernel trick. 
+Unlike the quadratic logistic regression classifier, there is no explicit expansion of the feature space; 
+we only need to be able to calculate the scalar product between the expanded features:\( k(x_1,x_2)=\phi(x_1)_T\phi(x_2)\) where k is the kernel function.
+To do this we need to go and replace H with \(\hat(H)= z_iz_jk(x_1,x_2)\). 
+We can observe two different types of kernels:
+\begin{itemize}
+    \item \textbf{Polynomial kernel of degree d}: \(k(x_1,x_2)=(x_1^Tx_2+c)^d\)
+    \item \textbf{Radial Basis Function kernel(RBF)}: \(k(x_1,x_2)=e^{-\gamma||x1-x_2||^2}\)
+\end{itemize}
 \subsection{GMM Classifier}
 \section{Score Calibration}
 \subsection{Calibration Analysis on Selected Models}

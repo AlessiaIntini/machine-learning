@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.17)  2 JUL 2024 15:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.17)  2 JUL 2024 22:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -609,14 +609,14 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(85.35826pt, 426.79135pt, 85.35826pt)
+* h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
 * v-part:(T,H,B)=(72.26999pt, 650.43pt, 122.34686pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
-* \textwidth=426.79135pt
+* \textwidth=483.69687pt
 * \textheight=650.43pt
-* \oddsidemargin=13.08827pt
-* \evensidemargin=13.08827pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
 * \topmargin=-37.0pt
 * \headheight=12.0pt
 * \headsep=25.0pt
@@ -666,12 +666,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/AllFeatures.png Graphic file (type png)
 <use ./img/AllFeatures.png>
 Package pdftex.def Info: ./img/AllFeatures.png  used on input line 103.
-(pdftex.def)             Requested size: 213.39568pt x 215.4315pt.
+(pdftex.def)             Requested size: 241.84843pt x 244.1557pt.
 <./img/image2.png, id=173, 757.83125pt x 760.8425pt>
 File: ./img/image2.png Graphic file (type png)
 <use ./img/image2.png>
 Package pdftex.def Info: ./img/image2.png  used on input line 113.
-(pdftex.def)             Requested size: 192.0548pt x 192.81068pt.
+(pdftex.def)             Requested size: 217.66211pt x 218.52574pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -693,7 +693,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/correlazione.png Graphic file (type png)
 <use ./img/correlazione.png>
 Package pdftex.def Info: ./img/correlazione.png  used on input line 149.
-(pdftex.def)             Requested size: 341.43437pt x 117.39214pt.
+(pdftex.def)             Requested size: 386.95897pt x 133.04613pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 153--158
 
@@ -721,12 +721,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/variance.png Graphic file (type png)
 <use ./img/variance.png>
 Package pdftex.def Info: ./img/variance.png  used on input line 179.
-(pdftex.def)             Requested size: 213.39568pt x 158.81607pt.
+(pdftex.def)             Requested size: 241.84843pt x 179.99106pt.
 <./img/PCA.png, id=205, 571.13374pt x 319.1925pt>
 File: ./img/PCA.png Graphic file (type png)
 <use ./img/PCA.png>
 Package pdftex.def Info: ./img/PCA.png  used on input line 187.
-(pdftex.def)             Requested size: 298.75264pt x 166.96489pt.
+(pdftex.def)             Requested size: 338.58632pt x 189.22784pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -740,7 +740,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/LDA.png Graphic file (type png)
 <use ./img/LDA.png>
 Package pdftex.def Info: ./img/LDA.png  used on input line 209.
-(pdftex.def)             Requested size: 298.75264pt x 143.8453pt.
+(pdftex.def)             Requested size: 338.58632pt x 163.02933pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -762,7 +762,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/GaussianDensity.jpeg Graphic file (type jpg)
 <use ./img/GaussianDensity.jpeg>
 Package pdftex.def Info: ./img/GaussianDensity.jpeg  used on input line 256.
-(pdftex.def)             Requested size: 341.43437pt x 192.0563pt.
+(pdftex.def)             Requested size: 386.95897pt x 217.66216pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -829,17 +829,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/full.png Graphic file (type png)
 <use ./img/full.png>
 Package pdftex.def Info: ./img/full.png  used on input line 479.
-(pdftex.def)             Requested size: 128.0387pt x 95.8265pt.
+(pdftex.def)             Requested size: 145.11053pt x 108.59666pt.
 <./img/naive.png, id=286, 631.35875pt x 473.77pt>
 File: ./img/naive.png Graphic file (type png)
 <use ./img/naive.png>
 Package pdftex.def Info: ./img/naive.png  used on input line 484.
-(pdftex.def)             Requested size: 128.0387pt x 96.07524pt.
+(pdftex.def)             Requested size: 145.11053pt x 108.89252pt.
 <./img/tied.png, id=287, 631.35875pt x 472.76625pt>
 File: ./img/tied.png Graphic file (type png)
 <use ./img/tied.png>
 Package pdftex.def Info: ./img/tied.png  used on input line 489.
-(pdftex.def)             Requested size: 128.0387pt x 95.8717pt.
+(pdftex.def)             Requested size: 145.11053pt x 108.6618pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -849,21 +849,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
 [15 <./img/full.png> <./img/naive.png> <./img/tied.png>]
-<./img/LLR_noW1.png, id=298, 639.38875pt x 479.7925pt>
+<./img/LLR_noW1.png, id=299, 639.38875pt x 479.7925pt>
 File: ./img/LLR_noW1.png Graphic file (type png)
 <use ./img/LLR_noW1.png>
 Package pdftex.def Info: ./img/LLR_noW1.png  used on input line 529.
-(pdftex.def)             Requested size: 128.0387pt x 96.07393pt.
-<./img/LLR_noW2.png, id=299, 631.35875pt x 471.7625pt>
+(pdftex.def)             Requested size: 145.11053pt x 108.88574pt.
+<./img/LLR_noW2.png, id=300, 631.35875pt x 471.7625pt>
 File: ./img/LLR_noW2.png Graphic file (type png)
 <use ./img/LLR_noW2.png>
 Package pdftex.def Info: ./img/LLR_noW2.png  used on input line 534.
-(pdftex.def)             Requested size: 128.0387pt x 95.66815pt.
-<./img/LLR_noW3.png, id=300, 627.34375pt x 462.72874pt>
+(pdftex.def)             Requested size: 145.11053pt x 108.4311pt.
+<./img/LLR_noW3.png, id=301, 627.34375pt x 462.72874pt>
 File: ./img/LLR_noW3.png Graphic file (type png)
 <use ./img/LLR_noW3.png>
 Package pdftex.def Info: ./img/LLR_noW3.png  used on input line 539.
-(pdftex.def)             Requested size: 128.0387pt x 94.44342pt.
+(pdftex.def)             Requested size: 145.11053pt x 107.03258pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 522--544
 
@@ -874,21 +874,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 522--544
 
  []
 
-<./img/LLR_noW501.png, id=301, 621.32124pt x 464.73625pt>
+<./img/LLR_noW501.png, id=302, 621.32124pt x 464.73625pt>
 File: ./img/LLR_noW501.png Graphic file (type png)
 <use ./img/LLR_noW501.png>
 Package pdftex.def Info: ./img/LLR_noW501.png  used on input line 549.
-(pdftex.def)             Requested size: 128.0387pt x 95.76793pt.
-<./img/LLR_noW502.png, id=302, 602.25pt x 467.7475pt>
+(pdftex.def)             Requested size: 145.11053pt x 108.53935pt.
+<./img/LLR_noW502.png, id=303, 602.25pt x 467.7475pt>
 File: ./img/LLR_noW502.png Graphic file (type png)
 <use ./img/LLR_noW502.png>
 Package pdftex.def Info: ./img/LLR_noW502.png  used on input line 554.
-(pdftex.def)             Requested size: 128.0387pt x 99.44319pt.
-<./img/LLR_noW503.png, id=303, 620.3175pt x 466.74374pt>
+(pdftex.def)             Requested size: 145.11053pt x 112.7042pt.
+<./img/LLR_noW503.png, id=304, 620.3175pt x 466.74374pt>
 File: ./img/LLR_noW503.png Graphic file (type png)
 <use ./img/LLR_noW503.png>
 Package pdftex.def Info: ./img/LLR_noW503.png  used on input line 559.
-(pdftex.def)             Requested size: 128.0387pt x 96.3383pt.
+(pdftex.def)             Requested size: 145.11053pt x 109.17914pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -901,17 +901,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/LLR_W1.png Graphic file (type png)
 <use ./img/LLR_W1.png>
 Package pdftex.def Info: ./img/LLR_W1.png  used on input line 606.
-(pdftex.def)             Requested size: 128.0387pt x 96.13112pt.
+(pdftex.def)             Requested size: 145.11053pt x 108.94434pt.
 <./img/LLR_W2.png, id=322, 623.32875pt x 468.75125pt>
 File: ./img/LLR_W2.png Graphic file (type png)
 <use ./img/LLR_W2.png>
 Package pdftex.def Info: ./img/LLR_W2.png  used on input line 611.
-(pdftex.def)             Requested size: 128.0387pt x 96.28773pt.
+(pdftex.def)             Requested size: 145.11053pt x 109.12659pt.
 <./img/LLR_W3.png, id=323, 615.29875pt x 468.75125pt>
 File: ./img/LLR_W3.png Graphic file (type png)
 <use ./img/LLR_W3.png>
 Package pdftex.def Info: ./img/LLR_W3.png  used on input line 616.
-(pdftex.def)             Requested size: 128.0387pt x 97.53943pt.
+(pdftex.def)             Requested size: 145.11053pt x 110.54279pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -933,17 +933,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: ./img/QLR1.png Graphic file (type png)
 <use ./img/QLR1.png>
 Package pdftex.def Info: ./img/QLR1.png  used on input line 699.
-(pdftex.def)             Requested size: 128.0387pt x 94.35127pt.
+(pdftex.def)             Requested size: 145.11053pt x 106.93573pt.
 <./img/QLR2.png, id=343, 638.385pt x 467.7475pt>
 File: ./img/QLR2.png Graphic file (type png)
 <use ./img/QLR2.png>
 Package pdftex.def Info: ./img/QLR2.png  used on input line 704.
-(pdftex.def)             Requested size: 128.0387pt x 93.8119pt.
+(pdftex.def)             Requested size: 145.11053pt x 106.3235pt.
 <./img/QLR3.png, id=344, 629.35126pt x 471.7625pt>
 File: ./img/QLR3.png Graphic file (type png)
 <use ./img/QLR3.png>
 Package pdftex.def Info: ./img/QLR3.png  used on input line 709.
-(pdftex.def)             Requested size: 128.0387pt x 95.97768pt.
+(pdftex.def)             Requested size: 145.11053pt x 108.76942pt.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -953,6 +953,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
 [19 <./img/QLR1.png> <./img/QLR2.png> <./img/QLR3.png>]
+<./img/SVM_L1.png, id=362, 404.51125pt x 300.12125pt>
+File: ./img/SVM_L1.png Graphic file (type png)
+<use ./img/SVM_L1.png>
+Package pdftex.def Info: ./img/SVM_L1.png  used on input line 777.
+(pdftex.def)             Requested size: 145.11053pt x 107.66347pt.
+<./img/SVM_L2.png, id=363, 403.5075pt x 304.13625pt>
+File: ./img/SVM_L2.png Graphic file (type png)
+<use ./img/SVM_L2.png>
+Package pdftex.def Info: ./img/SVM_L2.png  used on input line 782.
+(pdftex.def)             Requested size: 145.11053pt x 109.37294pt.
+<./img/SVM_L3.png, id=364, 390.96063pt x 292.59312pt>
+File: ./img/SVM_L3.png Graphic file (type png)
+<use ./img/SVM_L3.png>
+Package pdftex.def Info: ./img/SVM_L3.png  used on input line 787.
+(pdftex.def)             Requested size: 145.11053pt x 108.60152pt.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 22.54448pt, for example:
@@ -960,7 +976,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
 
-[20] (./main.aux)
+[20]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 22.54448pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.54448pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-10.54448pt}.
+
+[21 <./img/SVM_L1.png> <./img/SVM_L2.png> <./img/SVM_L3.png>] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -973,18 +997,18 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: BF4359194F627C86D89A6D0F9BAC5289;4977.
  ) 
 Here is how much of TeX's memory you used:
- 22651 strings out of 474116
- 421011 string characters out of 5743682
- 1956187 words of memory out of 5000000
- 44520 multiletter control sequences out of 15000+600000
+ 22681 strings out of 474116
+ 421591 string characters out of 5743682
+ 1955187 words of memory out of 5000000
+ 44543 multiletter control sequences out of 15000+600000
  567494 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,14n,87p,690b,566s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (20 pages, 3521693 bytes).
+ 83i,14n,87p,690b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on main.pdf (21 pages, 3669535 bytes).
 PDF statistics:
- 451 PDF objects out of 1000 (max. 8388607)
- 354 compressed objects within 4 object streams
- 103 named destinations out of 1000 (max. 500000)
- 363 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 479 PDF objects out of 1000 (max. 8388607)
+ 371 compressed objects within 4 object streams
+ 110 named destinations out of 1000 (max. 500000)
+ 378 words of extra memory for PDF output out of 10000 (max. 10000000)
 
