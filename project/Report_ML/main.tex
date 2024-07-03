@@ -1093,6 +1093,62 @@ a Logistic Regression model is obtained where \(\alpha\) and \(\beta'\) are the 
     f(s)=\alpha s+\beta=\alpha s+\beta'-log\frac{\tilde{\pi}}{1-\tilde{\pi}}
 \end{equation}
 Having selected the best models using minDCF as a metric we can now calibrate them to adjust the model predictions so that the predicted probabilities better reflect the actual probabilities of the events. 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{3cm}}
+    \hline
+    \multicolumn{4}{c}{\textbf{Uncalibrated Models [minDCF/actDCF] }} \\   \hline
+    \textbf{QLR} & & 0.243631/0.497167 & \\
+    \textbf{SVM} &  & 0.185531/0.361111 & \\
+    \textbf{GMM} &  & 0.131240/0.319092 & \\
+    \hline
+    \hline
+    \multicolumn{4}{c}{\textbf{Calibrated Models [minDCF/actDCF] }} \\   \hline
+    &\textbf{\(\tilde{\pi}=0.1\)}  &  \textbf{\(\tilde{\pi}=0.5\)} & \textbf{\(\tilde{\pi}=0.9\)} \\ \hline
+    \textbf{QLR} & 0.248591/0.272129 & 0.249583/0.260928 & 0.248031/0.265745\\
+    \textbf{SVM} & 0.185387/0.189356 & 0.184395/0.202252 & 0.190636/0.202956\\
+    \textbf{GMM} & 0.132376/\textcolor{red}{0.151801} & 0.131384/\textcolor{red}{0.151801} & 0.128264/0.155913\\
+    \hline
+    \textbf{Fusion} & 0.132376/0.156762 & 0.137336/0.163850 & 0.138184/0.173067\\
+    \end{tabular}
+    \caption{calibrated models}
+    \label{tab:Calibrated}
+    \end{table}
+In the Table~\Ref{tab:Calibrated} we can see the different models after calibration, different priors were used for calibration but the performance was always evaluated on the target application \((\pi_T=0.1)\).
+\\
+We can see that actDCF improved significantly after calibration, the best results were obtained with the GMM model with prior equal to 0.1 or 0.5.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/Cal1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/Cal2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/Cal3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/Cal4.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Calibration Model} % Aggiungi una caption unica qui
+    \label{fig:CalMod} % Aggiungi un'etichetta unica qui
+\end{figure}
+\begin{itemize}
+    \item We can see from the Bayes error graph how for the other applications as well, not just the target application, there were improvements after the calibration was applied.
+    \item It is possible to apply fusion which is used to combine the scores of several models to improve performance, because perhaps one model may not be optimal then one tries to combine several models.\\In our case we can see that the fusion is not greatly improving the performance in fact they are very similar to those obtained by applying the GMM model. Moreover, the fusion does not seem to be optimally calibrated either as the values of minDCF and actDCF still differ by a larger value than the best performing model mentioned above.
+\end{itemize}
+In conclusion as "delivered" system we choose GMM with Diagonal covariance with the previously mentioned configurations since after comparing it with all the other analyzed models it seems to be the most efficient one to fit our application. In fact as discussed when it was analyzed it seems to be the one most able to fit the distribution of our features managing to discriminate optimally between the different classes compared to the others, this decision was made based on the actDCF and minDCF measurements.
+
+
 \section{Experimental Results}
 \subsection{Calibration on evaluation score}
 \subsection{Considerations}

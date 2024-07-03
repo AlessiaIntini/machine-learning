@@ -776,6 +776,7 @@ if __name__ == '__main__':
         fig = pl.figure(figsize=(16, 9))
         axes = fig.subplots(2, 2, sharex='all')
         fig.suptitle('Single fold')
+        fig.subplots_adjust(hspace=0.5, wspace=0.5)
     else:
         axes = np.array([[pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
                          [pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
@@ -852,6 +853,8 @@ if __name__ == '__main__':
     axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
     axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
     axes[0, 0].set_ylim(0.0, 0.8)
+    axes[0, 0].set_xlabel('Prior log-odds')
+    axes[0, 0].set_ylabel('DCF')
     axes[0, 0].set_title('QLR - calibration validation')
     axes[0, 0].legend()
 
@@ -897,6 +900,8 @@ if __name__ == '__main__':
     axes[0, 1].plot(logOdds, minDCF, color='C1', linestyle='--', label='minDCF cal')
     axes[0, 1].plot(logOdds, actDCF, color='C1', linestyle='-', label='actDCF cal')
     axes[0, 1].set_ylim(0.0, 0.8)
+    axes[0, 1].set_xlabel('Prior log-odds')
+    axes[0, 1].set_ylabel('DCF')
     axes[0, 1].set_title('SVM - calibration validation')
     axes[0, 1].legend()
 
@@ -943,6 +948,8 @@ if __name__ == '__main__':
     axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF cal')
     axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-', label='actDCF cal')
     axes[1, 0].set_ylim(0.0, 0.4)
+    axes[1, 0].set_xlabel('Prior log-odds')
+    axes[1, 0].set_ylabel('DCF')
     axes[1, 0].set_title('GMM - calibration validation')
     axes[1, 0].legend()
 
@@ -990,6 +997,8 @@ if __name__ == '__main__':
     axes[1, 1].plot(logOdds, minDCF, color='C3', linestyle='--', label='Fusion-minDCF')
     axes[1, 1].plot(logOdds, actDCF, color='C3', linestyle='-', label='Fusion-actDCF')
     axes[1, 1].set_ylim(0.0, 0.45)
+    axes[1, 1].set_xlabel('Prior log-odds')
+    axes[1, 1].set_ylabel('DCF')
     axes[1, 1].legend()
     pl.show()
 
