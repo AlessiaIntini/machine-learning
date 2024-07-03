@@ -3,9 +3,10 @@ import scipy.special
 
 
 class GMM:
-    def __init__(self, alpha=0.1, nComponents=2, psi=0.01, covType='Full'):
+    def __init__(self, alpha=0.1, n0Components=2, n1Components=2, psi=0.01, covType='Full'):
         self.alpha = alpha
-        self.nComponents = nComponents
+        self.n0Components = n0Components
+        self.n1Components = n1Components
         self.psi = psi
         self.covType = covType
 
@@ -154,8 +155,8 @@ class GMM:
     def train(self, Dtrain, Ltrain):
         self.Dtrain_c0 = Dtrain[:, Ltrain == 0]
         self.Dtrain_c1 = Dtrain[:, Ltrain == 1]
-        self.gmm_c0, _ = self.GMM_algorithm_LBG(self.Dtrain_c0, self.alpha, self.nComponents, self.psi, self.covType)
-        self.gmm_c1, _ = self.GMM_algorithm_LBG(self.Dtrain_c1, self.alpha, self.nComponents, self.psi, self.covType)
+        self.gmm_c0, _ = self.GMM_algorithm_LBG(self.Dtrain_c0, self.alpha, self.n0Components, self.psi, self.covType)
+        self.gmm_c1, _ = self.GMM_algorithm_LBG(self.Dtrain_c1, self.alpha, self.n1Components, self.psi, self.covType)
         return self
 
     def predict(self, Dtest, labels=False):

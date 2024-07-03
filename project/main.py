@@ -636,94 +636,98 @@ if __name__ == '__main__':
     #
     # plt.plot_minDCF_actDCF(minDCF_values, actDCF_values, 'SVM with RBF kernel gamma=0.1', C_array, m=0, xlabel="C",
     #                        One=True)
-    log_odds_values = np.linspace(-4, 4, 21)
-    minDCF_values = []
-    actDCF_values = []
-    hParam = {'K': 1, 'C': 100.0, 'kernel': 'RBF', 'gamma': 0.1}
-    for log_odds in log_odds_values:
-        prior = 1 / (1 + np.exp(-log_odds))
-        svm = SVM.SVM(hParam, kernel='RBF', prior=0)
-        svmReturn = svm.train(DTR, LTR)
-        predictions = svmReturn.predict(DVAL, labels=True)
-        th = -np.log((prior * 1) / ((1 - prior) * 1))
-        llr = svmReturn.predict(DVAL)
-        predictedLabels = np.int32(llr > th)
-        current_minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
-        minDCF_values.append(minDCF)
-        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-        current_actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
-        actDCF_values.append(current_actDCF)
-
-    pl.figure()
-    pl.plot(log_odds_values, minDCF_values, 'b')
-    pl.plot(log_odds_values, actDCF_values, 'r')
-    pl.ylim([None, 0.4])
-    pl.xlabel('Log Odds')
-    pl.ylabel('DCF values')
-    pl.title('minDCF vs Log Odds SVM with RBF kernel K=1 C=10^2 gamma=0.1')
-    pl.legend(['minDCF', 'actDCF'])
-    pl.show()
-    minDCF_values = []
-    actDCF_values = []
-    ########################
-    ##       GMM         ###
-    ########################
-    # covTypes = ['Full', 'Diag']
-    # prior = 0.1
-    # nComponents = [1, 2, 4, 8, 16, 32]
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minDCF_value = []
-    # actDCF_value = []
-    # print("GMM with prior=0.1")
-    # for covType in covTypes:
-    #     for nc in nComponents:
-    #         print("nComponents ", nc)
-    #         print(" covType is ", covType)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         llr = gmm.predict(DVAL)
-    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-    #         if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #         print("minDCF", minDCF)
-    #         th = -np.log((prior * 1) / ((1 - prior) * 1))
-    #         predictedLabels = np.int32(llr > th)
-    #         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #         if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #         print("actDCF", actDCF)
-    #         minDCF_value.append(minDCF)
-    #         actDCF_value.append(actDCF)
-    #
-    #     x = np.arange(len(nComponents))
-    #     width = 0.33
-    #
-    #     fig, ax = pl.subplots()
-    #
-    #     rects1 = ax.bar(x - width / 2, minDCF_value, width, label='minDCF', color='red', alpha=0.5)
-    #     rects2 = ax.bar(x + width / 2, actDCF_value, width, label='actDCF', color='blue', alpha=0.5)
-    #
-    #     ax.set_xlabel('GMM Components')
-    #     ax.set_ylabel('minDCF')
-    #     ax.set_title(covType)
-    #     ax.set_xticks(x)
-    #     ax.set_xticklabels(nComponents)
-    #     ax.legend()
-    #
-    #     pl.show()
-    #     minDCF_value = []
-    #     actDCF_value = []
-    #
-    # print("minimum value of minDCF", minValue_minDCF)
-    # print("minimum value of actDCF", minValue_actDCF)
-    #
-    # print("GMM with different log odds")
     # log_odds_values = np.linspace(-4, 4, 21)
     # minDCF_values = []
     # actDCF_values = []
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+    # hParam = {'K': 1, 'C': 100.0, 'kernel': 'RBF', 'gamma': 0.1}
+    # for log_odds in log_odds_values:
+    #     prior = 1 / (1 + np.exp(-log_odds))
+    #     svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+    #     svmReturn = svm.train(DTR, LTR)
+    #     predictions = svmReturn.predict(DVAL, labels=True)
+    #     th = -np.log((prior * 1) / ((1 - prior) * 1))
+    #     llr = svmReturn.predict(DVAL)
+    #     predictedLabels = np.int32(llr > th)
+    #     current_minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+    #     minDCF_values.append(minDCF)
+    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #     current_actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+    #     actDCF_values.append(current_actDCF)
     #
+    # pl.figure()
+    # pl.plot(log_odds_values, minDCF_values, 'b')
+    # pl.plot(log_odds_values, actDCF_values, 'r')
+    # pl.ylim([None, 0.4])
+    # pl.xlabel('Log Odds')
+    # pl.ylabel('DCF values')
+    # pl.title('minDCF vs Log Odds SVM with RBF kernel K=1 C=10^2 gamma=0.1')
+    # pl.legend(['minDCF', 'actDCF'])
+    # pl.show()
+    # minDCF_values = []
+    # actDCF_values = []
+    ########################
+    ##       GMM         ###
+    ########################
+    covTypes = ['Full', 'Diag']
+    prior = 0.1
+    nComponents = [1, 2, 4, 8, 16, 32]
+    minValue_minDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
+    minDCF_value = []
+    actDCF_value = []
+    print("GMM with prior=0.1")
+    for covType in covTypes:
+        for nc0 in nComponents:
+            for nc1 in nComponents:
+                print("nComponents0 ", nc0)
+                print("nComponents1 ", nc1)
+                print(" covType is ", covType)
+                gmm = GMM.GMM(alpha=0.1, n0Components=nc0, n1Components=nc1, psi=0.01, covType=covType)
+                gmm.train(DTR, LTR)
+                llr = gmm.predict(DVAL)
+                minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+                if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
+                                                                       'min': minDCF}
+                print("minDCF", minDCF)
+                th = -np.log((prior * 1) / ((1 - prior) * 1))
+                predictedLabels = np.int32(llr > th)
+                confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+                actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+                if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
+                                                                       'min': actDCF}
+                print("actDCF", actDCF)
+                # minDCF_value.append(minDCF)
+                # actDCF_value.append(actDCF)
+
+    # x = np.arange(len(nComponents))
+    # width = 0.33
+    #
+    # fig, ax = pl.subplots()
+    #
+    # rects1 = ax.bar(x - width / 2, minDCF_value, width, label='minDCF', color='red', alpha=0.5)
+    # rects2 = ax.bar(x + width / 2, actDCF_value, width, label='actDCF', color='blue', alpha=0.5)
+    #
+    # ax.set_xlabel('GMM Components')
+    # ax.set_ylabel('minDCF')
+    # ax.set_title(covType)
+    # ax.set_xticks(x)
+    # ax.set_xticklabels(nComponents)
+    # ax.legend()
+    #
+    # pl.show()
+    # minDCF_value = []
+    # actDCF_value = []
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
+
+    print("GMM with different log odds")
+    log_odds_values = np.linspace(-4, 4, 21)
+    minDCF_values = []
+    actDCF_values = []
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+
     # for covType in covTypes:
     #     print(" covType is ", covType)
     #     for nc in nComponents:
@@ -896,8 +900,9 @@ if __name__ == '__main__':
 
     print("GMM")
     covType = 'Diag'
-    nComponents = 8
-    gmm = GMM.GMM(alpha=0.1, nComponents=nComponents, psi=0.01, covType=covType)
+    n0Components = 8
+    n1Components = 32
+    gmm = GMM.GMM(alpha=0.1, n0Components=n0Components, n1Components=n1Components, psi=0.01, covType=covType)
     gmm.train(DTR, LTR)
     scoreGMM = gmm.predict(DVAL)
     labelGMM = gmm.predict(DVAL, labels=True)

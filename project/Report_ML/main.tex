@@ -1075,7 +1075,10 @@ and f can be interpreted as log-likelihood for the two classes hypotheses:
 \begin{equation}
     f(s)=log \frac{f_{S|C}(s|\mathcal{H}_T)}{f_{S|C}(s|\mathcal{H}_F)}=\alpha s+\beta
 \end{equation}
-    
+and the class posterior probability for prior \(\tilde{\pi}\) corresponds to:
+\begin{equation}
+    log\frac{P(C=\mathcal{H}_T|s)}{P(C=\mathcal{H}_F|s)}=\alpha s+\beta+log\frac{\tilde{\pi}}{1-\tilde{\pi}}
+\end{equation}
 \section{Experimental Results}
 \subsection{Calibration on evaluation score}
 \subsection{Considerations}
