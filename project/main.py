@@ -649,7 +649,7 @@ if __name__ == '__main__':
     #     llr = svmReturn.predict(DVAL)
     #     predictedLabels = np.int32(llr > th)
     #     current_minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
-    #     minDCF_values.append(minDCF)
+    #     minDCF_values.append(current_minDCF)
     #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
     #     current_actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
     #     actDCF_values.append(current_actDCF)
@@ -671,33 +671,34 @@ if __name__ == '__main__':
     covTypes = ['Full', 'Diag']
     prior = 0.1
     nComponents = [1, 2, 4, 8, 16, 32]
-    minValue_minDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
-    minValue_actDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
-    minDCF_value = []
-    actDCF_value = []
-    print("GMM with prior=0.1")
-    for covType in covTypes:
-        for nc0 in nComponents:
-            for nc1 in nComponents:
-                print("nComponents0 ", nc0)
-                print("nComponents1 ", nc1)
-                print(" covType is ", covType)
-                gmm = GMM.GMM(alpha=0.1, n0Components=nc0, n1Components=nc1, psi=0.01, covType=covType)
-                gmm.train(DTR, LTR)
-                llr = gmm.predict(DVAL)
-                minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-                if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
-                                                                       'min': minDCF}
-                print("minDCF", minDCF)
-                th = -np.log((prior * 1) / ((1 - prior) * 1))
-                predictedLabels = np.int32(llr > th)
-                confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-                actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-                if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
-                                                                       'min': actDCF}
-                print("actDCF", actDCF)
-                # minDCF_value.append(minDCF)
-                # actDCF_value.append(actDCF)
+
+    # minValue_minDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
+    # minValue_actDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
+    # minDCF_value = []
+    # actDCF_value = []
+    # print("GMM with prior=0.1")
+    # for covType in covTypes:
+    #     for nc0 in nComponents:
+    #         for nc1 in nComponents:
+    #             print("nComponents0 ", nc0)
+    #             print("nComponents1 ", nc1)
+    #             print(" covType is ", covType)
+    #             gmm = GMM.GMM(alpha=0.1, n0Components=nc0, n1Components=nc1, psi=0.01, covType=covType)
+    #             gmm.train(DTR, LTR)
+    #             llr = gmm.predict(DVAL)
+    #             minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+    #             if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
+    #                                                                    'min': minDCF}
+    #             print("minDCF", minDCF)
+    #             th = -np.log((prior * 1) / ((1 - prior) * 1))
+    #             predictedLabels = np.int32(llr > th)
+    #             confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #             actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+    #             if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn0': nc0, 'cn1': nc1, 'covType': covType,
+    #                                                                    'min': actDCF}
+    #             print("actDCF", actDCF)
+    # minDCF_value.append(minDCF)
+    # actDCF_value.append(actDCF)
 
     # x = np.arange(len(nComponents))
     # width = 0.33
@@ -718,48 +719,47 @@ if __name__ == '__main__':
     # minDCF_value = []
     # actDCF_value = []
 
-    print("minimum value of minDCF", minValue_minDCF)
-    print("minimum value of actDCF", minValue_actDCF)
-
+    # print("minimum value of minDCF", minValue_minDCF)
+    # print("minimum value of actDCF", minValue_actDCF)
+    #
     print("GMM with different log odds")
     log_odds_values = np.linspace(-4, 4, 21)
     minDCF_values = []
     actDCF_values = []
-    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
 
-    # for covType in covTypes:
-    #     print(" covType is ", covType)
-    #     for nc in nComponents:
-    #         print("nComponents ", nc)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         for log_odds in log_odds_values:
-    #             prior = 1 / (1 + np.exp(-log_odds))
-    #             llr = gmm.predict(DVAL)
-    #             minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
-    #             print("minDCF", minDCF)
-    #             # if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #             minDCF_values.append(minDCF)
-    #             predictions = gmm.predict(DVAL, labels=True)
-    #             th = -np.log((prior * 1) / ((1 - prior) * 1))
-    #             predictedLabels = np.int32(llr > th)
-    #             confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #             actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
-    #             # if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #             print("actDCF", actDCF)
-    #             actDCF_values.append(actDCF)
-    #         pl.figure()
-    #         pl.plot(log_odds_values, minDCF_values, 'b')
-    #         pl.plot(log_odds_values, actDCF_values, 'r')
-    #         pl.ylim([None, 0.4])
-    #         pl.xlabel('Log Odds')
-    #         pl.ylabel('DCF values')
-    #         pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
-    #         pl.legend(['minDCF', 'actDCF'])
-    #         pl.show()
-    #         minDCF_values = []
-    #         actDCF_values = []
+    nc0 = 8
+    nc1 = 32
+    covType = 'Diag'
+    gmm = GMM.GMM(alpha=0.1, n0Components=nc0, n1Components=nc1, psi=0.01, covType=covType)
+    gmm.train(DTR, LTR)
+    for log_odds in log_odds_values:
+        prior = 1 / (1 + np.exp(-log_odds))
+        llr = gmm.predict(DVAL)
+        minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+        print("minDCF", minDCF)
+        minDCF_values.append(minDCF)
+        predictions = gmm.predict(DVAL, labels=True)
+        th = -np.log((prior * 1) / ((1 - prior) * 1))
+        predictedLabels = np.int32(llr > th)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+        actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+
+        print("actDCF", actDCF)
+        actDCF_values.append(actDCF)
+    pl.figure()
+    pl.plot(log_odds_values, minDCF_values, 'b')
+    pl.plot(log_odds_values, actDCF_values, 'r')
+    pl.ylim([None, 0.4])
+    pl.xlabel('Log Odds')
+    pl.ylabel('DCF values')
+    pl.title(
+        'minDCF vs Log Odds for GMM with diag Covariance')
+    pl.legend(['minDCF', 'actDCF'])
+    pl.show()
+    minDCF_values = []
+    actDCF_values = []
     #
     # print("minimum value of minDCF", minValue_minDCF)
     # print("minimum value of actDCF", minValue_actDCF)
@@ -769,6 +769,8 @@ if __name__ == '__main__':
     # ########################
     print("Calibration")
     pT = 0.1
+    # pT_cal = 0.9,0.5,0.1
+    pT_cal = 0.1
     SAMEFIGPLOTS = True
     if SAMEFIGPLOTS:
         fig = pl.figure(figsize=(16, 9))
@@ -801,11 +803,11 @@ if __name__ == '__main__':
     L_CAL, L_VAL = LVAL[:midpoint], LVAL[midpoint:]
 
     # Trasforma i punteggi di calibrazione per usarli con la LLR
-    S_CAL = S_CAL.reshape(1, -1)
-    S_VAL = S_VAL.reshape(1, -1)
-
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(S_CAL, L_CAL)
-    w, b = xf[:-1], xf[-1]
+    # S_CAL = S_CAL.reshape(1, -1)
+    # S_VAL = S_VAL.reshape(1, -1)
+    #
+    # xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(S_CAL, L_CAL)
+    # w, b = xf[:-1], xf[-1]
 
     # calibrated_SVAL = (w.T @ S_VAL + b - np.log(pT / (1 - pT))).ravel()
     #
@@ -831,10 +833,10 @@ if __name__ == '__main__':
     for foldIdx in range(KFOLD):
         SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreQLR, foldIdx)
         labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
-        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(
             rd.vrow(SCAL), labels_CAL)
         w, b = xf[:-1], xf[-1]
-        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
         calibrated_value_QLR.append(calibrated_SVAL)
         calibrated_label_QLR.append(labels_VAL)
 
@@ -876,10 +878,10 @@ if __name__ == '__main__':
         SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreSVM, foldIdx)
         labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
 
-        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(
             rd.vrow(SCAL), labels_CAL)
         w, b = xf[:-1], xf[-1]
-        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
         calibrated_value_SVM.append(calibrated_SVAL)
         calibrated_label_SVM.append(labels_VAL)
 
@@ -922,10 +924,10 @@ if __name__ == '__main__':
         SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreGMM, foldIdx)
         labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
 
-        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(
             rd.vrow(SCAL), labels_CAL)
         w, b = xf[:-1], xf[-1]
-        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_SVAL = (w.T @ rd.vrow(SVAL) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
         calibrated_value_GMM.append(calibrated_SVAL)
         calibrated_label_GMM.append(labels_VAL)
 
@@ -956,10 +958,10 @@ if __name__ == '__main__':
 
         SCAL = np.vstack([SCAL_QLR, SCAL_SVM, SCAL_GMM])
 
-        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(SCAL, labels_CAL)
+        xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(SCAL, labels_CAL)
         w, b = xf[:-1], xf[-1]
         SVAL = np.vstack([SVAL_QLR, SVAL_SVM, SVAL_GMM])
-        calibrated_SVAL = (w.T @ SVAL + b - np.log(pT / (1 - pT))).ravel()
+        calibrated_SVAL = (w.T @ SVAL + b - np.log(pT_cal / (1 - pT_cal))).ravel()
 
         fusedScore.append(calibrated_SVAL)
         fusedLabels.append(labels_VAL)
@@ -1007,9 +1009,9 @@ if __name__ == '__main__':
     print("actDCF no calibrated", actDCF)
 
     # calibrated
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreQLR), LVAL)
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreQLR), LVAL)
     w, b = xf[:-1], xf[-1]
-    calibrated_scoreQLR_eval = (w.T @ rd.vrow(scoreQLR_eval) + b - np.log(pT / (1 - pT))).ravel()
+    calibrated_scoreQLR_eval = (w.T @ rd.vrow(scoreQLR_eval) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
 
     minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreQLR_eval, evalLabels, pT, 1, 1)
     confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreQLR_eval > th), evalLabels)
@@ -1026,9 +1028,9 @@ if __name__ == '__main__':
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
 
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreGMM), LVAL)
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreGMM), LVAL)
     w, b = xf[:-1], xf[-1]
-    calibrated_scoreGMM_eval = (w.T @ rd.vrow(scoreGMM_eval) + b - np.log(pT / (1 - pT))).ravel()
+    calibrated_scoreGMM_eval = (w.T @ rd.vrow(scoreGMM_eval) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
 
     minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreGMM_eval, evalLabels, pT, 1, 1)
     confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreGMM_eval > th), evalLabels)
@@ -1046,9 +1048,9 @@ if __name__ == '__main__':
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
 
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(rd.vrow(scoreSVM), LVAL)
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreSVM), LVAL)
     w, b = xf[:-1], xf[-1]
-    calibrated_scoreSVM_eval = (w.T @ rd.vrow(scoreSVM_eval) + b - np.log(pT / (1 - pT))).ravel()
+    calibrated_scoreSVM_eval = (w.T @ rd.vrow(scoreSVM_eval) + b - np.log(pT_cal / (1 - pT_cal))).ravel()
 
     minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_scoreSVM_eval, evalLabels, pT, 1, 1)
     confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_scoreSVM_eval > th), evalLabels)
@@ -1059,10 +1061,10 @@ if __name__ == '__main__':
     print("Fusion")
     fusion_score = np.vstack([scoreQLR, scoreSVM, scoreGMM])
 
-    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(fusion_score, LVAL)
+    xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(fusion_score, LVAL)
     w, b = xf[:-1], xf[-1]
     score_eval = np.vstack([scoreQLR_eval, scoreSVM_eval, scoreGMM_eval])
-    calibrated_SVAL = (w.T @ score_eval + b - np.log(pT / (1 - pT))).ravel()
+    calibrated_SVAL = (w.T @ score_eval + b - np.log(pT_cal / (1 - pT_cal))).ravel()
 
     minDCF_calibrated_eval = bdm.compute_minDCF_binary(calibrated_SVAL, evalLabels, pT, 1, 1)
     confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > th), evalLabels)

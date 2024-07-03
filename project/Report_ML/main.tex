@@ -1005,37 +1005,41 @@ Through these histograms in Figure~\Ref{fig:GMM_hist} we can see how minDCF chan
     \caption{GMM with diagonal and full covariance matrix} % Aggiungi una caption unica qui
     \label{fig:GMM_hist} 
 \end{figure}
-We can see that the number of components that gives the best results are 4 and 8, both in the case of full covariance and diagonal covariance.
+During training with the GMM model, all achievable results were tested by giving a different number of components for each class. All possible combinations of the range of number of components chosen was tested both using full Covariance and diag Covariance, it could be concluded that using too low or too high number of components there was a deterioration of the metrics considered.\\
+In the Figure~\Ref{fig:GMM_hist} above for class 0 and class 1 the same number of components was used but it is also possible in some cases to optimize the number of components for each class can lead to better discrimination between classes and better classification performance, in this way it is possible to adapt to the specific class.\\
+During training with the GMM model, all achievable results were tested by giving precisely a different number of components for each class. All possible combinations of the range of number of components chosen was tested both using full Covariance and diag Covariance, it could be concluded that using too low or too high number of components there was a deterioration of the metrics considered.
 \begin{table}[H]
     \centering
     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
     \hline
     \multicolumn{3}{c}{\textbf{GMM model }} \\   \hline
-    \textbf{nComponents}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
+    \textbf{(nc0,nc1)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
     \multicolumn{3}{c}{\textbf{Full cov }} \\   \hline
-    \textbf{\(4\)} & 0.216141 & 0.239535\\
-    \textbf{\(8\)} & 0.178603 & 0.192764\\
-    \textbf{\(16\)} & 0.163130 & 0.176603 \\
-    \textbf{\(32\)} & 0.233726 & 0.249888\\\hline\hline
-    \multicolumn{3}{c}{\textbf{Diag cov }} \\   \hline
-    \textbf{\(4\)} & 0.148105 & 0.168666 \\
-    \textbf{\(8\)} & \textcolor{red}{0.146265} & 0.180859\\
-    \textbf{\(16\)} & 0.162154  & 0.176891\\
-    \textbf{\(32\)} & 0.176619 & 0.198860\\
+    \textbf{\((4,16)\)} & 0.174475 & 0.187084\\
+    \textbf{\((8,8)\)} & 0.178603 & 0.192764\\
+    \textbf{\((8,16)\)} & 0.152649 & 0.172491 \\
+    \textbf{\((8,32)\)} & 0.174475 & 0.190348\\
+    \textbf{\((16,16)\)} & 0.163130 & 0.176603 \\\hline\hline
+    \textbf{\((4,16)\)} & 0.137192 & 0.168666\\
+    \textbf{\((8,8)\)} &  0.146265 & 0.180859\\
+    \textbf{\((8,16)\)} & 0.132376 & 0.148681\\
+    \textbf{\((8,32)\)} & \textcolor{red}{0.131240} & 0.151657 \\
+    \textbf{\((16,16)\)} & 0.162154 & 0.176891 \\\hline\hline
     \hline
     \end{tabular}
     \caption{minDCF and actDCF}
     \label{tab:GMM}
     \end{table}
+    Only the combinations of number of components for the different classes that appeared to be most promising and representative were given in the Table~\ref{tab:GMM}; the others results can be found in the project code.
 \subsubsection*{Conclusion for GMM}
 \begin{itemize}
-    \item  After applying the model we can conclude that the best performance is achieved by using 8 components for both classes, this suggests that these components are sufficient to capture the complexity and variance of the data without incurring overfitting or underfitting.\\
+    \item  After applying the model we can conclude that the best performance is achieved by using 8 components for class 0 and 32 components for class 1, the choice of 8 components for class 0 and 32 for class 1 suggests that class 1 requires a more complex model to avoid underfitting, while for class 0 a less complex model is sufficient.\\
     While the better performance using a diagonal type covariance matrix indicates that assuming independence of features from each other leads to better results. This may suggest that the features in the dataset have a primarily independent relationship and that the additional complexity introduced by a full covariance matrix does not provide significant benefits in terms of model performance.
     \item Compared with the other models, it is also possible to see that the results are better calibrated than all the other cases, in fact, in addition to being the model that gives us lower minDCF than all the others, it is also the one that is better calibrated.
 \end{itemize}
 \underline{Best GMM model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
-    \item \textbf{GMM with diag covariance} with \(nComponents=8\)
+    \item \textbf{GMM with diag covariance} with \(nComponents=8\) for class 0 and \(nComponents=32\) for class 1.
 \end{itemize}
 \section{Score Calibration}
 \subsection{Calibration Analysis on Selected Models}
@@ -1043,7 +1047,7 @@ We can see that the number of components that gives the best results are 4 and 8
 \begin{itemize}
     \item \textbf{Logistic Regression:} QLR with \(\lambda=0.03162277660168379\), Best minDCF: 0.243631592421915
     \item \textbf{SVM:} SVM with RBF kernel \(C=10^2\;\; \gamma=0.1\), Best minDCF  0.18553187403993854
-    \item \textbf{GMM:} GMM with Diag covariance \(nComponents=8\), Best minDCF 0.146265
+    \item \textbf{GMM:} GMM with Diag covariance \(nComponents=8\) for class 0 and \(nComponents=32\) for class 1, Best minDCF 0.131240
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -1065,6 +1069,7 @@ We can see that the number of components that gives the best results are 4 and 8
     \caption{Analysis best model} % Aggiungi una caption unica qui
     \label{fig:CalAnal} % Aggiungi un'etichetta unica qui
 \end{figure}
+From the Figure~\Ref{fig:CalAnal} we can see how the selected models while having good performance are not well calibrated, so now we are going to do the calibration.
 \subsection{Calibrating Scores for Selected Models}
 The metric used to select the best model was the minDCF, however the evaluation is based on theoretical threshold \(t=-log{\frac{\tilde{\pi}}{1-\tilde{\pi}}}\) but there is no guarantee that this threshold is still the optimal one and for this reason an analysis on the score is performed.
 We assume that the function f that maps the uncalibrated score to calibrated has the form:
@@ -1079,6 +1084,15 @@ and the class posterior probability for prior \(\tilde{\pi}\) corresponds to:
 \begin{equation}
     log\frac{P(C=\mathcal{H}_T|s)}{P(C=\mathcal{H}_F|s)}=\alpha s+\beta+log\frac{\tilde{\pi}}{1-\tilde{\pi}}
 \end{equation}
+By interpreting scores s as samples of a datase a prior weighted logistic regression model can be employed to learn the model parameters over our calibration set. Letting: 
+\begin{equation}
+    \beta'=\beta+log\frac{\tilde{\pi}}{1-\tilde{\pi}}
+\end{equation}
+a Logistic Regression model is obtained where \(\alpha\) and \(\beta'\) are the model parameters to be learnt. A prior needs to be specified and will be the one of the target application, but there will be improvements in terms of calibration even on the unbalanced applications. To obtain calibrated scores we will have to compute:
+\begin{equation}
+    f(s)=\alpha s+\beta=\alpha s+\beta'-log\frac{\tilde{\pi}}{1-\tilde{\pi}}
+\end{equation}
+Having selected the best models using minDCF as a metric we can now calibrate them to adjust the model predictions so that the predicted probabilities better reflect the actual probabilities of the events. 
 \section{Experimental Results}
 \subsection{Calibration on evaluation score}
 \subsection{Considerations}
