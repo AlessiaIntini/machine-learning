@@ -21,11 +21,11 @@
 \contentsline {subsection}{\numberline {5.3}SVM Classifier}{21}{subsection.5.3}%
 \contentsline {subsubsection}{\numberline {5.3.1}Linear SVM}{21}{subsubsection.5.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.2}Kernel SVM}{22}{subsubsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.4}GMM Classifier}{22}{subsection.5.4}%
-\contentsline {section}{\numberline {6}Score Calibration}{22}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Calibration Analysis on Selected Models}{22}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Calibrating Scores for Selected Models}{22}{subsection.6.2}%
-\contentsline {section}{\numberline {7}Experimental Results}{22}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Calibration on evaluation score}{22}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Considerations}{22}{subsection.7.2}%
-\contentsline {section}{\numberline {8}Conclusions}{22}{section.8}%
+\contentsline {subsection}{\numberline {5.4}GMM Classifier}{23}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Score Calibration}{23}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Calibration Analysis on Selected Models}{23}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Calibrating Scores for Selected Models}{23}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Experimental Results}{23}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Calibration on evaluation score}{23}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Considerations}{23}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Conclusions}{23}{section.8}%

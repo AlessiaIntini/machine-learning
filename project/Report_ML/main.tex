@@ -682,26 +682,6 @@ This can be useful if the dataset is unbalanced, the choice of the prior must be
 \end{itemize}
 \subsubsection*{Binary Logistic Regression with Pre-Processing (PCA)}
 We can now analyze the results obtained by applying the model after applying PCA, always using \(\pi_T=0.1\)
-    % \begin{table}[H]
-    %     \centering
-    %     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
-    %     \hline
-    %     \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-    %     \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
-    %     \multicolumn{3}{c}{m=5}\\  \hline
-    %     \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
-    %     \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
-    %     \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
-    %     \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
-    %     \multicolumn{3}{c}{m=6}\\  \hline
-    %     \textbf{\(10^{-4}\)} & 0.363975 &0.402089\\
-    %     \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
-    %     \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.456781\\
-    %     \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
-    %     \end{tabular}
-    %     \caption{minDCF and actDCF}
-    %     \label{tab:LLR_PCA}
-    %     \end{table}
     \begin{table}[H]
         \centering
         \begin{tabular}{>{\centering\arraybackslash}m{1cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
@@ -850,16 +830,21 @@ After that we have calculated the optimal \(\alpha\) we can compute \(w^*\).
 \end{figure}
 \begin{table}[H]
     \centering
-    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    % \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    % \hline
+    % \multicolumn{3}{c}{\textbf{Linear SVM with K=1.0}} \\   \hline
+    % \textbf{C}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
+    \begin{tabular}{>{\centering\arraybackslash}m{1cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
     \hline
-    \textbf{C}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-    \multicolumn{3}{c}{\textbf{Linear SVM with K=1.0}} \\   \hline
-    \textbf{\(10^{-5}\)} & 1.0 & 1.0  \\
-    \textbf{\(10^{-4}\)} & 0.363975 & 1.0\\
-    \textbf{\(10^{-3}\)} & 0.361991 & 0.959325\\
-    \textbf{\(10^{-2}\)} & 0.361991 & 0.671770\\
-    \textbf{\(10^{-1}\)} & 0.358167 & 0.516161\\
-    \textbf{\(10^{0}\)}  & 0.358167 & 0.489375\\\hline
+    \multicolumn{5}{c}{\textbf{Linear SVM with K=1.0}} \\ \hline
+    \textbf{C} & \multicolumn{2}{c}{\textbf{minDCF}} & \multicolumn{2}{c}{\textbf{actDCF}} \\ \cline{2-5} 
+     & \textbf{no z-norm} & \textbf{z-norm} & \textbf{no z-norm} & \textbf{z-norm} \\ \hline
+    \textbf{\(10^{-5}\)} & 1.0 & 1.0 & 1.0 & 1.0 \\
+    \textbf{\(10^{-4}\)} & 0.363975& 0.363975 & 1.0 & 1.0 \\
+    \textbf{\(10^{-3}\)} & 0.361991& 0.361991 & 0.959325 & 0.959325\\
+    \textbf{\(10^{-2}\)} & 0.361991& 0.361991 & 0.671770 & 0.671770\\
+    \textbf{\(10^{-1}\)} & 0.358167& 0.358166 & 0.516161& 0.516161\\
+    \textbf{\(10^{0}\)}  & 0.358167& 0.358167 & 0.489375& 0.489375\\\hline
     \end{tabular}
     \caption{minDCF and actDCF}
     \label{tab:SVM_linear}
@@ -868,11 +853,55 @@ After that we have calculated the optimal \(\alpha\) we can compute \(w^*\).
 SVMs allow nonlinear classification through the kernel trick. 
 Unlike the quadratic logistic regression classifier, there is no explicit expansion of the feature space; 
 we only need to be able to calculate the scalar product between the expanded features:\( k(x_1,x_2)=\phi(x_1)_T\phi(x_2)\) where k is the kernel function.
-To do this we need to go and replace H with \(\hat(H)= z_iz_jk(x_1,x_2)\). 
+To do this we need to go and replace H with \(\hat{H}= z_iz_jk(x_1,x_2)\). 
 We can observe two different types of kernels:
 \begin{itemize}
     \item \textbf{Polynomial kernel of degree d}: \(k(x_1,x_2)=(x_1^Tx_2+c)^d\)
     \item \textbf{Radial Basis Function kernel(RBF)}: \(k(x_1,x_2)=e^{-\gamma||x1-x_2||^2}\)
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_P1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_P2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_P3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{SVM for Polynomial kernel} % Aggiungi una caption unica qui
+    \label{fig:SVM_p} % Aggiungi un'etichetta unica qui
+\end{figure}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \multicolumn{3}{c}{\textbf{Polynomial kernel SVM ~ \(d=2,\;\; c=1, \;\;\xi=0\) }} \\   \hline
+    \textbf{C}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
+    \textbf{\(10^{-4}\)} & 0.251296 & 1.0\\
+    \textbf{\(10^{-3}\)} & 0.256544 & 0.9196428\\
+    \textbf{\(10^{-2}\)} & 0.252848 & 0.588437 \\
+    \textbf{\(10^{-1}\)} & 0.248031 & 0.410858\\\hline
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:SVM_Poly}
+    \end{table}
+\subsubsection*{Conclusion for SVM}
+\begin{itemize}
+    \item Again as in logistic regression, we do not see any substantial changes in performance even after applying z-normalization.
+    \item We can also draw conclusions by seeing the performance of the metrics when we vary the parameter C, in fact lower values of C imply strong regularization while low values imply weak regularization. We can see that for higher values of C we will have better calibration since the value of actDCF also decreases, while minDCF remains quite low and stable for all tested values of C.
+    \item \textbf{SVM with Polynomial kernel:}
+    \begin{itemize}
+    \item When we apply SVM with polynomial kernel we can see that the results are lower than those of linear SVM. We can compare the results obtained to those of the previously analyzed models and we can get that the results obtained are comparable to those obtained with QLR this continues to suggest that there is no linear relationship between the features and therefore we need to model quadratic relationships between the features.
+    \item It is also possible to see that in this case compared to previous models the actDCF turns out to be lower so there is a better calibration of the model.
+   \end{itemize}
 \end{itemize}
 \subsection{GMM Classifier}
 \section{Score Calibration}

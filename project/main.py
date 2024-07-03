@@ -213,35 +213,35 @@ if __name__ == '__main__':
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted', ldbArray, One=True)
 
-    print("Binary Logistic regression non prior-weighted centered data")
-    ldbArray = np.logspace(-4, 2, 13)
-    actDCF = []
-    minDCF = []
-    DTR_normalized = e.znormalized_features_training(DTR)
-    DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
-    minValue_minDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
-                       "50-sample": False}
-    minValue_actDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
-                       "50-sample": False}
-    for ldb in ldbArray:
-        print("lambda: ", ldb)
-        llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False)
-        current_xf = llr.trainLogReg(DTR_normalized, LTR)
-        current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_normalized,
-                                                                   pi_emp=sum(LTR == 1) / len(LTR),
-                                                                   prior=0.1)
-        if current_minDCF < minValue_minDCF['min']:
-            minValue_minDCF['min'] = current_minDCF
-            minValue_minDCF['lambda'] = ldb
-        if current_actDCF < minValue_actDCF['min']:
-            minValue_actDCF['min'] = current_actDCF
-            minValue_actDCF['lambda'] = ldb
-        actDCF.append(current_actDCF)
-        minDCF.append(current_minDCF)
-
-    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted centered data', ldbArray)
-    plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted with Z-normalization',
-                           ldbArray, One=True)
+    # print("Binary Logistic regression non prior-weighted centered data")
+    # ldbArray = np.logspace(-4, 2, 13)
+    # actDCF = []
+    # minDCF = []
+    # DTR_normalized = e.znormalized_features_training(DTR)
+    # DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
+    # minValue_minDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
+    #                    "50-sample": False}
+    # minValue_actDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
+    #                    "50-sample": False}
+    # for ldb in ldbArray:
+    #     print("lambda: ", ldb)
+    #     llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False)
+    #     current_xf = llr.trainLogReg(DTR_normalized, LTR)
+    #     current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_normalized,
+    #                                                                pi_emp=sum(LTR == 1) / len(LTR),
+    #                                                                prior=0.1)
+    #     if current_minDCF < minValue_minDCF['min']:
+    #         minValue_minDCF['min'] = current_minDCF
+    #         minValue_minDCF['lambda'] = ldb
+    #     if current_actDCF < minValue_actDCF['min']:
+    #         minValue_actDCF['min'] = current_actDCF
+    #         minValue_actDCF['lambda'] = ldb
+    #     actDCF.append(current_actDCF)
+    #     minDCF.append(current_minDCF)
+    #
+    # # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted centered data', ldbArray)
+    # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted with Z-normalization',
+    #                        ldbArray, One=True)
 
     # print("Binary Logistic regression non prior-weighted only 50 sample")
     # ldbArray = np.logspace(-4, 2, 13)
@@ -358,197 +358,234 @@ if __name__ == '__main__':
     #     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with PCA with', ldbArray, m)
 
     # apply PCA and Z-normalization
-    print("Binary Logistic regression with PCA and Z-normalization")
-    scaler = StandardScaler().fit(DTR)
-    DTR_normalized = e.znormalized_features_training(DTR)
-    DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
-    for m in range(5, 7):
-        s, P = PCA.PCA_function(DTR_normalized, m)
-        DTR_PCA = np.dot(P.T, DTR_normalized)
-        DVAL_PCA = np.dot(P.T, DVAL_normalized)
-
-        actDCF = []
-        minDCF = []
-        for ldb in ldbArray:
-            print("lambda: ", ldb)
-            llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
-            current_xf = llr.trainLogReg(DTR_PCA, LTR)
-            current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
-                                                                       pi_emp=(LTR == 1).sum() / len(LTR),
-                                                                       prior=0.1)
-            if current_minDCF < minValue_minDCF['min']:
-                minValue_minDCF['min'] = current_minDCF
-                minValue_minDCF['lambda'] = ldb
-                minValue_minDCF['PCA'] = m
-                minValue_minDCF['Z-norm'] = True
-            if current_actDCF < minValue_actDCF['min']:
-                minValue_actDCF['min'] = current_actDCF
-                minValue_actDCF['lambda'] = ldb
-                minValue_actDCF['PCA'] = m
-                minValue_actDCF['Z-norm'] = True
-            actDCF.append(current_actDCF)
-            minDCF.append(current_minDCF)
-
-        plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with Z-normalization and PCA with', ldbArray,
-                               m, One=True)
-
-    print('Result LLR')
-    print("Best minDCF", minValue_minDCF)
-    print("Best actDCF ", minValue_actDCF)
+    # print("Binary Logistic regression with PCA and Z-normalization")
+    # scaler = StandardScaler().fit(DTR)
+    # DTR_normalized = e.znormalized_features_training(DTR)
+    # DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
+    # for m in range(5, 7):
+    #     s, P = PCA.PCA_function(DTR_normalized, m)
+    #     DTR_PCA = np.dot(P.T, DTR_normalized)
+    #     DVAL_PCA = np.dot(P.T, DVAL_normalized)
+    #
+    #     actDCF = []
+    #     minDCF = []
+    #     for ldb in ldbArray:
+    #         print("lambda: ", ldb)
+    #         llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False, prior=0.1)
+    #         current_xf = llr.trainLogReg(DTR_PCA, LTR)
+    #         current_minDCF, current_actDCF = LLR.compute_minDCF_actDCF(current_xf, LVAL, DVAL_PCA,
+    #                                                                    pi_emp=(LTR == 1).sum() / len(LTR),
+    #                                                                    prior=0.1)
+    #         if current_minDCF < minValue_minDCF['min']:
+    #             minValue_minDCF['min'] = current_minDCF
+    #             minValue_minDCF['lambda'] = ldb
+    #             minValue_minDCF['PCA'] = m
+    #             minValue_minDCF['Z-norm'] = True
+    #         if current_actDCF < minValue_actDCF['min']:
+    #             minValue_actDCF['min'] = current_actDCF
+    #             minValue_actDCF['lambda'] = ldb
+    #             minValue_actDCF['PCA'] = m
+    #             minValue_actDCF['Z-norm'] = True
+    #         actDCF.append(current_actDCF)
+    #         minDCF.append(current_minDCF)
+    #
+    #     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with Z-normalization and PCA with', ldbArray,
+    #                            m, One=True)
+    #
+    # print('Result LLR')
+    # print("Best minDCF", minValue_minDCF)
+    # print("Best actDCF ", minValue_actDCF)
 
     # ########################
     # ##      SVM          ###
     # ########################
-    # print("SVM")
-    # parameters = {'prior': 0.1, 'Cfn': 1, 'Cfp': 1}
-    # C_array = np.logspace(-5, 0, 11)
-    # minDCF_Array = []
-    # actDCF_Array = []
-    # minValue_minDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
-    # minValue_actDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
-    # K = 1.0
-    # # linear SVM
-    # print("Linear SVM")
-    # for C in C_array:
-    #     hParam = {'K': K, 'C': C}
-    #     print(hParam)
-    #     svm = SVM.SVM(hParam, kernel=None, prior=0)
-    #     svmReturn = svm.train(DTR, LTR)
-    #
-    #     predictions = svmReturn.predict(DVAL, labels=True)
-    #     print("error rate", e.error_rate(predictions, LVAL))
-    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-    #     llr = svmReturn.predict(DVAL)
-    #     predictedLabels = np.int32(llr > th)
-    #
-    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-    #     minDCF_Array.append(minDCF)
-    #     print("minDCF", minDCF)
-    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #     actDCF_Array.append(actDCF)
-    #     if minDCF < minValue_minDCF['min']:
-    #         minValue_minDCF['min'] = minDCF
-    #         minValue_minDCF['C'] = C
-    #     if actDCF < minValue_actDCF['min']:
-    #         minValue_actDCF['min'] = actDCF
-    #         minValue_actDCF['C'] = C
-    #     print("actDCF", actDCF)
-    #     primal_value, dual_value = svmReturn.compute_primal_dual_value()
-    #     print("primal value", primal_value)
-    #     print("dual value", dual_value)
-    #     print("duality gap", svmReturn.compute_duality_gap())
-    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C", One=True)
-    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C")
-    #
-    # print("SVM with polinomial kernel")
-    # minDCF_Array = []
-    # actDCF_Array = []
-    # K = 0.0
-    # d = 2
-    # c = 1
-    # for C in C_array:
-    #     hParam = {'K': K, 'C': C, 'd': d, 'c': c, 'kernel': 'Polynomial'}
-    #     print(hParam)
-    #     svm = SVM.SVM(hParam, kernel='Polynomial', prior=0)
-    #     svmReturn = svm.train(DTR, LTR)
-    #     predictions = svmReturn.predict(DVAL, labels=True)
-    #     print("error rate", e.error_rate(predictions, LVAL))
-    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-    #     llr = svmReturn.predict(DVAL)
-    #     predictedLabels = np.int32(llr > th)
-    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-    #     minDCF_Array.append(minDCF)
-    #     print("minDCF", minDCF)
-    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #     actDCF_Array.append(actDCF)
-    #     if minDCF < minValue_minDCF['min']:
-    #         minValue_minDCF['min'] = minDCF
-    #         minValue_minDCF['C'] = C
-    #         minValue_minDCF['kernel'] = True
-    #         minValue_minDCF['type'] = 'Polynomial'
-    #     if actDCF < minValue_actDCF['min']:
-    #         minValue_actDCF['min'] = actDCF
-    #         minValue_actDCF['C'] = C
-    #         minValue_actDCF['kernel'] = True
-    #         minValue_actDCF['type'] = 'Polynomial'
-    #     print("actDCF", actDCF)
-    #     print("dual value", svmReturn.dual_value)
-    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C", One=True)
-    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C")
-    #
-    # print("SVM with RBF kernel")
-    # minDCF_matrix = []
-    # actDCF_matrix = []
-    # C_array = np.logspace(-3, 2, 11)
-    # K = 1.0
-    # gamma_Array = np.array([1e-4, 1e-3, 1e-2, 1e-1])
-    # # gamma_Array = np.array([1e-2, 1e-1, 1.0])
-    # for gamma in gamma_Array:
-    #     minDCF_values = []
-    #     actDCF_values = []
-    #     for c in C_array:
-    #         hParam = {'K': K, 'C': c, 'gamma': gamma, 'kernel': 'RBF'}
-    #         print(hParam)
-    #         svm = SVM.SVM(hParam, kernel='RBF', prior=0)
-    #         svmReturn = svm.train(DTR, LTR)
-    #         print(svmReturn.alpha)
-    #         predictions = svmReturn.predict(DVAL, labels=True)
-    #
-    #         print("error rate", e.error_rate(predictions, LVAL))
-    #         th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-    #         llr = svmReturn.predict(DVAL)
-    #         predictedLabels = np.int32(llr > th)
-    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, parameters['prior'], parameters['Cfn'], parameters['Cfn'])
-    #         minDCF_values.append(minDCF)
-    #         print("minDCF", minDCF)
-    #         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
-    #                                        normalize=True)
-    #         actDCF_values.append(actDCF)
-    #         if minDCF < minValue_minDCF['min']:
-    #             minValue_minDCF['min'] = minDCF
-    #             minValue_minDCF['C'] = c
-    #             minValue_minDCF['kernel'] = True
-    #             minValue_minDCF['type'] = 'RBF'
-    #             minValue_minDCF['gamma'] = gamma
-    #         if actDCF < minValue_actDCF['min']:
-    #             minValue_actDCF['min'] = actDCF
-    #             minValue_actDCF['C'] = c
-    #             minValue_actDCF['kernel'] = True
-    #             minValue_actDCF['type'] = 'RBF'
-    #             minValue_actDCF['gamma'] = gamma
-    #         print("actDCF", actDCF)
-    #         print("dual value", svmReturn.dual_value)
-    #     minDCF_matrix.append(minDCF_values)
-    #     actDCF_matrix.append(actDCF_values)
-    # print("Best value for SVM")
-    # print("Best minDCF", minValue_minDCF)
-    # print("Best actDCF ", minValue_actDCF)
-    # color = ['b', 'g', 'r', 'c']
-    # pl.figure()
-    # pl.title("SVM RBF kernel")
-    # for i, minDCF_values in enumerate(minDCF_matrix):
-    #     pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
-    #
-    # pl.xlabel('C')
-    # pl.ylabel('minDCF value')
-    # pl.xscale('log', base=10)
-    # pl.legend()
-    # pl.show()
-    #
-    # color = ['b', 'g', 'r', 'c']
-    # pl.figure()
-    # pl.title("SVM RBF kernel")
-    # for i, actDCF_values in enumerate(actDCF_matrix):
-    #     pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
-    #
-    # pl.xlabel('C')
-    # pl.ylabel('actDCF value')
-    # pl.xscale('log', base=10)
-    # pl.legend()
-    # pl.show()
+    print("SVM")
+    parameters = {'prior': 0.1, 'Cfn': 1, 'Cfp': 1}
+    C_array = np.logspace(-5, 0, 11)
+    minDCF_Array = []
+    actDCF_Array = []
+    minValue_minDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
+    minValue_actDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
+    K = 1.0
+    # linear SVM
+    print("Linear SVM")
+    for C in C_array:
+        hParam = {'K': K, 'C': C}
+        print(hParam)
+        svm = SVM.SVM(hParam, kernel=None, prior=0)
+        svmReturn = svm.train(DTR, LTR)
+
+        predictions = svmReturn.predict(DVAL, labels=True)
+        print("error rate", e.error_rate(predictions, LVAL))
+        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+        llr = svmReturn.predict(DVAL)
+        predictedLabels = np.int32(llr > th)
+
+        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+        minDCF_Array.append(minDCF)
+        print("minDCF", minDCF)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+        actDCF_Array.append(actDCF)
+        if minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = minDCF
+            minValue_minDCF['C'] = C
+        if actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = actDCF
+            minValue_actDCF['C'] = C
+        print("actDCF", actDCF)
+        primal_value, dual_value = svmReturn.compute_primal_dual_value()
+        print("primal value", primal_value)
+        print("dual value", dual_value)
+        print("duality gap", svmReturn.compute_duality_gap())
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C", One=True)
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C")
+
+    minDCF_Array = []
+    actDCF_Array = []
+    print("Linear SVM with K-norm")
+    DTR_normalized = e.znormalized_features_training(DTR)
+    DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
+    for C in C_array:
+        hParam = {'K': K, 'C': C}
+        print(hParam)
+        svm = SVM.SVM(hParam, kernel=None, prior=0)
+        svmReturn = svm.train(DTR_normalized, LTR)
+
+        predictions = svmReturn.predict(DVAL, labels=True)
+        print("error rate", e.error_rate(predictions, LVAL))
+        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+        llr = svmReturn.predict(DVAL_normalized)
+        predictedLabels = np.int32(llr > th)
+
+        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+        minDCF_Array.append(minDCF)
+        print("minDCF", minDCF)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+        actDCF_Array.append(actDCF)
+        if minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = minDCF
+            minValue_minDCF['C'] = C
+        if actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = actDCF
+            minValue_actDCF['C'] = C
+        print("actDCF", actDCF)
+        primal_value, dual_value = svmReturn.compute_primal_dual_value()
+        print("primal value", primal_value)
+        print("dual value", dual_value)
+        print("duality gap", svmReturn.compute_duality_gap())
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C", One=True)
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C")
+
+    print("SVM with polinomial kernel")
+    minDCF_Array = []
+    actDCF_Array = []
+    K = 0.0
+    d = 2
+    c = 1
+    for C in C_array:
+        hParam = {'K': K, 'C': C, 'd': d, 'c': c, 'kernel': 'Polynomial'}
+        print(hParam)
+        svm = SVM.SVM(hParam, kernel='Polynomial', prior=0)
+        svmReturn = svm.train(DTR, LTR)
+        predictions = svmReturn.predict(DVAL, labels=True)
+        print("error rate", e.error_rate(predictions, LVAL))
+        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+        llr = svmReturn.predict(DVAL)
+        predictedLabels = np.int32(llr > th)
+        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+        minDCF_Array.append(minDCF)
+        print("minDCF", minDCF)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+        actDCF_Array.append(actDCF)
+        if minDCF < minValue_minDCF['min']:
+            minValue_minDCF['min'] = minDCF
+            minValue_minDCF['C'] = C
+            minValue_minDCF['kernel'] = True
+            minValue_minDCF['type'] = 'Polynomial'
+        if actDCF < minValue_actDCF['min']:
+            minValue_actDCF['min'] = actDCF
+            minValue_actDCF['C'] = C
+            minValue_actDCF['kernel'] = True
+            minValue_actDCF['type'] = 'Polynomial'
+        print("actDCF", actDCF)
+        print("dual value", svmReturn.dual_value)
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C", One=True)
+    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C")
+
+    print("SVM with RBF kernel")
+    minDCF_matrix = []
+    actDCF_matrix = []
+    C_array = np.logspace(-3, 2, 11)
+    K = 1.0
+    gamma_Array = np.array([1e-4, 1e-3, 1e-2, 1e-1])
+    # gamma_Array = np.array([1e-2, 1e-1, 1.0])
+    for gamma in gamma_Array:
+        minDCF_values = []
+        actDCF_values = []
+        for c in C_array:
+            hParam = {'K': K, 'C': c, 'gamma': gamma, 'kernel': 'RBF'}
+            print(hParam)
+            svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+            svmReturn = svm.train(DTR, LTR)
+            print(svmReturn.alpha)
+            predictions = svmReturn.predict(DVAL, labels=True)
+
+            print("error rate", e.error_rate(predictions, LVAL))
+            th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+            llr = svmReturn.predict(DVAL)
+            predictedLabels = np.int32(llr > th)
+            minDCF = bdm.compute_minDCF_binary(llr, LVAL, parameters['prior'], parameters['Cfn'], parameters['Cfn'])
+            minDCF_values.append(minDCF)
+            print("minDCF", minDCF)
+            confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+            actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
+                                           normalize=True)
+            actDCF_values.append(actDCF)
+            if minDCF < minValue_minDCF['min']:
+                minValue_minDCF['min'] = minDCF
+                minValue_minDCF['C'] = c
+                minValue_minDCF['kernel'] = True
+                minValue_minDCF['type'] = 'RBF'
+                minValue_minDCF['gamma'] = gamma
+            if actDCF < minValue_actDCF['min']:
+                minValue_actDCF['min'] = actDCF
+                minValue_actDCF['C'] = c
+                minValue_actDCF['kernel'] = True
+                minValue_actDCF['type'] = 'RBF'
+                minValue_actDCF['gamma'] = gamma
+            print("actDCF", actDCF)
+            print("dual value", svmReturn.dual_value)
+        minDCF_matrix.append(minDCF_values)
+        actDCF_matrix.append(actDCF_values)
+    print("Best value for SVM")
+    print("Best minDCF", minValue_minDCF)
+    print("Best actDCF ", minValue_actDCF)
+    color = ['b', 'g', 'r', 'c']
+    pl.figure()
+    pl.title("SVM RBF kernel")
+    for i, minDCF_values in enumerate(minDCF_matrix):
+        pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
+
+    pl.xlabel('C')
+    pl.ylabel('minDCF value')
+    pl.xscale('log', base=10)
+    pl.legend()
+    pl.show()
+
+    color = ['b', 'g', 'r', 'c']
+    pl.figure()
+    pl.title("SVM RBF kernel")
+    for i, actDCF_values in enumerate(actDCF_matrix):
+        pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
+
+    pl.xlabel('C')
+    pl.ylabel('actDCF value')
+    pl.xscale('log', base=10)
+    pl.legend()
+    pl.show()
 
     # ########################
     # ##       GMM         ###
