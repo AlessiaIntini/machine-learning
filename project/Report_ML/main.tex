@@ -1045,7 +1045,37 @@ We can see that the number of components that gives the best results are 4 and 8
     \item \textbf{SVM:} SVM with RBF kernel \(C=10^2\;\; \gamma=0.1\), Best minDCF  0.18553187403993854
     \item \textbf{GMM:} GMM with Diag covariance \(nComponents=8\), Best minDCF 0.146265
 \end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/BestQLR.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/SVM_P2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/BestGMM.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Analysis best model} % Aggiungi una caption unica qui
+    \label{fig:CalAnal} % Aggiungi un'etichetta unica qui
+\end{figure}
 \subsection{Calibrating Scores for Selected Models}
+The metric used to select the best model was the minDCF, however the evaluation is based on theoretical threshold \(t=-log{\frac{\tilde{\pi}}{1-\tilde{\pi}}}\) but there is no guarantee that this threshold is still the optimal one and for this reason an analysis on the score is performed.
+We assume that the function f that maps the uncalibrated score to calibrated has the form:
+\begin{equation}
+    f(s)=\alpha s+\beta
+\end{equation}
+and f can be interpreted as log-likelihood for the two classes hypotheses:
+\begin{equation}
+    f(s)=log \frac{f_{S|C}(s|\mathcal{H}_T)}{f_{S|C}(s|\mathcal{H}_F)}=\alpha s+\beta
+\end{equation}
+    
 \section{Experimental Results}
 \subsection{Calibration on evaluation score}
 \subsection{Considerations}

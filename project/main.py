@@ -636,7 +636,35 @@ if __name__ == '__main__':
     #
     # plt.plot_minDCF_actDCF(minDCF_values, actDCF_values, 'SVM with RBF kernel gamma=0.1', C_array, m=0, xlabel="C",
     #                        One=True)
+    log_odds_values = np.linspace(-4, 4, 21)
+    minDCF_values = []
+    actDCF_values = []
+    hParam = {'K': 1, 'C': 100.0, 'kernel': 'RBF', 'gamma': 0.1}
+    for log_odds in log_odds_values:
+        prior = 1 / (1 + np.exp(-log_odds))
+        svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+        svmReturn = svm.train(DTR, LTR)
+        predictions = svmReturn.predict(DVAL, labels=True)
+        th = -np.log((prior * 1) / ((1 - prior) * 1))
+        llr = svmReturn.predict(DVAL)
+        predictedLabels = np.int32(llr > th)
+        current_minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+        minDCF_values.append(minDCF)
+        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+        current_actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+        actDCF_values.append(current_actDCF)
 
+    pl.figure()
+    pl.plot(log_odds_values, minDCF_values, 'b')
+    pl.plot(log_odds_values, actDCF_values, 'r')
+    pl.ylim([None, 0.4])
+    pl.xlabel('Log Odds')
+    pl.ylabel('DCF values')
+    pl.title('minDCF vs Log Odds SVM with RBF kernel K=1 C=10^2 gamma=0.1')
+    pl.legend(['minDCF', 'actDCF'])
+    pl.show()
+    minDCF_values = []
+    actDCF_values = []
     ########################
     ##       GMM         ###
     ########################
@@ -775,22 +803,22 @@ if __name__ == '__main__':
     xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT).trainLogReg(S_CAL, L_CAL)
     w, b = xf[:-1], xf[-1]
 
-    calibrated_SVAL = (w.T @ S_VAL + b - np.log(pT / (1 - pT))).ravel()
-
-    minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_SVAL, L_VAL, pT, 1, 1)
-    th = -np.log((pT * 1) / ((1 - pT) * 1))
-    confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > th), L_VAL)
-    actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
-    print("Single fold")
-    print(f"minDCF Calibrated: {minDCF_calibrated}")
-    print(f"actDCF Calibrated: {actDCF_calibrated}")
-    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_SVAL, L_VAL)
-    axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
-    axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
-    axes[0, 0].set_ylim(0.0, 0.8)
-    axes[0, 0].set_title('QLR - calibration validation')
-    axes[0, 0].legend()
-    pl.show()
+    # calibrated_SVAL = (w.T @ S_VAL + b - np.log(pT / (1 - pT))).ravel()
+    #
+    # minDCF_calibrated = bdm.compute_minDCF_binary(calibrated_SVAL, L_VAL, pT, 1, 1)
+    # th = -np.log((pT * 1) / ((1 - pT) * 1))
+    # confusionMatrix_calibrated = bdm.compute_confusion_matrix(np.int32(calibrated_SVAL > th), L_VAL)
+    # actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
+    # print("Single fold")
+    # print(f"minDCF Calibrated: {minDCF_calibrated}")
+    # print(f"actDCF Calibrated: {actDCF_calibrated}")
+    # logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_SVAL, L_VAL)
+    # axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
+    # axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
+    # axes[0, 0].set_ylim(0.0, 0.8)
+    # axes[0, 0].set_title('QLR - calibration validation')
+    # axes[0, 0].legend()
+    #
 
     print("K-fold")
     KFOLD = 5
