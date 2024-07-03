@@ -185,8 +185,8 @@ if __name__ == '__main__':
     # #################################### #
     # ##    Linear Logistic regression    ##
     # #################################### #
-    print("Binary Logistic regression##")
-    # print("Binary Logistic regression non prior-weighted")
+    # print("Binary Logistic regression##")
+    # # print("Binary Logistic regression non prior-weighted")
     # ldbArray = np.logspace(-4, 2, 13)
     # actDCF = []
     # minDCF = []
@@ -326,7 +326,7 @@ if __name__ == '__main__':
     #
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Quadratic Logistic Regression with expanded features', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Quadratic Logistic Regression with expanded features', ldbArray, One=True)
-    #
+
     # # apply PCA
     # print("Binary Logistic regression with PCA")
     # for m in range(5, 7):
@@ -399,194 +399,194 @@ if __name__ == '__main__':
     # ########################
     # ##      SVM          ###
     # ########################
-    print("SVM")
-    parameters = {'prior': 0.1, 'Cfn': 1, 'Cfp': 1}
-    C_array = np.logspace(-5, 0, 11)
-    minDCF_Array = []
-    actDCF_Array = []
-    minValue_minDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
-    minValue_actDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
-    K = 1.0
-    # linear SVM
-    print("Linear SVM")
-    for C in C_array:
-        hParam = {'K': K, 'C': C}
-        print(hParam)
-        svm = SVM.SVM(hParam, kernel=None, prior=0)
-        svmReturn = svm.train(DTR, LTR)
-
-        predictions = svmReturn.predict(DVAL, labels=True)
-        print("error rate", e.error_rate(predictions, LVAL))
-        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-        llr = svmReturn.predict(DVAL)
-        predictedLabels = np.int32(llr > th)
-
-        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-        minDCF_Array.append(minDCF)
-        print("minDCF", minDCF)
-        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-        actDCF_Array.append(actDCF)
-        if minDCF < minValue_minDCF['min']:
-            minValue_minDCF['min'] = minDCF
-            minValue_minDCF['C'] = C
-        if actDCF < minValue_actDCF['min']:
-            minValue_actDCF['min'] = actDCF
-            minValue_actDCF['C'] = C
-        print("actDCF", actDCF)
-        primal_value, dual_value = svmReturn.compute_primal_dual_value()
-        print("primal value", primal_value)
-        print("dual value", dual_value)
-        print("duality gap", svmReturn.compute_duality_gap())
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C", One=True)
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C")
-
-    minDCF_Array = []
-    actDCF_Array = []
-    print("Linear SVM with K-norm")
-    DTR_normalized = e.znormalized_features_training(DTR)
-    DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
-    for C in C_array:
-        hParam = {'K': K, 'C': C}
-        print(hParam)
-        svm = SVM.SVM(hParam, kernel=None, prior=0)
-        svmReturn = svm.train(DTR_normalized, LTR)
-
-        predictions = svmReturn.predict(DVAL, labels=True)
-        print("error rate", e.error_rate(predictions, LVAL))
-        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-        llr = svmReturn.predict(DVAL_normalized)
-        predictedLabels = np.int32(llr > th)
-
-        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-        minDCF_Array.append(minDCF)
-        print("minDCF", minDCF)
-        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-        actDCF_Array.append(actDCF)
-        if minDCF < minValue_minDCF['min']:
-            minValue_minDCF['min'] = minDCF
-            minValue_minDCF['C'] = C
-        if actDCF < minValue_actDCF['min']:
-            minValue_actDCF['min'] = actDCF
-            minValue_actDCF['C'] = C
-        print("actDCF", actDCF)
-        primal_value, dual_value = svmReturn.compute_primal_dual_value()
-        print("primal value", primal_value)
-        print("dual value", dual_value)
-        print("duality gap", svmReturn.compute_duality_gap())
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C", One=True)
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C")
-
-    print("SVM with polinomial kernel")
-    # different C
+    # print("SVM")
+    # parameters = {'prior': 0.1, 'Cfn': 1, 'Cfp': 1}
+    # C_array = np.logspace(-5, 0, 11)
+    # minDCF_Array = []
+    # actDCF_Array = []
+    # minValue_minDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
+    # minValue_actDCF = {'C': 0, 'kernel': False, 'type': '', 'min': 10, 'gamma': 20}
+    # K = 1.0
+    # # linear SVM
+    # print("Linear SVM")
+    # for C in C_array:
+    #     hParam = {'K': K, 'C': C}
+    #     print(hParam)
+    #     svm = SVM.SVM(hParam, kernel=None, prior=0)
+    #     svmReturn = svm.train(DTR, LTR)
+    #
+    #     predictions = svmReturn.predict(DVAL, labels=True)
+    #     print("error rate", e.error_rate(predictions, LVAL))
+    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+    #     llr = svmReturn.predict(DVAL)
+    #     predictedLabels = np.int32(llr > th)
+    #
+    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+    #     minDCF_Array.append(minDCF)
+    #     print("minDCF", minDCF)
+    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+    #     actDCF_Array.append(actDCF)
+    #     if minDCF < minValue_minDCF['min']:
+    #         minValue_minDCF['min'] = minDCF
+    #         minValue_minDCF['C'] = C
+    #     if actDCF < minValue_actDCF['min']:
+    #         minValue_actDCF['min'] = actDCF
+    #         minValue_actDCF['C'] = C
+    #     print("actDCF", actDCF)
+    #     primal_value, dual_value = svmReturn.compute_primal_dual_value()
+    #     print("primal value", primal_value)
+    #     print("dual value", dual_value)
+    #     print("duality gap", svmReturn.compute_duality_gap())
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C", One=True)
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear', C_array, m=0, xlabel="C")
+    #
+    # minDCF_Array = []
+    # actDCF_Array = []
+    # print("Linear SVM with K-norm")
+    # DTR_normalized = e.znormalized_features_training(DTR)
+    # DVAL_normalized = e.znormalized_features_evaluation(DVAL, DTR)
+    # for C in C_array:
+    #     hParam = {'K': K, 'C': C}
+    #     print(hParam)
+    #     svm = SVM.SVM(hParam, kernel=None, prior=0)
+    #     svmReturn = svm.train(DTR_normalized, LTR)
+    #
+    #     predictions = svmReturn.predict(DVAL, labels=True)
+    #     print("error rate", e.error_rate(predictions, LVAL))
+    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+    #     llr = svmReturn.predict(DVAL_normalized)
+    #     predictedLabels = np.int32(llr > th)
+    #
+    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+    #     minDCF_Array.append(minDCF)
+    #     print("minDCF", minDCF)
+    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+    #     actDCF_Array.append(actDCF)
+    #     if minDCF < minValue_minDCF['min']:
+    #         minValue_minDCF['min'] = minDCF
+    #         minValue_minDCF['C'] = C
+    #     if actDCF < minValue_actDCF['min']:
+    #         minValue_actDCF['min'] = actDCF
+    #         minValue_actDCF['C'] = C
+    #     print("actDCF", actDCF)
+    #     primal_value, dual_value = svmReturn.compute_primal_dual_value()
+    #     print("primal value", primal_value)
+    #     print("dual value", dual_value)
+    #     print("duality gap", svmReturn.compute_duality_gap())
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C", One=True)
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C")
+    #
+    # print("SVM with polinomial kernel")
+    # # different C
+    # # C_array = np.logspace(-3, 2, 11)
+    # minDCF_Array = []
+    # actDCF_Array = []
+    # K = 0.0
+    # d = 2
+    # c = 1
+    # for C in C_array:
+    #     hParam = {'K': K, 'C': C, 'd': d, 'c': c, 'kernel': 'Polynomial'}
+    #     print(hParam)
+    #     svm = SVM.SVM(hParam, kernel='Polynomial', prior=0)
+    #     svmReturn = svm.train(DTR, LTR)
+    #     predictions = svmReturn.predict(DVAL, labels=True)
+    #     print("error rate", e.error_rate(predictions, LVAL))
+    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+    #     llr = svmReturn.predict(DVAL)
+    #     predictedLabels = np.int32(llr > th)
+    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+    #     minDCF_Array.append(minDCF)
+    #     print("minDCF", minDCF)
+    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+    #     actDCF_Array.append(actDCF)
+    #     if minDCF < minValue_minDCF['min']:
+    #         minValue_minDCF['min'] = minDCF
+    #         minValue_minDCF['C'] = C
+    #         minValue_minDCF['kernel'] = True
+    #         minValue_minDCF['type'] = 'Polynomial'
+    #     if actDCF < minValue_actDCF['min']:
+    #         minValue_actDCF['min'] = actDCF
+    #         minValue_actDCF['C'] = C
+    #         minValue_actDCF['kernel'] = True
+    #         minValue_actDCF['type'] = 'Polynomial'
+    #     print("actDCF", actDCF)
+    #     print("dual value", svmReturn.dual_value)
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C", One=True)
+    # plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C")
+    #
+    # print("SVM with RBF kernel")
+    # minDCF_matrix = []
+    # actDCF_matrix = []
     # C_array = np.logspace(-3, 2, 11)
-    minDCF_Array = []
-    actDCF_Array = []
-    K = 0.0
-    d = 2
-    c = 1
-    for C in C_array:
-        hParam = {'K': K, 'C': C, 'd': d, 'c': c, 'kernel': 'Polynomial'}
-        print(hParam)
-        svm = SVM.SVM(hParam, kernel='Polynomial', prior=0)
-        svmReturn = svm.train(DTR, LTR)
-        predictions = svmReturn.predict(DVAL, labels=True)
-        print("error rate", e.error_rate(predictions, LVAL))
-        th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-        llr = svmReturn.predict(DVAL)
-        predictedLabels = np.int32(llr > th)
-        minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-        minDCF_Array.append(minDCF)
-        print("minDCF", minDCF)
-        confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-        actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-        actDCF_Array.append(actDCF)
-        if minDCF < minValue_minDCF['min']:
-            minValue_minDCF['min'] = minDCF
-            minValue_minDCF['C'] = C
-            minValue_minDCF['kernel'] = True
-            minValue_minDCF['type'] = 'Polynomial'
-        if actDCF < minValue_actDCF['min']:
-            minValue_actDCF['min'] = actDCF
-            minValue_actDCF['C'] = C
-            minValue_actDCF['kernel'] = True
-            minValue_actDCF['type'] = 'Polynomial'
-        print("actDCF", actDCF)
-        print("dual value", svmReturn.dual_value)
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C", One=True)
-    plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM polynomial', C_array, m=0, xlabel="C")
-
-    print("SVM with RBF kernel")
-    minDCF_matrix = []
-    actDCF_matrix = []
-    C_array = np.logspace(-3, 2, 11)
-    K = 1.0
-    gamma_Array = np.array([1e-4, 1e-3, 1e-2, 1e-1])
-    for gamma in gamma_Array:
-        minDCF_values = []
-        actDCF_values = []
-        for c in C_array:
-            hParam = {'K': K, 'C': c, 'gamma': gamma, 'kernel': 'RBF'}
-            print(hParam)
-            svm = SVM.SVM(hParam, kernel='RBF', prior=0)
-            svmReturn = svm.train(DTR, LTR)
-            print(svmReturn.alpha)
-            predictions = svmReturn.predict(DVAL, labels=True)
-
-            print("error rate", e.error_rate(predictions, LVAL))
-            th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
-            llr = svmReturn.predict(DVAL)
-            predictedLabels = np.int32(llr > th)
-            minDCF = bdm.compute_minDCF_binary(llr, LVAL, parameters['prior'], parameters['Cfn'], parameters['Cfn'])
-            minDCF_values.append(minDCF)
-            print("minDCF", minDCF)
-            confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-            actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
-                                           normalize=True)
-            actDCF_values.append(actDCF)
-            if minDCF < minValue_minDCF['min']:
-                minValue_minDCF['min'] = minDCF
-                minValue_minDCF['C'] = c
-                minValue_minDCF['kernel'] = True
-                minValue_minDCF['type'] = 'RBF'
-                minValue_minDCF['gamma'] = gamma
-            if actDCF < minValue_actDCF['min']:
-                minValue_actDCF['min'] = actDCF
-                minValue_actDCF['C'] = c
-                minValue_actDCF['kernel'] = True
-                minValue_actDCF['type'] = 'RBF'
-                minValue_actDCF['gamma'] = gamma
-            print("actDCF", actDCF)
-            print("dual value", svmReturn.dual_value)
-        minDCF_matrix.append(minDCF_values)
-        actDCF_matrix.append(actDCF_values)
-    print("Best value for SVM")
-    print("Best minDCF", minValue_minDCF)
-    print("Best actDCF ", minValue_actDCF)
-    color = ['b', 'g', 'r', 'c']
-    pl.figure()
-    pl.title("SVM RBF kernel")
-    for i, minDCF_values in enumerate(minDCF_matrix):
-        pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
-
-    pl.xlabel('C')
-    pl.ylabel('minDCF value')
-    pl.xscale('log', base=10)
-    pl.legend()
-    pl.show()
-
-    color = ['b', 'g', 'r', 'c']
-    pl.figure()
-    pl.title("SVM RBF kernel")
-    for i, actDCF_values in enumerate(actDCF_matrix):
-        pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
-
-    pl.xlabel('C')
-    pl.ylabel('actDCF value')
-    pl.xscale('log', base=10)
-    pl.legend()
-    pl.show()
+    # K = 1.0
+    # gamma_Array = np.array([1e-4, 1e-3, 1e-2, 1e-1])
+    # for gamma in gamma_Array:
+    #     minDCF_values = []
+    #     actDCF_values = []
+    #     for c in C_array:
+    #         hParam = {'K': K, 'C': c, 'gamma': gamma, 'kernel': 'RBF'}
+    #         print(hParam)
+    #         svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+    #         svmReturn = svm.train(DTR, LTR)
+    #         print(svmReturn.alpha)
+    #         predictions = svmReturn.predict(DVAL, labels=True)
+    #
+    #         print("error rate", e.error_rate(predictions, LVAL))
+    #         th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+    #         llr = svmReturn.predict(DVAL)
+    #         predictedLabels = np.int32(llr > th)
+    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, parameters['prior'], parameters['Cfn'], parameters['Cfn'])
+    #         minDCF_values.append(minDCF)
+    #         print("minDCF", minDCF)
+    #         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
+    #                                        normalize=True)
+    #         actDCF_values.append(actDCF)
+    #         if minDCF < minValue_minDCF['min']:
+    #             minValue_minDCF['min'] = minDCF
+    #             minValue_minDCF['C'] = c
+    #             minValue_minDCF['kernel'] = True
+    #             minValue_minDCF['type'] = 'RBF'
+    #             minValue_minDCF['gamma'] = gamma
+    #         if actDCF < minValue_actDCF['min']:
+    #             minValue_actDCF['min'] = actDCF
+    #             minValue_actDCF['C'] = c
+    #             minValue_actDCF['kernel'] = True
+    #             minValue_actDCF['type'] = 'RBF'
+    #             minValue_actDCF['gamma'] = gamma
+    #         print("actDCF", actDCF)
+    #         print("dual value", svmReturn.dual_value)
+    #     minDCF_matrix.append(minDCF_values)
+    #     actDCF_matrix.append(actDCF_values)
+    # print("Best value for SVM")
+    # print("Best minDCF", minValue_minDCF)
+    # print("Best actDCF ", minValue_actDCF)
+    # color = ['b', 'g', 'r', 'c']
+    # pl.figure()
+    # pl.title("SVM RBF kernel")
+    # for i, minDCF_values in enumerate(minDCF_matrix):
+    #     pl.plot(C_array, minDCF_values, color=color[i], label=str(gamma_Array[i]))
+    #
+    # pl.xlabel('C')
+    # pl.ylabel('minDCF value')
+    # pl.xscale('log', base=10)
+    # pl.legend()
+    # pl.show()
+    #
+    # color = ['b', 'g', 'r', 'c']
+    # pl.figure()
+    # pl.title("SVM RBF kernel")
+    # for i, actDCF_values in enumerate(actDCF_matrix):
+    #     pl.plot(C_array, actDCF_values, color=color[i], label=str(gamma_Array[i]))
+    #
+    # pl.xlabel('C')
+    # pl.ylabel('actDCF value')
+    # pl.xscale('log', base=10)
+    # pl.legend()
+    # pl.show()
     # C_array = np.logspace(-3, 2, 11)
     # minDCF_values = []
     # actDCF_values = []
@@ -616,77 +616,100 @@ if __name__ == '__main__':
     # plt.plot_minDCF_actDCF(minDCF_values, actDCF_values, 'SVM with RBF kernel gamma=0.1', C_array, m=0, xlabel="C",
     #                        One=True)
 
-    # ########################
-    # ##       GMM         ###
-    # ########################
-    # covTypes = ['Full', 'Diag']
-    # prior = 0.1
-    # nComponents = [1, 2, 4, 8, 16, 32]
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # print("GMM with prior=0.1")
-    # for nc in nComponents:
-    #     print("nComponents ", nc)
-    #     for covType in covTypes:
-    #         print(" covType is ", covType)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         llr = gmm.predict(DVAL)
-    #         minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
-    #         if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #         print("minDCF", minDCF)
-    #         th = -np.log((prior * 1) / ((1 - prior) * 1))
-    #         predictedLabels = np.int32(llr > th)
-    #         confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #         actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
-    #         if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #         print("actDCF", actDCF)
-    #
-    # print("minimum value of minDCF", minValue_minDCF)
-    # print("minimum value of actDCF", minValue_actDCF)
+    ########################
+    ##       GMM         ###
+    ########################
+    covTypes = ['Full', 'Diag']
+    prior = 0.1
+    nComponents = [1, 2, 4, 8, 16, 32]
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minDCF_value = []
+    actDCF_value = []
+    print("GMM with prior=0.1")
+    for covType in covTypes:
+        for nc in nComponents:
+            print("nComponents ", nc)
+            print(" covType is ", covType)
+            gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+            gmm.train(DTR, LTR)
+            llr = gmm.predict(DVAL)
+            minDCF = bdm.compute_minDCF_binary(llr, LVAL, 0.1, 1, 1)
+            if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+            print("minDCF", minDCF)
+            th = -np.log((prior * 1) / ((1 - prior) * 1))
+            predictedLabels = np.int32(llr > th)
+            confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+            actDCF = bdm.computeDCF_Binary(confusionMatrix, 0.1, 1, 1, normalize=True)
+            if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
+            print("actDCF", actDCF)
+            minDCF_value.append(minDCF)
+            actDCF_value.append(actDCF)
 
-    # print("GMM with different log odds")
-    # log_odds_values = np.linspace(-4, 4, 21)
-    # minDCF_values = []
-    # actDCF_values = []
-    # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
-    # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
-    #
-    # for covType in covTypes:
-    #     print(" covType is ", covType)
-    #     for nc in nComponents:
-    #         print("nComponents ", nc)
-    #         gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
-    #         gmm.train(DTR, LTR)
-    #         for log_odds in log_odds_values:
-    #             prior = 1 / (1 + np.exp(-log_odds))
-    #             llr = gmm.predict(DVAL)
-    #             minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
-    #             print("minDCF", minDCF)
-    #             if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
-    #             minDCF_values.append(minDCF)
-    #             predictions = gmm.predict(DVAL, labels=True)
-    #             th = -np.log((prior * 1) / ((1 - prior) * 1))
-    #             predictedLabels = np.int32(llr > th)
-    #             confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
-    #             actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
-    #             if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
-    #             print("actDCF", actDCF)
-    #             actDCF_values.append(actDCF)
-    #         pl.figure()
-    #         pl.plot(log_odds_values, minDCF_values, 'b')
-    #         pl.plot(log_odds_values, actDCF_values, 'r')
-    #         pl.ylim([None, 0.4])
-    #         pl.xlabel('Log Odds')
-    #         pl.ylabel('DCF values')
-    #         pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
-    #         pl.legend(['minDCF', 'actDCF'])
-    #         pl.show()
-    #         minDCF_values = []
-    #         actDCF_values = []
-    #
-    # print("minimum value of minDCF", minValue_minDCF)
-    # print("minimum value of actDCF", minValue_actDCF)
+        x = np.arange(len(nComponents))
+        width = 0.33
+
+        fig, ax = pl.subplots()
+
+        rects1 = ax.bar(x - width / 2, minDCF_value, width, label='minDCF', color='red', alpha=0.5)
+        rects2 = ax.bar(x + width / 2, actDCF_value, width, label='actDCF', color='blue', alpha=0.5)
+
+        ax.set_xlabel('GMM Components')
+        ax.set_ylabel('minDCF')
+        ax.set_title(covType)
+        ax.set_xticks(x)
+        ax.set_xticklabels(nComponents)
+        ax.legend()
+
+        pl.show()
+        minDCF_value = []
+        actDCF_value = []
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
+
+    print("GMM with different log odds")
+    log_odds_values = np.linspace(-4, 4, 21)
+    minDCF_values = []
+    actDCF_values = []
+    minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
+    minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
+
+    for covType in covTypes:
+        print(" covType is ", covType)
+        for nc in nComponents:
+            print("nComponents ", nc)
+            gmm = GMM.GMM(alpha=0.1, nComponents=nc, psi=0.01, covType=covType)
+            gmm.train(DTR, LTR)
+            for log_odds in log_odds_values:
+                prior = 1 / (1 + np.exp(-log_odds))
+                llr = gmm.predict(DVAL)
+                minDCF = bdm.compute_minDCF_binary(llr, LVAL, prior, 1, 1)
+                print("minDCF", minDCF)
+                # if minDCF < minValue_minDCF['min']: minValue_minDCF = {'cn': nc, 'covType': covType, 'min': minDCF}
+                minDCF_values.append(minDCF)
+                predictions = gmm.predict(DVAL, labels=True)
+                th = -np.log((prior * 1) / ((1 - prior) * 1))
+                predictedLabels = np.int32(llr > th)
+                confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+                actDCF = bdm.computeDCF_Binary(confusionMatrix, prior, 1, 1, normalize=True)
+                # if actDCF < minValue_actDCF['min']: minValue_actDCF = {'cn': nc, 'covType': covType, 'min': actDCF}
+                print("actDCF", actDCF)
+                actDCF_values.append(actDCF)
+            pl.figure()
+            pl.plot(log_odds_values, minDCF_values, 'b')
+            pl.plot(log_odds_values, actDCF_values, 'r')
+            pl.ylim([None, 0.4])
+            pl.xlabel('Log Odds')
+            pl.ylabel('DCF values')
+            pl.title('minDCF vs Log Odds with nComponents = ' + str(nc) + ' and covType ' + covType)
+            pl.legend(['minDCF', 'actDCF'])
+            pl.show()
+            minDCF_values = []
+            actDCF_values = []
+
+    print("minimum value of minDCF", minValue_minDCF)
+    print("minimum value of actDCF", minValue_actDCF)
 
     ##########################
     # ##   CALIBRATION     ###
@@ -704,7 +727,7 @@ if __name__ == '__main__':
     #                      [None, pl.figure().gca(), pl.figure().gca()]])
     #
     # print("QLR")
-    # qlr = QLR.QuadraticLogisticRegression(0.00031622776601683794, prior_weighted=False, prior=pT)
+    # qlr = QLR.QuadraticLogisticRegression(0.03162277660168379, prior_weighted=False, prior=pT)
     # xf = qlr.train(DTR, LTR)
     # w, b = xf[:-1], xf[-1]
     # scoreQLR = qlr.calculateS(DVAL)
@@ -719,7 +742,7 @@ if __name__ == '__main__':
     # logOdds, actDCF, minDCF = plt.bayesPlot(scoreQLR, LVAL)
     # axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle=':', label='minDCF no cal')
     # axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-.', label='actDCF no cal')
-
+    #
     # midpoint = len(scoreQLR) // 3
     # S_CAL, S_VAL = scoreQLR[:midpoint], scoreQLR[midpoint:]
     # L_CAL, L_VAL = LVAL[:midpoint], LVAL[midpoint:]

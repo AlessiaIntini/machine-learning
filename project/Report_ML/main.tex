@@ -6,7 +6,7 @@
 \usepackage{setspace}
 \usepackage{geometry}
 \usepackage{float}
-\usepackage{hyperref}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{xcolor}
@@ -538,7 +538,7 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
         \centering
         \includegraphics[width=\linewidth]{./img/LLR_noW3.png}
     \end{minipage}%
-    \begin{minipage}{.27\textwidth}
+    \begin{minipage}{.25\textwidth}
         \centering
         \includegraphics[width=\linewidth]{./img/LLR_Z1.png} % Aggiungi il percorso della tua quarta immagine qui
     \end{minipage}
@@ -624,39 +624,6 @@ It's also possible use prior-weighted logistic regression model that allows us t
           \frac{1-\pi_T}{n_F} & \text{if } z_i=-1 (c_i=0)
         \end{cases}
 \end{equation}
-
-
-    \begin{figure}[H]
-        \centering
-        \begin{minipage}{.27\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{./img/LLR_W1.png}
-            % Rimuovi la caption e l'etichetta da qui
-        \end{minipage}%
-        \begin{minipage}{.27\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{./img/LLR_W2.png}
-            % Rimuovi la caption e l'etichetta da qui
-        \end{minipage}
-        \begin{minipage}{.27\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{./img/LLR_W3.png}
-            % Rimuovi la caption e l'etichetta da qui
-        \end{minipage}
-        \begin{minipage}{.27\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{./img/LLR_Z2.png}
-            % Rimuovi la caption e l'etichetta da qui
-        \end{minipage}
-        \begin{minipage}{.27\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{./img/LLR_Z3.png}
-            % Rimuovi la caption e l'etichetta da qui
-        \end{minipage}
-        \caption{Binary Logistic Regression Model with prior-weighted prior=0.1} % Aggiungi una caption unica qui
-        \label{fig:LLR_model_W} % Aggiungi un'etichetta unica qui
-    \end{figure}
-
 Now we can analyze the results of the binary logistic regression model on the primary application \(\pi_T=0.1\).
 \begin{table}[H]
     \centering
@@ -673,6 +640,39 @@ Now we can analyze the results of the binary logistic regression model on the pr
     \caption{minDCF and actDCF}
     \label{tab:LLR_W}
     \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.23\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W1.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}%
+        \begin{minipage}{.23\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W2.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.23\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_W3.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.23\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_Z2.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.23\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_Z3.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \caption{Binary Logistic Regression Model with prior-weighted prior=0.1} % Aggiungi una caption unica qui
+        \label{fig:LLR_model_W} % Aggiungi un'etichetta unica qui
+    \end{figure}
+
+
 \begin{itemize}
     \item In logistic regression, prior is a parameter that represents our a priori knowledge about the distribution of labels in the dataset. 
 In other words, it is the probability that a random sample belongs to a certain class before we have seen the data.  
@@ -960,10 +960,82 @@ We can now apply the polynomial kernel to the SVM with \(d=2,\;\; c=1, \;\;\xi=0
 
 \underline{Best SVM model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
-    \item \textbf{SVM with RBF kernel } with \(\gamma=0.1\;\; C=10^2\)
+    \item \textbf{SVM with RBF kernel } with \(\gamma=0.1\;\; K=1\;\; C=10^2\)
 \end{itemize}
 
 \subsection{GMM Classifier}
+The last model we are going to consider is a generative model. The GMM problem is related to the
+estimation of a population distribution and can be also applied to the classification task.
+The GMM density consists of a weighted sum of K Gaussians:
+\begin{equation}
+\mathbf{X}\thicksim  GMM(\mathbf{M} ,\mathcal{S},w)\implies f_x(x)=\sum_{c=1}^{K}\mathcal{N}(x|\mu_g,\Sigma_g)w_g
+\end{equation}
+where \( M=[\mu_1...\mu_k]\), \(\mathcal{S}=[\Sigma_1...\Sigma_k]\) and \(w=[w_1...w_k]\) are the parameters of the model.\\
+Gaussian components can be viewed as clusters to which the samples belong ( hard or soft), and the cluster label is an unobserved latent random variable. We can also introduce a term called responsability that represents the posterior probability that a sample belongs to a certain cluster:
+\begin{equation}
+    \gamma(z_{n,i})=P(G_i=g| X_i=x)=\frac{f_{x_i,G_i}(x_i,g)}{f_{x_i}(x_i)}=\frac{\mathcal{N}(x_i|\mu_g,\Sigma_g)w_g}{\sum_{g'}\mathcal{N}(x_i|\mu_{g'},\Sigma_{g'})w_{g'}}
+\end{equation}
+Then assign the sample to the cluster label for which the liability is highest and re-estimate the model parameters based on the cluster assignment. An obvious problem is the creation of hard clusters that do not allow a sample to belong to more than one cluster. To handle soft clusters, scores can be estimated from which we can then obtain new parameters:
+In this way we can apply the Expectation-Maximization algorithm:
+\begin{itemize}
+    \item Expectation stage: estimation of the liability (given the model parameters \((M_t,S_t,w_t)\))
+    \item Maximization step: estimation of new model parameters using the above statistics, estimation continues from an initial value of the model parameters until a certain criterion is met. 
+\end{itemize}
+
+The EM algorithm then requires an initial estimate for the GMM parameters, so we use the LBG algorithm to incrementally construct a GMM with 2G components from a GMM with G components. The starting point will be \( (1,\mu,\sigma)\), so we use the empirical mean and covariance matrix of the data set. Then it builds a 2-component model starting from one and from each of the new components 2 more components are generated and so on.
+GMM can have differents versions as:
+\begin{itemize}
+    \item \textbf{The diagonal covariance model:} in this setup, the covariance matrix of each component is assumed to be diagonal, which means the variables are considered independent.
+    \item \textbf{The full covariance model:} in this case each component has a full covariance matrix, which means that all possible covariances between the variables are considered.
+\end{itemize}
+It can be assumed that the model with the diagonal covariance can give good results, as the features do not appear to be particularly correlated, however below we go on to analyze the results obtained for the different models.
+\\
+Through these histograms in Figure~\Ref{fig:GMM_hist} we can see how minDCF changes as the number of components varies and thus which components are worth considering when evaluating GMM
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/GMM_Full.png}    
+    \end{minipage}%
+    \begin{minipage}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/GMM_diag.png}
+    \end{minipage}
+    \caption{GMM with diagonal and full covariance matrix} % Aggiungi una caption unica qui
+    \label{fig:GMM_hist} 
+\end{figure}
+We can see that the number of components that gives the best results are 4 and 8, both in the case of full covariance and diagonal covariance.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \multicolumn{3}{c}{\textbf{GMM model }} \\   \hline
+    \textbf{nComponents}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
+    \multicolumn{3}{c}{\textbf{Full cov }} \\   \hline
+    \textbf{\(4\)} & 0.216141 & 0.239535\\
+    \textbf{\(8\)} & 0.178603 & 0.192764\\
+    \textbf{\(16\)} & 0.163130 & 0.176603 \\
+    \textbf{\(32\)} & 0.233726 & 0.249888\\\hline\hline
+    \multicolumn{3}{c}{\textbf{Diag cov }} \\   \hline
+    \textbf{\(4\)} & 0.148105 & 0.168666 \\
+    \textbf{\(8\)} & \textcolor{red}{0.146265} & 0.180859\\
+    \textbf{\(16\)} & 0.162154  & 0.176891\\
+    \textbf{\(32\)} & 0.176619 & 0.198860\\
+    \hline
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:GMM}
+    \end{table}
+\subsubsection*{Conclusion for GMM}
+\begin{itemize}
+    \item  After applying the model we can conclude that the best performance is achieved by using 8 components for both classes, this suggests that these components are sufficient to capture the complexity and variance of the data without incurring overfitting or underfitting.\\
+    While the better performance using a diagonal type covariance matrix indicates that assuming independence of features from each other leads to better results. This may suggest that the features in the dataset have a primarily independent relationship and that the additional complexity introduced by a full covariance matrix does not provide significant benefits in terms of model performance.
+    \item Compared with the other models, it is also possible to see that the results are better calibrated than all the other cases, in fact, in addition to being the model that gives us lower minDCF than all the others, it is also the one that is better calibrated.
+\end{itemize}
+\underline{Best GMM model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\begin{itemize}
+    \item \textbf{GMM with diag covariance} with \(nComponents=8\)
+\end{itemize}
 \section{Score Calibration}
 \subsection{Calibration Analysis on Selected Models}
 \subsection{Calibrating Scores for Selected Models}
