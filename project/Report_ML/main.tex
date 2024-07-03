@@ -1149,7 +1149,29 @@ We can see that actDCF improved significantly after calibration, the best result
 In conclusion as "delivered" system we choose GMM with Diagonal covariance with the previously mentioned configurations since after comparing it with all the other analyzed models it seems to be the most efficient one to fit our application. In fact as discussed when it was analyzed it seems to be the one most able to fit the distribution of our features managing to discriminate optimally between the different classes compared to the others, this decision was made based on the actDCF and minDCF measurements.
 \section{Experimental Results}
 \subsection{Evaluation}
-Now to evaluate the chosen model we can test it on a new evaluation dataset, no parameters will be calculated on this dataset but we will simply go and test the model we have already trained.
+Now to evaluate the chosen model we can test it on a new evaluation dataset, no parameters will be calculated on this dataset but we will simply go and test the model we have already trained.\\
+From an initial analysis we can infer that the scores are not well calibrated for either the target application or the other possible applications in the evaluation dataset.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{3cm}}
+    \hline
+    \multicolumn{4}{c}{\textbf{Uncalibrated Models [minDCF/actDCF] }} \\   \hline
+    \textbf{QLR} & & 0.351473/0.493525 & \\
+    \textbf{SVM} &  & 0.265915/0.364114 & \\
+    \textbf{GMM} &  & 0.183800/0.369626 & \\
+    \hline
+    \hline
+    \multicolumn{4}{c}{\textbf{Calibrated Models [minDCF/actDCF] }} \\   \hline
+    &\textbf{\(\tilde{\pi}=0.1\)}  &  \textbf{\(\tilde{\pi}=0.5\)} & \textbf{\(\tilde{\pi}=0.9\)} \\ \hline
+    \textbf{QLR} & 0.351473/0.389589 & 0.351473/0.371689 & 0.351473/0.364806\\
+    \textbf{SVM} & 0.265915/0.294592 & 0.265915/0.275374 & 0.265915/0.273113\\
+    \textbf{GMM} & 0.185387/0.189356 & 0.183800/0.202290 & 0.183800/0.210571\\
+    \hline
+    \textbf{Fusion} &  0.186456/0.204611 & 0.183132/0.205614 &  0.183132/0.208898\\
+    \end{tabular}
+    \caption{calibrated models to eval dataset}
+    \label{tab:CalibratedEval}
+    \end{table}
 \begin{figure}[H]
     \centering
     \begin{minipage}{.4\textwidth}
