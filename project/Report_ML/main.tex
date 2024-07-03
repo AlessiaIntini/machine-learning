@@ -758,7 +758,8 @@ where vec(X) is the operator that stacks the columns of X into a single column v
     \textbf{\(10^{-4}\)} &  0.260224 & 0.275809 \\
     \textbf{\(10^{-3}\)} & 0.258656 & 0.276514 \\
     \textbf{\(10^{-2}\)} & 0.248736 & 0.345382 \\
-    \textbf{\(10^{-1}\)} & \textcolor{red}{ 0.246607 }& 0.751984 \\\hline
+    \textbf{\(0.316*10^{-1}\)}&\textcolor{red}{0.243631}&0.497167\\
+    \textbf{\(10^{-1}\)} &  0.246607 & 0.751984 \\\hline
     
     \end{tabular}
     \caption{minDCF and actDCF}
@@ -782,7 +783,7 @@ In our case quadratic logistic regression seems to give the best results, so we 
 \end{itemize}
 \underline{Best Logistic Regression Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
-    \item \textbf{Quadratic Logistic Regression} with \(\lambda=(0.0316228\approxeq 10^{-1})\), no prior-weighted
+    \item \textbf{Quadratic Logistic Regression} with \(\lambda=0.0316228\), no prior-weighted
 \end{itemize}
 
 \subsection{SVM Classifier}
@@ -1038,6 +1039,12 @@ We can see that the number of components that gives the best results are 4 and 8
 \end{itemize}
 \section{Score Calibration}
 \subsection{Calibration Analysis on Selected Models}
+\subsection*{Best models}
+\begin{itemize}
+    \item \textbf{Logistic Regression:} QLR with \(\lambda=0.03162277660168379\), Best minDCF: 0.243631592421915
+    \item \textbf{SVM:} SVM with RBF kernel \(C=10^2\;\; \gamma=0.1\), Best minDCF  0.18553187403993854
+    \item \textbf{GMM:} GMM with Diag covariance \(nComponents=8\), Best minDCF 0.146265
+\end{itemize}
 \subsection{Calibrating Scores for Selected Models}
 \section{Experimental Results}
 \subsection{Calibration on evaluation score}
