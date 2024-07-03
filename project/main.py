@@ -479,6 +479,8 @@ if __name__ == '__main__':
     plt.plot_minDCF_actDCF(minDCF_Array, actDCF_Array, 'SVM linear with K-norm', C_array, m=0, xlabel="C")
 
     print("SVM with polinomial kernel")
+    # different C
+    # C_array = np.logspace(-3, 2, 11)
     minDCF_Array = []
     actDCF_Array = []
     K = 0.0
@@ -521,7 +523,6 @@ if __name__ == '__main__':
     C_array = np.logspace(-3, 2, 11)
     K = 1.0
     gamma_Array = np.array([1e-4, 1e-3, 1e-2, 1e-1])
-    # gamma_Array = np.array([1e-2, 1e-1, 1.0])
     for gamma in gamma_Array:
         minDCF_values = []
         actDCF_values = []
@@ -586,6 +587,34 @@ if __name__ == '__main__':
     pl.xscale('log', base=10)
     pl.legend()
     pl.show()
+    # C_array = np.logspace(-3, 2, 11)
+    # minDCF_values = []
+    # actDCF_values = []
+    # print("Best value for SVM with RBF kernel, gamma=0.1")
+    # for c in C_array:
+    #     hParam = {'K': K, 'C': c, 'gamma': 0.1, 'kernel': 'RBF'}
+    #     print(hParam)
+    #     svm = SVM.SVM(hParam, kernel='RBF', prior=0)
+    #     svmReturn = svm.train(DTR, LTR)
+    #     print(svmReturn.alpha)
+    #     predictions = svmReturn.predict(DVAL, labels=True)
+    #
+    #     print("error rate", e.error_rate(predictions, LVAL))
+    #     th = -np.log((parameters['prior'] * parameters['Cfn']) / ((1 - parameters['prior']) * parameters['Cfn']))
+    #     llr = svmReturn.predict(DVAL)
+    #     predictedLabels = np.int32(llr > th)
+    #     minDCF = bdm.compute_minDCF_binary(llr, LVAL, parameters['prior'], parameters['Cfn'], parameters['Cfn'])
+    #     minDCF_values.append(minDCF)
+    #     print("minDCF", minDCF)
+    #     confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
+    #     actDCF = bdm.computeDCF_Binary(confusionMatrix, parameters['prior'], parameters['Cfn'], parameters['Cfn'],
+    #                                    normalize=True)
+    #     actDCF_values.append(actDCF)
+    #     print("actDCF", actDCF)
+    #     print("dual value", svmReturn.dual_value)
+    #
+    # plt.plot_minDCF_actDCF(minDCF_values, actDCF_values, 'SVM with RBF kernel gamma=0.1', C_array, m=0, xlabel="C",
+    #                        One=True)
 
     # ########################
     # ##       GMM         ###

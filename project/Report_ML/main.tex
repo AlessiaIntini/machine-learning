@@ -780,7 +780,7 @@ and which model gives the best performance comparing for now the minDCF, also th
 In our case quadratic logistic regression seems to give the best results, so we can draw that we need the model to be able to capture nonlinear relationships between variables and thus be able to find nonlinear separations rules in the feature space.
 \item From the results we can observe that in fact we get better results with a relatively higher lambda so we can conclude that we need more regularization to prevent overfitting.
 \end{itemize}
-\underline{Logistic Regression Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\underline{Best Logistic Regression Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
     \item \textbf{Quadratic Logistic Regression} with \(\lambda=(0.0316228\approxeq 10^{-1})\), no prior-weighted
 \end{itemize}
@@ -859,6 +859,7 @@ We can observe two different types of kernels:
     \item \textbf{Polynomial kernel of degree d}: \(k(x_1,x_2)=(x_1^Tx_2+c)^d\)
     \item \textbf{Radial Basis Function kernel(RBF)}: \(k(x_1,x_2)=e^{-\gamma||x1-x_2||^2}\)
 \end{itemize}
+We can now apply the polynomial kernel to the SVM with \(d=2,\;\; c=1, \;\;\xi=0\) and see how minDCF and actDCF vary as C changes.
 \begin{figure}[H]
     \centering
     \begin{minipage}{.3\textwidth}
@@ -876,7 +877,7 @@ We can observe two different types of kernels:
         \includegraphics[width=\linewidth]{./img/SVM_P3.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{SVM for Polynomial kernel} % Aggiungi una caption unica qui
+    \caption{SVM with Polynomial kernel} % Aggiungi una caption unica qui
     \label{fig:SVM_p} % Aggiungi un'etichetta unica qui
 \end{figure}
 \begin{table}[H]
@@ -888,11 +889,59 @@ We can observe two different types of kernels:
     \textbf{\(10^{-4}\)} & 0.251296 & 1.0\\
     \textbf{\(10^{-3}\)} & 0.256544 & 0.9196428\\
     \textbf{\(10^{-2}\)} & 0.252848 & 0.588437 \\
-    \textbf{\(10^{-1}\)} & 0.248031 & 0.410858\\\hline
+    \textbf{\(10^{-1}\)} & 0.248031 & 0.410858\\
+    \textbf{\(10^{0}\)} &  0.258240 & 0.386056\\
+    \textbf{\(10^{1}\)} & 0.269297 & 0.380104\\
+    \textbf{\(10^{2}\)} & 0.261920 & 0.342837\\
+    \hline
     \end{tabular}
     \caption{minDCF and actDCF}
     \label{tab:SVM_Poly}
     \end{table}
+    In this case instead we apply to SVM the RBF kernel with \(\xi=1\) and yet in a first analysis as we can see from Figure~\Ref{fig:SVM_RBF} , we make an analysis of how minDCF and actDCF vary as \(\gamma\) varies. From this analysis we can derive that the best value for it is 0.1.
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.4\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/SVM_RBF1.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}%
+        \begin{minipage}{.4\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/SVM_RBF2.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \caption{SVM with RBF kernel} % Aggiungi una caption unica qui
+        \label{fig:SVM_RBF} % Aggiungi un'etichetta unica qui
+    \end{figure}
+
+
+    \begin{figure}[ht]
+        \begin{minipage}[b]{0.5\textwidth}
+            \centering
+        \includegraphics[width=0.7\textwidth]{./img/SVM_RBF3.png}
+        \caption{Variance of data for each m values}
+        \label{fig:SVM_RFD3}
+        \end{minipage}
+        \hfill % Aggiunge uno spazio orizzontale tra le due minipage se necessario
+        \begin{minipage}[b]{0.5\textwidth}
+        \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    \hline
+    \multicolumn{3}{c}{\textbf{RBF kernel SVM ~ \(\xi=1 \;\;\gamma=0.1\) }} \\   \hline
+    \textbf{C}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline
+    \textbf{\(10^{-3}\)} & 0.328821 & 1.0\\
+    \textbf{\(10^{-2}\)} & 0.325284 & 1.0 \\
+    \textbf{\(10^{-1}\)} & 0.281201 & 0.959325\\
+    \textbf{\(10^{0}\)} & 0.236975 & 0.659866\\
+    \textbf{\(10^{1}\)} & 0.239807 & 0.524801\\
+    \textbf{\(10^{2}\)} & \textcolor{red}{0.185531} & 0.361111\\
+    \hline
+    \end{tabular}
+    \caption{minDCF and actDCF}
+    \label{tab:SVM_RDF}
+    \end{minipage}
+    \end{figure}
 \subsubsection*{Conclusion for SVM}
 \begin{itemize}
     \item Again as in logistic regression, we do not see any substantial changes in performance even after applying z-normalization.
@@ -902,7 +951,18 @@ We can observe two different types of kernels:
     \item When we apply SVM with polynomial kernel we can see that the results are lower than those of linear SVM. We can compare the results obtained to those of the previously analyzed models and we can get that the results obtained are comparable to those obtained with QLR this continues to suggest that there is no linear relationship between the features and therefore we need to model quadratic relationships between the features.
     \item It is also possible to see that in this case compared to previous models the actDCF turns out to be lower so there is a better calibration of the model.
    \end{itemize}
+   \item \textbf{SVM with RBF kernel:}
+    \begin{itemize}
+    \item The best results in this case are obtained with gamma=0.1 as mentioned earlier and with high C so with lower regularization. The calibration in this case is better than in the other models but still turns out to be not well calibrated.
+    \item This model also turns out to be the one for which we get better performance so it can be assumed from this that the dataset benefits from nonlinear mapping and that there are complex relationships between features that can be better captured in a higher dimensional space.
+   \end{itemize}
 \end{itemize}
+
+\underline{Best SVM model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
+\begin{itemize}
+    \item \textbf{SVM with RBF kernel } with \(\gamma=0.1\;\; C=10^2\)
+\end{itemize}
+
 \subsection{GMM Classifier}
 \section{Score Calibration}
 \subsection{Calibration Analysis on Selected Models}
