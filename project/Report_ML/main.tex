@@ -509,6 +509,8 @@ All prior information has been absorbed in the bias term b, given w and b we can
 \end{equation}
 where \(\sigma=\frac{1}{1-e^{-x}}\) is the sigmoid function.\\
 This equation provides a model that allows computing the posterior prabilities for h1 and h0, the model assumes that decision rules are linear surfaces orthogonal to the vector \textbf{w} and the model parameters are \((\textbf{w},b)\).
+\subsubsection*{Training Model with centered data}
+We used z-normalization to see how performance could change by applying normalization to the data, this was applied as prepocessing to Binary Logistic Regression and paired with the application of PCA.
 \subsubsection{Binary Logistic Regression}
 \subsubsection*{Binary Logistic Regression non prior-weighted}
 We are going to look for the minimizer of the function:
@@ -524,23 +526,24 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
 \\
 \begin{figure}[H]
     \centering
-    \begin{minipage}{.3\textwidth}
+    \begin{minipage}{.27\textwidth}
         \centering
         \includegraphics[width=\linewidth]{./img/LLR_noW1.png}
-        % Rimuovi la caption e l'etichetta da qui
     \end{minipage}%
-    \begin{minipage}{.3\textwidth}
+    \begin{minipage}{.27\textwidth}
         \centering
         \includegraphics[width=\linewidth]{./img/LLR_noW2.png}
-        % Rimuovi la caption e l'etichetta da qui
-    \end{minipage}
-    \begin{minipage}{.3\textwidth}
+    \end{minipage}%
+    \begin{minipage}{.27\textwidth}
         \centering
         \includegraphics[width=\linewidth]{./img/LLR_noW3.png}
-        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.27\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/LLR_Z1.png} % Aggiungi il percorso della tua quarta immagine qui
     \end{minipage}
-    \caption{Binary Logistic Regression Model non prior-weighted} % Aggiungi una caption unica qui
-    \label{fig:LLR_model} % Aggiungi un'etichetta unica qui
+    \caption{Binary Logistic Regression Model non prior-weighted}
+    \label{fig:LLR_model}
 \end{figure}
     \begin{figure}[H]
         \centering
@@ -563,17 +566,41 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
         \label{fig:LLR_model_50} % Aggiungi un'etichetta unica qui
     \end{figure}
     Now we can analyze the results of the binary logistic regression model on the primary application \(\pi_T=0.1\).
+    % \begin{table}[H]
+    %     \centering
+    %     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    %     \hline
+    %     \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+    %     \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
+    %     \textbf{\(10^{-4}\)} &  0.363975 & 0.402089 \\
+    %     \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+    %     \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.413002 \\
+    %     \textbf{\(10^{-1}\)} &  0.364119 & 0.851190 \\\hline\hline
+    %     \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted (50 samples)}} \\   \hline
+    %     \textbf{\(10^{-4}\)} & 0.446604 & 0.93146\\
+    %     \textbf{\(10^{-3}\)} & 0.448733 & 0.704077 \\
+    %     \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
+    %     \textbf{\(10^{-1}\)} & 0.398842 & 0.780898\\\hline
+    %     \end{tabular}
+    %     \caption{minDCF and actDCF}
+    %     \label{tab:LLR}
+    %     \end{table}
     \begin{table}[H]
         \centering
-        \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+        \begin{tabular}{>{\centering\arraybackslash}m{1cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
         \hline
-        \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-        \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\   \hline
-        \textbf{\(10^{-4}\)} &  0.363975 & 0.402089 \\
-        \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
-        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.413002 \\
-        \textbf{\(10^{-1}\)} &  0.364119 & 0.851190 \\\hline\hline
+        \multicolumn{5}{c}{\textbf{Binary Logistic Regression non prior-weighted model}} \\ \hline
+        \textbf{\(\lambda\)} & \multicolumn{2}{c}{\textbf{minDCF}} & \multicolumn{2}{c}{\textbf{actDCF}} \\ \cline{2-5} 
+         & \textbf{no z-norm} & \textbf{z-norm} & \textbf{no z-norm} & \textbf{z-norm} \\ \hline
+        \textbf{\(10^{-4}\)} & 0.363975 &  0.363975 & 0.402089 & 0.402089 \\
+        \textbf{\(10^{-3}\)} & 0.364967 & 0.364967 & 0.413002 & 0.413002 \\
+        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.361143 & 0.413002 & 0.456781 \\
+        \textbf{\(10^{-1}\)} & 0.364119 & 0.364119 & 0.851190 & 0.852182 \\ \hline\hline
+        \end{tabular}
+        
+        \begin{tabular}{>{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{3cm}}
         \multicolumn{3}{c}{\textbf{Binary Logistic Regression non prior-weighted (50 samples)}} \\   \hline
+        \textbf{\(\lambda\)} & \textbf{minDCF} & \textbf{actDCF} \\ \hline
         \textbf{\(10^{-4}\)} & 0.446604 & 0.93146\\
         \textbf{\(10^{-3}\)} & 0.448733 & 0.704077 \\
         \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
@@ -581,7 +608,7 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
         \end{tabular}
         \caption{minDCF and actDCF}
         \label{tab:LLR}
-        \end{table}
+    \end{table}
         \begin{itemize}
             \item Using only 50 samples, we can see that using a limited number of samples can significantly affect the logistic regression model and could lead to misleading outcomes that are not 
                 representative of the entire dataset. 
@@ -601,19 +628,29 @@ It's also possible use prior-weighted logistic regression model that allows us t
 
     \begin{figure}[H]
         \centering
-        \begin{minipage}{.3\textwidth}
+        \begin{minipage}{.27\textwidth}
             \centering
             \includegraphics[width=\linewidth]{./img/LLR_W1.png}
             % Rimuovi la caption e l'etichetta da qui
         \end{minipage}%
-        \begin{minipage}{.3\textwidth}
+        \begin{minipage}{.27\textwidth}
             \centering
             \includegraphics[width=\linewidth]{./img/LLR_W2.png}
             % Rimuovi la caption e l'etichetta da qui
         \end{minipage}
-        \begin{minipage}{.3\textwidth}
+        \begin{minipage}{.27\textwidth}
             \centering
             \includegraphics[width=\linewidth]{./img/LLR_W3.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.27\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_Z2.png}
+            % Rimuovi la caption e l'etichetta da qui
+        \end{minipage}
+        \begin{minipage}{.27\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{./img/LLR_Z3.png}
             % Rimuovi la caption e l'etichetta da qui
         \end{minipage}
         \caption{Binary Logistic Regression Model with prior-weighted prior=0.1} % Aggiungi una caption unica qui
@@ -645,27 +682,47 @@ This can be useful if the dataset is unbalanced, the choice of the prior must be
 \end{itemize}
 \subsubsection*{Binary Logistic Regression with Pre-Processing (PCA)}
 We can now analyze the results obtained by applying the model after applying PCA, always using \(\pi_T=0.1\)
+    % \begin{table}[H]
+    %     \centering
+    %     \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+    %     \hline
+    %     \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
+    %     \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
+    %     \multicolumn{3}{c}{m=5}\\  \hline
+    %     \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
+    %     \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
+    %     \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
+    %     \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
+    %     \multicolumn{3}{c}{m=6}\\  \hline
+    %     \textbf{\(10^{-4}\)} & 0.363975 &0.402089\\
+    %     \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
+    %     \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.456781\\
+    %     \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
+    %     \end{tabular}
+    %     \caption{minDCF and actDCF}
+    %     \label{tab:LLR_PCA}
+    %     \end{table}
     \begin{table}[H]
         \centering
-        \begin{tabular}{>{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{2cm}}
+        \begin{tabular}{>{\centering\arraybackslash}m{1cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
         \hline
-        \textbf{\(\lambda\)}  &  \textbf{minDCF} & \textbf{actDCF} \\ \hline\hline
-        \multicolumn{3}{c}{\textbf{Binary Logistic Regression with PCA}} \\   \hline
-        \multicolumn{3}{c}{m=5}\\  \hline
-        \textbf{\(10^{-4}\)} & 0.366103 & 0.401098\\
-        \textbf{\(10^{-3}\)} & 0.366103 & 0.410026\\
-        \textbf{\(10^{-2}\)} & 0.361847 & 0.457773\\
-        \textbf{\(10^{-1}\)} &  0.365959 & 0.849206 \\\hline
-        \multicolumn{3}{c}{m=6}\\  \hline
-        \textbf{\(10^{-4}\)} & 0.363975 &0.402089\\
-        \textbf{\(10^{-3}\)} & 0.364967 & 0.413002 \\
-        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.456781\\
-        \textbf{\(10^{-1}\)} & 0.364119 & 0.851190\\\hline
+        \multicolumn{5}{c}{\textbf{Binary Logistic Regression with PCA}} \\ \hline
+        \textbf{\(\lambda\)} & \multicolumn{2}{c}{\textbf{minDCF}} & \multicolumn{2}{c}{\textbf{actDCF}} \\ \cline{2-5} 
+         & \textbf{no z-norm} & \textbf{z-norm} & \textbf{no z-norm} & \textbf{z-norm} \\ \hline
+        \multicolumn{5}{c}{m=5}\\  \hline
+        \textbf{\(10^{-4}\)} & 0.366103 &  0.366103 & 0.401098 & 0.401097 \\
+        \textbf{\(10^{-3}\)} & 0.366103 & 0.366103 & 0.410026 & 0.410026 \\
+        \textbf{\(10^{-2}\)} & 0.361847 & 0.362839 & 0.457773 & 0.458765 \\
+        \textbf{\(10^{-1}\)} & 0.365959 & 0.365959 & 0.849206 & 0.851190\\ \hline
+        \multicolumn{5}{c}{m=6}\\  \hline
+        \textbf{\(10^{-4}\)} & 0.363975 & 0.363975 &0.402089 & 0.402089 \\
+        \textbf{\(10^{-3}\)} & 0.364967 & 0.364967 & 0.413002 & 0.413002\\
+        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.361143 & 0.456781 & 0.456781 \\
+        \textbf{\(10^{-1}\)} & 0.364119 & 0.364119 & 0.851190 & 0.852183 \\ \hline
         \end{tabular}
         \caption{minDCF and actDCF}
         \label{tab:LLR_PCA}
-        \end{table}
-
+    \end{table}
    We can conclude by looking at the table that the application of PCA does not give a significant improvement, as noted earlier, but we can state that performance remains constant.
 
 \subsubsection{Quadratic Logistic Regression}
@@ -732,6 +789,7 @@ where vec(X) is the operator that stacks the columns of X into a single column v
 
 \subsubsection*{Conclusion for Binary Logistic Regression}
 \begin{itemize}
+    \item We can see that applying z-normalization does not bring us significant changes in the observed metrics, it could be because of the invariance of Logistic Regression in fact being based on a linear function of the data, it is invariant to linear transformations of the data, i.e. it does not change the ability of the model to separate classes if the relationship between the features and the label is already linearly separable.  Also if the regularization parameter is chosen appropriately this could minimize the effect of z-normalization. Finally, if our data are already distributed such that features contribute equally to the model decision, z-normalization may not have a significant impact.  
     \item For all the various models represented in
     Figure ~\ref{fig:LLR_model} ,
     Figure ~\ref{fig:LLR_model_W} ,

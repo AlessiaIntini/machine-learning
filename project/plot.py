@@ -58,6 +58,8 @@ def plot_minDCF_actDCF(minDCF, actDCF, title, xArray, m=0, xlabel='lambda', One=
         plt.show()
     else:
         plt.figure()
+        if m != 0:
+            title = title + " m = " + str(m)
         plt.title(title)
         plt.scatter(xArray, minDCF, label='minDCF', color='b')
         plt.plot(xArray, minDCF, color='b')
