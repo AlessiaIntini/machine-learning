@@ -1147,11 +1147,34 @@ We can see that actDCF improved significantly after calibration, the best result
     \item It is possible to apply fusion which is used to combine the scores of several models to improve performance, because perhaps one model may not be optimal then one tries to combine several models.\\In our case we can see that the fusion is not greatly improving the performance in fact they are very similar to those obtained by applying the GMM model. Moreover, the fusion does not seem to be optimally calibrated either as the values of minDCF and actDCF still differ by a larger value than the best performing model mentioned above.
 \end{itemize}
 In conclusion as "delivered" system we choose GMM with Diagonal covariance with the previously mentioned configurations since after comparing it with all the other analyzed models it seems to be the most efficient one to fit our application. In fact as discussed when it was analyzed it seems to be the one most able to fit the distribution of our features managing to discriminate optimally between the different classes compared to the others, this decision was made based on the actDCF and minDCF measurements.
-
-
 \section{Experimental Results}
-\subsection{Calibration on evaluation score}
-\subsection{Considerations}
+\subsection{Evaluation}
+Now to evaluate the chosen model we can test it on a new evaluation dataset, no parameters will be calculated on this dataset but we will simply go and test the model we have already trained.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/EVAL1.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}%
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/EVAL2.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/EVAL3.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{./img/EVAL4.png}
+        % Rimuovi la caption e l'etichetta da qui
+    \end{minipage}
+    \caption{Calibration Model} % Aggiungi una caption unica qui
+    \label{fig:CalEVAL} % Aggiungi un'etichetta unica qui
+\end{figure}
 \section{Conclusions}
 
 

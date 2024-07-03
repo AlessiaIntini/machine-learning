@@ -1007,6 +1007,17 @@ if __name__ == '__main__':
     # ########################
     print("Evaluation")
 
+    SAMEFIGPLOTS = True
+    if SAMEFIGPLOTS:
+        fig = pl.figure(figsize=(16, 9))
+        axes = fig.subplots(2, 2, sharex='all')
+        fig.suptitle('Single fold')
+        fig.subplots_adjust(hspace=0.5, wspace=0.5)
+    else:
+        axes = np.array([[pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
+                         [pl.figure().gca(), pl.figure().gca(), pl.figure().gca()],
+                         [None, pl.figure().gca(), pl.figure().gca()]])
+
     scoreQLR_eval = qlr.calculateS(evalData)
     labelQLR_eval = qlr.predictThreshold(evalData, th)
 
@@ -1016,6 +1027,9 @@ if __name__ == '__main__':
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreQLR, LVAL)
+    axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle=':', label='minDCF no cal')
+    axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-.', label='actDCF no cal')
 
     # calibrated
     xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreQLR), LVAL)
@@ -1028,6 +1042,15 @@ if __name__ == '__main__':
     print("minDCF Calibrated: ", minDCF_calibrated_eval)
     print("actDCF Calibrated: ", actDCF_calibrated_eval)
 
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_QLR, calibrated_label_QLR)
+    axes[0, 0].plot(logOdds, minDCF, color='C0', linestyle='--', label='minDCF cal')
+    axes[0, 0].plot(logOdds, actDCF, color='C0', linestyle='-', label='actDCF cal')
+    axes[0, 0].set_ylim(0.0, 0.8)
+    axes[0, 0].set_xlabel('Prior log-odds')
+    axes[0, 0].set_ylabel('DCF')
+    axes[0, 0].set_title('QLR - calibration Evaluation Dataset')
+    axes[0, 0].legend()
+
     print("GMM")
     scoreGMM_eval = gmm.predict(evalData)
     labelGMM_eval = gmm.predict(evalData, labels=True)
@@ -1036,6 +1059,9 @@ if __name__ == '__main__':
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreSVM, LVAL)
+    axes[0, 1].plot(logOdds, minDCF, color='C1', linestyle=':', label='minDCF no cal')
+    axes[0, 1].plot(logOdds, actDCF, color='C1', linestyle='-.', label='actDCF no cal')
 
     xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreGMM), LVAL)
     w, b = xf[:-1], xf[-1]
@@ -1046,6 +1072,14 @@ if __name__ == '__main__':
     actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
     print("minDCF Calibrated: ", minDCF_calibrated_eval)
     print("actDCF Calibrated: ", actDCF_calibrated_eval)
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_SVM, calibrated_label_SVM)
+    axes[0, 1].plot(logOdds, minDCF, color='C1', linestyle='--', label='minDCF cal')
+    axes[0, 1].plot(logOdds, actDCF, color='C1', linestyle='-', label='actDCF cal')
+    axes[0, 1].set_ylim(0.0, 0.8)
+    axes[0, 1].set_xlabel('Prior log-odds')
+    axes[0, 1].set_ylabel('DCF')
+    axes[0, 1].set_title('SVM - calibration Evaluation Dataset')
+    axes[0, 1].legend()
 
     print("SVM")
     scoreSVM_eval = svmReturn.predict(evalData)
@@ -1056,6 +1090,9 @@ if __name__ == '__main__':
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
+    logOdds, actDCF, minDCF = plt.bayesPlot(scoreGMM, LVAL)
+    axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF no cal')
+    axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-.', label='actDCF no cal')
 
     xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(rd.vrow(scoreSVM), LVAL)
     w, b = xf[:-1], xf[-1]
@@ -1066,6 +1103,14 @@ if __name__ == '__main__':
     actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
     print("minDCF Calibrated: ", minDCF_calibrated_eval)
     print("actDCF Calibrated: ", actDCF_calibrated_eval)
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_GMM, calibrated_label_GMM)
+    axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF cal')
+    axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-', label='actDCF cal')
+    axes[1, 0].set_ylim(0.0, 0.4)
+    axes[1, 0].set_xlabel('Prior log-odds')
+    axes[1, 0].set_ylabel('DCF')
+    axes[1, 0].set_title('GMM - calibration Evaluation Dataset')
+    axes[1, 0].legend()
 
     print("Fusion")
     fusion_score = np.vstack([scoreQLR, scoreSVM, scoreGMM])
@@ -1080,3 +1125,22 @@ if __name__ == '__main__':
     actDCF_calibrated_eval = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
     print("minDCF Calibrated: ", minDCF_calibrated_eval)
     print("actDCF Calibrated: ", actDCF_calibrated_eval)
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_QLR, calibrated_label_QLR)
+    axes[1, 1].set_title('Fusion - Evaluation Dataset')
+    axes[1, 1].plot(logOdds, minDCF, color='C0', linestyle='--', label='QLR-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C0', linestyle='-', label='QLR-actDCF')
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_SVM, calibrated_label_SVM)
+    axes[1, 1].plot(logOdds, minDCF, color='C1', linestyle='--', label='SVM-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C1', linestyle='-', label='SVM-actDCF')
+    logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_GMM, calibrated_label_GMM)
+    axes[1, 1].plot(logOdds, minDCF, color='C2', linestyle='--', label='GMM-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C2', linestyle='-', label='GMM-actDCF')
+
+    logOdds, actDCF, minDCF = plt.bayesPlot(fusedScore, fusedLabels)
+    axes[1, 1].plot(logOdds, minDCF, color='C3', linestyle='--', label='Fusion-minDCF')
+    axes[1, 1].plot(logOdds, actDCF, color='C3', linestyle='-', label='Fusion-actDCF')
+    axes[1, 1].set_ylim(0.0, 0.45)
+    axes[1, 1].set_xlabel('Prior log-odds')
+    axes[1, 1].set_ylabel('DCF')
+    axes[1, 1].legend()
+    pl.show()

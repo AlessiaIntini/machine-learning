@@ -26,6 +26,5 @@
 \contentsline {subsection}{\numberline {6.1}Calibration Analysis on Selected Models}{26}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Calibrating Scores for Selected Models}{26}{subsection.6.2}%
 \contentsline {section}{\numberline {7}Experimental Results}{28}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Calibration on evaluation score}{28}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Considerations}{28}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.1}Evaluation}{28}{subsection.7.1}%
 \contentsline {section}{\numberline {8}Conclusions}{28}{section.8}%
