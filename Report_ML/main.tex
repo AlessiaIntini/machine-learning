@@ -101,7 +101,7 @@ We can start to analize all features, here is the graph of each feature, through
 \begin{figure}[ht]
         \centering
         \includegraphics[width=0.5\textwidth]{./img/AllFeatures.png}
-        \caption{All features}
+        \caption{Raw features distribution}
         \label{fig:AllFeatures}
 \end{figure}  
 \\
@@ -177,7 +177,7 @@ To do this evaluation, it was decided to represent on a graph the variance of th
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./img/variance.png}
-    \caption{Variance of data for each m values}
+    \caption{Percentage of variance of data for each m values using during PCA}
     \label{fig:variance}
 \end{figure} 
 
@@ -235,7 +235,7 @@ Two different methods were used to calculate the threshold value:
     PCA(m=5)+LDA - Second threshold & 185 & 9.25 \\
     \hline
     \end{tabular}
-    \caption{LDA and PCA+LDA results with different threshold}
+    \caption{LDA and PCA+LDA results with different threshold defined in the previous section}
     \label{tab:resultsPCALDA}
 \end{table}
 As can be seen from the Table~\ref{tab:resultsPCALDA} there is not much real improvement by applying PCA as pre-processing before LDA and that the classification error turns out to be quite high so good classification is not performed using LDA or the combination of LDA with PCA.
@@ -254,7 +254,7 @@ Very often to prevent numerical problems due to exponentiation of large numbers,
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./img/GaussianDensity.jpeg}
-    \caption{Gaussian density}
+    \caption{Gaussian density for each feature}
     \label{fig:gaussianD}
 \end{figure} 
 The curve we can observe on the graph in Figure~\ref{fig:gaussianD} represents the Gaussian probability density calculated from the data. If the data actually follow a Gaussian distribution, then the curve should fit the histogram of the data well. When this happens we can say that the Gaussian model is a good fit for the data while if the Gaussian curve does not fit the histogram well, then the Gaussian model may not be the most appropriate model for that data.\\
@@ -372,7 +372,7 @@ At this point placing the \( P(C = 1) = P(C = 0) = 1/2\), classification was per
     1,2,3,4,5,6 & Tied Cov &  9.30 \\
     \hline
     \end{tabularx}
-    \caption{Error Rates for Different Models and Features}
+    \caption{Error Rates for Different MVG Models and different combinations of features}
     \label{tab:error_ratesMVG}
     \end{table}
 Comparing the results with Table~\ref{tab:resultsPCALDA} , where LDA had been used for classification we can observe that for certain configurations there was an improvement. This could be due to the fact that this method is able to classify better and thus recognize the point to which class it belongs.
@@ -411,7 +411,7 @@ The prior value represents the a priori probability of the positive class, so if
     \textbf{actDCF} & 0.400058 & 0.389257 & 0.462558 \\
     \textbf{minDFC} & 0.342309 & 0.350950 & 0.445132 \\ \hline
     \end{tabular}
-    \caption{minDCF and actDCF for Different Models and configurations}
+    \caption{minDCF and actDCF for Different MVG Models and different applications}
     \label{tab:model_comparison}
     \end{table}
     So it can be seen from the Table~\ref{tab:model_comparison} that:
@@ -461,7 +461,7 @@ We now focus on the three applications that have different effective priors (0.1
 \textbf{actDCF} & 0.305140 & 0.392025 & 0.406058 \\
 \textbf{minDCF} & 0.262913 & 0.353479 & 0.362839\\ \hline
 \end{tabular}
-\caption{minDCF and actDCF for Different Models and configurations with and without PCA}
+\caption{minDCF and actDCF for Different MVG Models and different applications after the application of PCA}
 \label{tab:model_chooseApp}
 \end{table}
 \begin{itemize}
@@ -489,7 +489,7 @@ The Full Covariance model considers all correlations between features, so it may
         \includegraphics[width=\linewidth]{./img/tied.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{Confronto tra i modelli: Full Covariance, Naive Bayes, e Tied Covariance} % Aggiungi una caption unica qui
+    \caption{Error bayes plots for different MVG models} % Aggiungi una caption unica qui
     \label{fig:models_comparison} % Aggiungi un'etichetta unica qui
 \end{figure}
 \underline{Best Gaussian Model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
@@ -606,7 +606,7 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
         \textbf{\(10^{-2}\)} & 0.440652 & 0.452557\\
         \textbf{\(10^{-1}\)} & 0.398842 & 0.780898\\\hline
         \end{tabular}
-        \caption{minDCF and actDCF}
+        \caption{minDCF and actDCF for Binary Logistic Regression non prior-weighted model}
         \label{tab:LLR}
     \end{table}
         \begin{itemize}
@@ -637,7 +637,7 @@ Now we can analyze the results of the binary logistic regression model on the pr
     \textbf{\(10^{-2}\)} & \textcolor{red}{0.362983} & 0.890873\\
     \textbf{\(10^{-1}\)} & 0.364823  & 1.0\\\hline
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for Binary Logistic Regression with prior-weighted model}
     \label{tab:LLR_W}
     \end{table}
 
@@ -700,7 +700,7 @@ We can now analyze the results obtained by applying the model after applying PCA
         \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.361143 & 0.456781 & 0.456781 \\
         \textbf{\(10^{-1}\)} & 0.364119 & 0.364119 & 0.851190 & 0.852183 \\ \hline
         \end{tabular}
-        \caption{minDCF and actDCF}
+        \caption{minDCF and actDCF for Binary Logistic Regression with PCA and with and without z-normalization}
         \label{tab:LLR_PCA}
     \end{table}
    We can conclude by looking at the table that the application of PCA does not give a significant improvement, as noted earlier, but we can state that performance remains constant.
@@ -762,7 +762,7 @@ where vec(X) is the operator that stacks the columns of X into a single column v
     \textbf{\(10^{-1}\)} &  0.246607 & 0.751984 \\\hline
     
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for Quadratic Logistic Regression model}
     \label{tab:QLR}
     \end{table}
 
@@ -826,7 +826,7 @@ After that we have calculated the optimal \(\alpha\) we can compute \(w^*\).
         \includegraphics[width=\linewidth]{./img/SVM_L3.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{SVM} % Aggiungi una caption unica qui
+    \caption{Linear SVM} % Aggiungi una caption unica qui
     \label{fig:SVM} % Aggiungi un'etichetta unica qui
 \end{figure}
 \begin{table}[H]
@@ -847,7 +847,7 @@ After that we have calculated the optimal \(\alpha\) we can compute \(w^*\).
     \textbf{\(10^{-1}\)} & 0.358167& 0.358166 & 0.516161& 0.516161\\
     \textbf{\(10^{0}\)}  & 0.358167& 0.358167 & 0.489375& 0.489375\\\hline
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for Linear SVM model}
     \label{tab:SVM_linear}
     \end{table}
 \subsubsection{Kernel SVM}
@@ -896,7 +896,7 @@ We can now apply the polynomial kernel to the SVM with \(d=2,\;\; c=1, \;\;\xi=0
     \textbf{\(10^{2}\)} & 0.261920 & 0.342837\\
     \hline
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for SVM with Polynomial kernel}
     \label{tab:SVM_Poly}
     \end{table}
     In this case instead we apply to SVM the RBF kernel with \(\xi=1\) and yet in a first analysis as we can see from Figure~\Ref{fig:SVM_RBF} , we make an analysis of how minDCF and actDCF vary as \(\gamma\) varies. From this analysis we can derive that the best value for it is 0.1.
@@ -921,7 +921,7 @@ We can now apply the polynomial kernel to the SVM with \(d=2,\;\; c=1, \;\;\xi=0
         \begin{minipage}[b]{0.5\textwidth}
             \centering
         \includegraphics[width=0.7\textwidth]{./img/SVM_RBF3.png}
-        \caption{Variance of data for each m values}
+        \caption{variation of minDCF and actDCF with C for SVM with RBF kernel for chosen \(\gamma=0.1\)}
         \label{fig:SVM_RFD3}
         \end{minipage}
         \hfill % Aggiunge uno spazio orizzontale tra le due minipage se necessario
@@ -939,7 +939,7 @@ We can now apply the polynomial kernel to the SVM with \(d=2,\;\; c=1, \;\;\xi=0
     \textbf{\(10^{2}\)} & \textcolor{red}{0.185531} & 0.361111\\
     \hline
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for SVM with RBF kernel}
     \label{tab:SVM_RDF}
     \end{minipage}
     \end{figure}
@@ -1002,7 +1002,7 @@ Through these histograms in Figure~\Ref{fig:GMM_hist} we can see how minDCF chan
         \centering
         \includegraphics[width=\linewidth]{./img/GMM_diag.png}
     \end{minipage}
-    \caption{GMM with diagonal and full covariance matrix} % Aggiungi una caption unica qui
+    \caption{variation of actDCF and minDCF based on number of components for each class for GMM with diagonal and full covariance matrix} % Aggiungi una caption unica qui
     \label{fig:GMM_hist} 
 \end{figure}
 During training with the GMM model, all achievable results were tested by giving a different number of components for each class. All possible combinations of the range of number of components chosen was tested both using full Covariance and diag Covariance, it could be concluded that using too low or too high number of components there was a deterioration of the metrics considered.\\
@@ -1020,6 +1020,7 @@ During training with the GMM model, all achievable results were tested by giving
     \textbf{\((8,16)\)} & 0.152649 & 0.172491 \\
     \textbf{\((8,32)\)} & 0.174475 & 0.190348\\
     \textbf{\((16,16)\)} & 0.163130 & 0.176603 \\\hline\hline
+    \multicolumn{3}{c}{\textbf{Diag cov }} \\   \hline
     \textbf{\((4,16)\)} & 0.137192 & 0.168666\\
     \textbf{\((8,8)\)} &  0.146265 & 0.180859\\
     \textbf{\((8,16)\)} & 0.132376 & 0.148681\\
@@ -1027,7 +1028,7 @@ During training with the GMM model, all achievable results were tested by giving
     \textbf{\((16,16)\)} & 0.162154 & 0.176891 \\\hline\hline
     \hline
     \end{tabular}
-    \caption{minDCF and actDCF}
+    \caption{minDCF and actDCF for GMM model with different number of components for each class and different covariance matrix type}
     \label{tab:GMM}
     \end{table}
     Only the combinations of number of components for the different classes that appeared to be most promising and representative were given in the Table~\ref{tab:GMM}; the others results can be found in the project code.
@@ -1066,7 +1067,7 @@ During training with the GMM model, all achievable results were tested by giving
         \includegraphics[width=\linewidth]{./img/BestGMM.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{Analysis best model} % Aggiungi una caption unica qui
+    \caption{Analysis of best model before to apply calibration} % Aggiungi una caption unica qui
     \label{fig:CalAnal} % Aggiungi un'etichetta unica qui
 \end{figure}
 From the Figure~\Ref{fig:CalAnal} we can see how the selected models while having good performance are not well calibrated, so now we are going to do the calibration.
@@ -1111,7 +1112,7 @@ Having selected the best models using minDCF as a metric we can now calibrate th
     \hline
     \textbf{Fusion} & 0.132376/0.156762 & 0.137336/0.163850 & 0.138184/0.173067\\\hline
     \end{tabular}
-    \caption{calibrated models}
+    \caption{chosen models before and after to apply calibration}
     \label{tab:Calibrated}
     \end{table}
 In the Table~\Ref{tab:Calibrated} we can see the different models after calibration, different priors were used for calibration but the performance was always evaluated on the target application \((\pi_T=0.1)\).
@@ -1139,7 +1140,7 @@ We can see that actDCF improved significantly after calibration, the best result
         \includegraphics[width=\linewidth]{./img/Cal4.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{Calibration Model} % Aggiungi una caption unica qui
+    \caption{Plot of model before and after calibration} % Aggiungi una caption unica qui
     \label{fig:CalMod} % Aggiungi un'etichetta unica qui
 \end{figure}
 \begin{itemize}
@@ -1155,7 +1156,7 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{./img/PlotActDCF.png}
-    \caption{Plot various actDCF}
+    \caption{Plot various actDCF for chosen models}
     \label{fig:Act}
 \end{figure} 
 \begin{table}[H]
@@ -1201,7 +1202,7 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
         \includegraphics[width=\linewidth]{./img/EVAL4.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
-    \caption{Calibration Model} % Aggiungi una caption unica qui
+    \caption{Calibration Models for evaluation dataset} % Aggiungi una caption unica qui
     \label{fig:CalEVAL} % Aggiungi un'etichetta unica qui
 \end{figure}
 \begin{itemize}
@@ -1224,7 +1225,7 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
      minDCF/actDCF &0.178175/0.367639 & 0.178175/0.196958\\
     \hline
     \end{tabular}
-    \caption{calibrated models to eval dataset}
+    \caption{Different model for GMM on evaluation dataset}
     \label{tab:OtherModel}
     \end{table}
 \section{Conclusions}

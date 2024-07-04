@@ -8,8 +8,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}Dataset Analysis}{3}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Training and evaluation sets}{3}{subsection.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Features analysis}{3}{subsection.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces All features}}{3}{figure.1}\protected@file@percent }
-\newlabel{fig:AllFeatures}{{1}{3}{All features}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Raw features distribution}}{3}{figure.1}\protected@file@percent }
+\newlabel{fig:AllFeatures}{{1}{3}{Raw features distribution}{figure.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Distribution of feature pairs}}{4}{figure.2}\protected@file@percent }
 \newlabel{fig:PairFeatures}{{2}{4}{Distribution of feature pairs}{figure.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Mean and variance for each features}}{4}{figure.3}\protected@file@percent }
@@ -19,19 +19,19 @@
 \newlabel{fig:AllFeatures}{{4}{5}{Correlation features: gray scale indicates the correlation between whole dataset, blue is for Fake class and orange for Genuine class}{figure.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Dimensionality reduction}{5}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}PCA}{5}{subsection.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Variance of data for each m values}}{6}{figure.5}\protected@file@percent }
-\newlabel{fig:variance}{{5}{6}{Variance of data for each m values}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Percentage of variance of data for each m values using during PCA}}{6}{figure.5}\protected@file@percent }
+\newlabel{fig:variance}{{5}{6}{Percentage of variance of data for each m values using during PCA}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces PCA for the two first components}}{6}{figure.6}\protected@file@percent }
 \newlabel{fig:PCA}{{6}{6}{PCA for the two first components}{figure.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}LDA}{7}{subsection.2.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces LDA for first direction}}{7}{figure.7}\protected@file@percent }
 \newlabel{fig:LDA}{{7}{7}{LDA for first direction}{figure.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Classification}{8}{subsection.2.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces LDA and PCA+LDA results with different threshold}}{8}{table.1}\protected@file@percent }
-\newlabel{tab:resultsPCALDA}{{1}{8}{LDA and PCA+LDA results with different threshold}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces LDA and PCA+LDA results with different threshold defined in the previous section}}{8}{table.1}\protected@file@percent }
+\newlabel{tab:resultsPCALDA}{{1}{8}{LDA and PCA+LDA results with different threshold defined in the previous section}{table.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Multivariate Gaussian Density}{8}{section.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Gaussian density}}{9}{figure.8}\protected@file@percent }
-\newlabel{fig:gaussianD}{{8}{9}{Gaussian density}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Gaussian density for each feature}}{9}{figure.8}\protected@file@percent }
+\newlabel{fig:gaussianD}{{8}{9}{Gaussian density for each feature}{figure.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Model evaluation for classification}{9}{section.4}\protected@file@percent }
 \newlabel{eq:DCF}{{4}{10}{Model evaluation for classification}{equation.4.9}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Classification model analysis}{10}{section.5}\protected@file@percent }
@@ -40,73 +40,73 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}Naive Bayes Classifier}{11}{subsubsection.5.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Tied Bayes Classifier}{11}{subsubsection.5.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Gaussian Models Comparison}{11}{subsubsection.5.1.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Error Rates for Different Models and Features}}{12}{table.2}\protected@file@percent }
-\newlabel{tab:error_ratesMVG}{{2}{12}{Error Rates for Different Models and Features}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces minDCF and actDCF for Different Models and configurations}}{13}{table.3}\protected@file@percent }
-\newlabel{tab:model_comparison}{{3}{13}{minDCF and actDCF for Different Models and configurations}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces minDCF and actDCF for Different Models and configurations with and without PCA}}{14}{table.4}\protected@file@percent }
-\newlabel{tab:model_chooseApp}{{4}{14}{minDCF and actDCF for Different Models and configurations with and without PCA}{table.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Confronto tra i modelli: Full Covariance, Naive Bayes, e Tied Covariance}}{15}{figure.9}\protected@file@percent }
-\newlabel{fig:models_comparison}{{9}{15}{Confronto tra i modelli: Full Covariance, Naive Bayes, e Tied Covariance}{figure.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Error Rates for Different MVG Models and different combinations of features}}{12}{table.2}\protected@file@percent }
+\newlabel{tab:error_ratesMVG}{{2}{12}{Error Rates for Different MVG Models and different combinations of features}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces minDCF and actDCF for Different MVG Models and different applications}}{13}{table.3}\protected@file@percent }
+\newlabel{tab:model_comparison}{{3}{13}{minDCF and actDCF for Different MVG Models and different applications}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces minDCF and actDCF for Different MVG Models and different applications after the application of PCA}}{14}{table.4}\protected@file@percent }
+\newlabel{tab:model_chooseApp}{{4}{14}{minDCF and actDCF for Different MVG Models and different applications after the application of PCA}{table.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Error bayes plots for different MVG models}}{15}{figure.9}\protected@file@percent }
+\newlabel{fig:models_comparison}{{9}{15}{Error bayes plots for different MVG models}{figure.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Logistic Regression Classifier}{15}{subsection.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Binary Logistic Regression}{16}{subsubsection.5.2.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Binary Logistic Regression Model non prior-weighted}}{16}{figure.10}\protected@file@percent }
 \newlabel{fig:LLR_model}{{10}{16}{Binary Logistic Regression Model non prior-weighted}{figure.10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Binary Logistic Regression Model non prior-weighted(50 samples)}}{16}{figure.11}\protected@file@percent }
 \newlabel{fig:LLR_model_50}{{11}{16}{Binary Logistic Regression Model non prior-weighted(50 samples)}{figure.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces minDCF and actDCF}}{17}{table.5}\protected@file@percent }
-\newlabel{tab:LLR}{{5}{17}{minDCF and actDCF}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces minDCF and actDCF}}{17}{table.6}\protected@file@percent }
-\newlabel{tab:LLR_W}{{6}{17}{minDCF and actDCF}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces minDCF and actDCF for Binary Logistic Regression non prior-weighted model}}{17}{table.5}\protected@file@percent }
+\newlabel{tab:LLR}{{5}{17}{minDCF and actDCF for Binary Logistic Regression non prior-weighted model}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces minDCF and actDCF for Binary Logistic Regression with prior-weighted model}}{17}{table.6}\protected@file@percent }
+\newlabel{tab:LLR_W}{{6}{17}{minDCF and actDCF for Binary Logistic Regression with prior-weighted model}{table.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Binary Logistic Regression Model with prior-weighted prior=0.1}}{18}{figure.12}\protected@file@percent }
 \newlabel{fig:LLR_model_W}{{12}{18}{Binary Logistic Regression Model with prior-weighted prior=0.1}{figure.12}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces minDCF and actDCF}}{18}{table.7}\protected@file@percent }
-\newlabel{tab:LLR_PCA}{{7}{18}{minDCF and actDCF}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces minDCF and actDCF for Binary Logistic Regression with PCA and with and without z-normalization}}{18}{table.7}\protected@file@percent }
+\newlabel{tab:LLR_PCA}{{7}{18}{minDCF and actDCF for Binary Logistic Regression with PCA and with and without z-normalization}{table.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Quadratic Logistic Regression}{19}{subsubsection.5.2.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Quadratic Logistic Regression}}{19}{figure.13}\protected@file@percent }
 \newlabel{fig:QLR_model}{{13}{19}{Quadratic Logistic Regression}{figure.13}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces minDCF and actDCF}}{19}{table.8}\protected@file@percent }
-\newlabel{tab:QLR}{{8}{19}{minDCF and actDCF}{table.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces minDCF and actDCF for Quadratic Logistic Regression model}}{19}{table.8}\protected@file@percent }
+\newlabel{tab:QLR}{{8}{19}{minDCF and actDCF for Quadratic Logistic Regression model}{table.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}SVM Classifier}{20}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Linear SVM}{20}{subsubsection.5.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces SVM}}{21}{figure.14}\protected@file@percent }
-\newlabel{fig:SVM}{{14}{21}{SVM}{figure.14}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces minDCF and actDCF}}{21}{table.9}\protected@file@percent }
-\newlabel{tab:SVM_linear}{{9}{21}{minDCF and actDCF}{table.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Linear SVM}}{21}{figure.14}\protected@file@percent }
+\newlabel{fig:SVM}{{14}{21}{Linear SVM}{figure.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces minDCF and actDCF for Linear SVM model}}{21}{table.9}\protected@file@percent }
+\newlabel{tab:SVM_linear}{{9}{21}{minDCF and actDCF for Linear SVM model}{table.9}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Kernel SVM}{21}{subsubsection.5.3.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces SVM with Polynomial kernel}}{22}{figure.15}\protected@file@percent }
 \newlabel{fig:SVM_p}{{15}{22}{SVM with Polynomial kernel}{figure.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces minDCF and actDCF}}{22}{table.10}\protected@file@percent }
-\newlabel{tab:SVM_Poly}{{10}{22}{minDCF and actDCF}{table.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces minDCF and actDCF for SVM with Polynomial kernel}}{22}{table.10}\protected@file@percent }
+\newlabel{tab:SVM_Poly}{{10}{22}{minDCF and actDCF for SVM with Polynomial kernel}{table.10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces SVM with RBF kernel}}{22}{figure.16}\protected@file@percent }
 \newlabel{fig:SVM_RBF}{{16}{22}{SVM with RBF kernel}{figure.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Variance of data for each m values}}{23}{figure.17}\protected@file@percent }
-\newlabel{fig:SVM_RFD3}{{17}{23}{Variance of data for each m values}{figure.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces minDCF and actDCF}}{23}{figure.18}\protected@file@percent }
-\newlabel{tab:SVM_RDF}{{18}{23}{minDCF and actDCF}{figure.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces variation of minDCF and actDCF with C for SVM with RBF kernel for chosen \(\gamma =0.1\)}}{23}{figure.17}\protected@file@percent }
+\newlabel{fig:SVM_RFD3}{{17}{23}{variation of minDCF and actDCF with C for SVM with RBF kernel for chosen \(\gamma =0.1\)}{figure.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces minDCF and actDCF for SVM with RBF kernel}}{23}{figure.18}\protected@file@percent }
+\newlabel{tab:SVM_RDF}{{18}{23}{minDCF and actDCF for SVM with RBF kernel}{figure.18}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}GMM Classifier}{23}{subsection.5.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces GMM with diagonal and full covariance matrix}}{24}{figure.19}\protected@file@percent }
-\newlabel{fig:GMM_hist}{{19}{24}{GMM with diagonal and full covariance matrix}{figure.19}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces minDCF and actDCF}}{25}{table.11}\protected@file@percent }
-\newlabel{tab:GMM}{{11}{25}{minDCF and actDCF}{table.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces variation of actDCF and minDCF based on number of components for each class for GMM with diagonal and full covariance matrix}}{24}{figure.19}\protected@file@percent }
+\newlabel{fig:GMM_hist}{{19}{24}{variation of actDCF and minDCF based on number of components for each class for GMM with diagonal and full covariance matrix}{figure.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces minDCF and actDCF for GMM model with different number of components for each class and different covariance matrix type}}{25}{table.11}\protected@file@percent }
+\newlabel{tab:GMM}{{11}{25}{minDCF and actDCF for GMM model with different number of components for each class and different covariance matrix type}{table.11}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Score Calibration}{26}{section.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Calibration Analysis on Selected Models}{26}{subsection.6.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Analysis best model}}{26}{figure.20}\protected@file@percent }
-\newlabel{fig:CalAnal}{{20}{26}{Analysis best model}{figure.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Analysis of best model before to apply calibration}}{26}{figure.20}\protected@file@percent }
+\newlabel{fig:CalAnal}{{20}{26}{Analysis of best model before to apply calibration}{figure.20}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Calibrating Scores for Selected Models}{26}{subsection.6.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces calibrated models}}{27}{table.12}\protected@file@percent }
-\newlabel{tab:Calibrated}{{12}{27}{calibrated models}{table.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Calibration Model}}{27}{figure.21}\protected@file@percent }
-\newlabel{fig:CalMod}{{21}{27}{Calibration Model}{figure.21}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces chosen models before and after to apply calibration}}{27}{table.12}\protected@file@percent }
+\newlabel{tab:Calibrated}{{12}{27}{chosen models before and after to apply calibration}{table.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Plot of model before and after calibration}}{27}{figure.21}\protected@file@percent }
+\newlabel{fig:CalMod}{{21}{27}{Plot of model before and after calibration}{figure.21}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {7}Experimental Results}{28}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Evaluation}{28}{subsection.7.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Plot various actDCF}}{28}{figure.22}\protected@file@percent }
-\newlabel{fig:Act}{{22}{28}{Plot various actDCF}{figure.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Plot various actDCF for chosen models}}{28}{figure.22}\protected@file@percent }
+\newlabel{fig:Act}{{22}{28}{Plot various actDCF for chosen models}{figure.22}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces calibrated models to eval dataset}}{29}{table.13}\protected@file@percent }
 \newlabel{tab:CalibratedEval}{{13}{29}{calibrated models to eval dataset}{table.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Calibration Model}}{29}{figure.23}\protected@file@percent }
-\newlabel{fig:CalEVAL}{{23}{29}{Calibration Model}{figure.23}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces calibrated models to eval dataset}}{30}{table.14}\protected@file@percent }
-\newlabel{tab:OtherModel}{{14}{30}{calibrated models to eval dataset}{table.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Calibration Models for evaluation dataset}}{29}{figure.23}\protected@file@percent }
+\newlabel{fig:CalEVAL}{{23}{29}{Calibration Models for evaluation dataset}{figure.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Different model for GMM on evaluation dataset}}{30}{table.14}\protected@file@percent }
+\newlabel{tab:OtherModel}{{14}{30}{Different model for GMM on evaluation dataset}{table.14}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {8}Conclusions}{30}{section.8}\protected@file@percent }
 \gdef \@abspage@last{30}
