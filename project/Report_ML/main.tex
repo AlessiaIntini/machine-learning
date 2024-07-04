@@ -1058,7 +1058,7 @@ During training with the GMM model, all achievable results were tested by giving
     \end{minipage}%
     \begin{minipage}{.3\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{./img/SVM_P2.png}
+        \includegraphics[width=\linewidth]{./img/BestSVM.png}
         % Rimuovi la caption e l'etichetta da qui
     \end{minipage}
     \begin{minipage}{.3\textwidth}
@@ -1151,10 +1151,10 @@ In conclusion as "delivered" system we choose GMM with Diagonal covariance with 
 \subsection{Evaluation}
 Now to evaluate the chosen model we can test it on a new evaluation dataset, no parameters will be calculated on this dataset but we will simply go and test the model we have already trained.\\
 From an initial analysis we can infer that the scores are not well calibrated for either the target application or the other possible applications in the evaluation dataset.\\\\
-We represented the actDCF before calibration by applying the different models to the evaluation dataset and on different applications. We can already infer before calibration that the best model is the one that was chosen.
+In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the different models before and after calibration, we can we can infer even before calibration that the best model is the one that was chosen. In fact it turns out to have the lowest actDCF compared to the others even before calibration
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\textwidth]{./img/plotACTDCF.png}
+    \includegraphics[width=0.45\textwidth]{./img/PlotActDCF.png}
     \caption{Plot various actDCF}
     \label{fig:Act}
 \end{figure} 
@@ -1172,7 +1172,7 @@ We represented the actDCF before calibration by applying the different models to
     &\textbf{\(\tilde{\pi}=0.1\)}  &  \textbf{\(\tilde{\pi}=0.5\)} & \textbf{\(\tilde{\pi}=0.9\)} \\ \hline
     \textbf{QLR} & 0.351473/0.389589 & 0.351473/0.371689 & 0.351473/0.364806\\
     \textbf{SVM} & 0.265915/0.294592 & 0.265915/0.275374 & 0.265915/0.273113\\
-    \textbf{GMM} & \textcolor{red}{0.185387/0.189356 }& 0.183800/0.202290 & 0.183800/0.210571\\
+    \textbf{GMM} & \textcolor{red}{0.185387/0.205280}& 0.183800/0.202290 & 0.183800/0.210571\\
     \hline
     \textbf{Fusion} &  0.186456/0.204611 & 0.183132/0.205614 &  0.183132/0.208898\\\hline
     \end{tabular}
@@ -1205,11 +1205,32 @@ We represented the actDCF before calibration by applying the different models to
     \label{fig:CalEVAL} % Aggiungi un'etichetta unica qui
 \end{figure}
 \begin{itemize}
-    \item After calculating minDCF and actDCF we can say that the results we get reflect the chosen model, in fact even after this analysis GMM gives us the best performance which is similar to the fusion of the different models. So we can say that we have made the right choice.
-    \item Again the calibration strategy seems to have worked, in fact we can see that for the GMM model chosen with \(\tilde{\pi}=0.1\) we have a good calibration, minDCF and actDCF are very close in fact.
+    \item After calculating minDCF and actDCF we can say that the results obtained reflect the chosen model, in fact even after this analysis the GMM gives us the best performance along with the fusion of the different models. We can say that both fusion of all trained models and GMM give similar performance.
+    \item Again the calibration strategy seems to have worked, in fact we can see that for the GMM model chosen with \(\tilde{\pi}=0.1\) we have a good calibration.
+    \item As mentioned earlier we chose the GMM model, this during its training phase was tested with different numbers of components for different classes and using diagonal or full covariance. We can then now evaluate based on the evaluation dataset whether choosing another type of covariance or using a different number of components could have led to a better result. \\
+    So by testing other strategies on evaluation we can say that the type of covariance was optimally chosen, in fact diagonal covariance always gives the best results. While the number of components that gives the best results on the evaluation dataset is different we found that the optimal GMM model in this case is with configuration (nc0=4 nc1=16 best minDCF=0.178175). This change of components could be due to the fact that the data distribution is slightly different from the trainining dataset, so in this case different numbers of components could have better generalization ability.
+    We can observe the results in Table~\Ref{tab:OtherModel}.
 \end{itemize}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{>{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm} }
+    \hline
+    \multicolumn{3}{c}{\textbf{Chosen model GMM(Diag,nc0=8,nc1=32)}} \\   \hline
+    &\textbf{Uncalibrated} & \textbf{Calibrated}\\\hline
+     minDCF/actDCF & 0.183800/0.369626 & 0.185387/0.205280\\
+    \hline
+    \multicolumn{3}{c}{\textbf{Other model GMM(Diag,nc0=4,nc1=16)}} \\   \hline
+    &\textbf{Uncalibrated} & \textbf{Calibrated}\\\hline
+     minDCF/actDCF &0.178175/0.367639 & 0.178175/0.196958\\
+    \hline
+    \end{tabular}
+    \caption{calibrated models to eval dataset}
+    \label{tab:OtherModel}
+    \end{table}
 \section{Conclusions}
-
+We can therefore conclude that in general quadratic models give better performance than linear models. And also that the features do not turn out to be particularly correlated as we had mentioned from the beginning since precisely GMM which is the best performing model suggests to us that the features can be considered independent of each other, since using a diagonal covariance matrix assumes that there is no correlation between the different features in the data. This implies that each dimension contributes independently to the overall distribution without interactions with other dimensions.\\\\
+Also for this same reason we can conclude that PCA did not give any real improvements, rather the performance remained similar to before the application of it, this could be because the original features are already independent and contribute uniformly to the variance of the data and therefore the application of PCA may not lead to significant improvement in model performance. This is because PCA is useful when there are relationships between features that can be exploited to reduce dimensionality, but if they are already independent, each principal component may end up capturing only a small portion of the total variance, making dimensionality reduction less useful.\\
+In the end however, we can conclude that for the target application \(\tilde{\pi}=0.1\) and the choices made on the training dataset also proved useful on the evaluation set when we went to apply them.
 
 \newpage
 
