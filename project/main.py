@@ -186,14 +186,14 @@ if __name__ == '__main__':
     # ##    Linear Logistic regression    ##
     # #################################### #
     # print("Binary Logistic regression##")
-    # # print("Binary Logistic regression non prior-weighted")
-    ldbArray = np.logspace(-4, 2, 13)
-    actDCF = []
-    minDCF = []
-    minValue_minDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
-                       "50-sample": False}
-    minValue_actDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
-                       "50-sample": False}
+    # print("Binary Logistic regression non prior-weighted")
+    # ldbArray = np.logspace(-4, 2, 13)
+    # actDCF = []
+    # minDCF = []
+    # minValue_minDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
+    #                    "50-sample": False}
+    # minValue_actDCF = {'lambda': 0, 'weight': False, 'min': 10, 'expanded': False, 'PCA': -1, 'Z-norm': False,
+    #                    "50-sample": False}
     # for ldb in ldbArray:
     #     print("lambda: ", ldb)
     #     llr = LLR.LinearLogisticRegression(ldb, prior_weighted=False)
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     #
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted', ldbArray, One=True)
-
+    #
     # print("Binary Logistic regression non prior-weighted centered data")
     # ldbArray = np.logspace(-4, 2, 13)
     # actDCF = []
@@ -242,7 +242,7 @@ if __name__ == '__main__':
     # # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted centered data', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted with Z-normalization',
     #                        ldbArray, One=True)
-
+    #
     # print("Binary Logistic regression non prior-weighted only 50 sample")
     # ldbArray = np.logspace(-4, 2, 13)
     # actDCF = []
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted (50 samples)', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic regression non prior-weighted (50 samples)', ldbArray,
     #                        One=True)
-
+    #
     # weight = [0.1, 0.5, 0.8]
     # weight = [0.1]
     # ldbArray = np.logspace(-4, 2, 13)
@@ -326,7 +326,7 @@ if __name__ == '__main__':
     #
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Quadratic Logistic Regression with expanded features', ldbArray)
     # plt.plot_minDCF_actDCF(minDCF, actDCF, 'Quadratic Logistic Regression with expanded features', ldbArray, One=True)
-
+    #
     # # apply PCA
     # print("Binary Logistic regression with PCA")
     # for m in range(5, 7):
@@ -356,8 +356,8 @@ if __name__ == '__main__':
     #         minDCF.append(current_minDCF)
     #
     #     plt.plot_minDCF_actDCF(minDCF, actDCF, 'Binary Logistic Regression with PCA with', ldbArray, m)
-
-    # apply PCA and Z-normalization
+    #
+    # ##apply PCA and Z-normalization
     # print("Binary Logistic regression with PCA and Z-normalization")
     # scaler = StandardScaler().fit(DTR)
     # DTR_normalized = e.znormalized_features_training(DTR)
@@ -668,10 +668,10 @@ if __name__ == '__main__':
     ########################
     ##       GMM         ###
     ########################
-    covTypes = ['Full', 'Diag']
-    prior = 0.1
-    nComponents = [1, 2, 4, 8, 16, 32]
-
+    # covTypes = ['Full', 'Diag']
+    # prior = 0.1
+    # nComponents = [1, 2, 4, 8, 16, 32]
+    #
     # minValue_minDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
     # minValue_actDCF = {'cn0': 0, 'cn1': 0, 'covType': '', 'min': 10}
     # minDCF_value = []
@@ -699,7 +699,7 @@ if __name__ == '__main__':
     #             print("actDCF", actDCF)
     # minDCF_value.append(minDCF)
     # actDCF_value.append(actDCF)
-
+    #
     # x = np.arange(len(nComponents))
     # width = 0.33
     #
@@ -718,14 +718,14 @@ if __name__ == '__main__':
     # pl.show()
     # minDCF_value = []
     # actDCF_value = []
-
+    #
     # print("minimum value of minDCF", minValue_minDCF)
     # print("minimum value of actDCF", minValue_actDCF)
     #
-    print("GMM with different log odds")
-    log_odds_values = np.linspace(-4, 4, 21)
-    minDCF_values = []
-    actDCF_values = []
+    # print("GMM with different log odds")
+    # log_odds_values = np.linspace(-4, 4, 21)
+    # minDCF_values = []
+    # actDCF_values = []
     # minValue_minDCF = {'cn': 0, 'covType': '', 'min': 10}
     # minValue_actDCF = {'cn': 0, 'covType': '', 'min': 10}
     #
@@ -862,7 +862,9 @@ if __name__ == '__main__':
     svm = SVM.SVM(hParam, kernel='RBF', prior=0)
     svmReturn = svm.train(DTR, LTR)
     scoreSVM = svmReturn.predict(DVAL)
-    labelSVM = svmReturn.predict(DVAL, labels=True)
+    th = -np.log((pT * 1) / ((1 - pT) * 1))
+    labelSVM = np.int32(scoreSVM > th)
+    # labelSVM = svmReturn.predict(DVAL, labels=True)
 
     minDCF = bdm.compute_minDCF_binary(scoreSVM, LVAL, pT, 1, 1)
     confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreSVM > th), LVAL)
@@ -911,9 +913,10 @@ if __name__ == '__main__':
     gmm = GMM.GMM(alpha=0.1, n0Components=n0Components, n1Components=n1Components, psi=0.01, covType=covType)
     gmm.train(DTR, LTR)
     scoreGMM = gmm.predict(DVAL)
-    labelGMM = gmm.predict(DVAL, labels=True)
     minDCF = bdm.compute_minDCF_binary(scoreGMM, LVAL, pT, 1, 1)
-    confusionMatrix = bdm.compute_confusion_matrix(labelGMM, LVAL)
+    th = -np.log((pT * 1) / ((1 - pT) * 1))
+    predictedLabels = np.int32(scoreGMM > th)
+    confusionMatrix = bdm.compute_confusion_matrix(predictedLabels, LVAL)
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
@@ -922,12 +925,12 @@ if __name__ == '__main__':
     axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-.', label='actDCF no cal')
 
     print("K-fold")
+    KFOLD = 5
     calibrated_value_GMM = []
     calibrated_label_GMM = []
     for foldIdx in range(KFOLD):
         SCAL, SVAL = e.extract_train_val_folds_from_ary(scoreGMM, foldIdx)
         labels_CAL, labels_VAL = e.extract_train_val_folds_from_ary(LVAL, foldIdx)
-
         xf = LLR.LinearLogisticRegression(0, prior_weighted=True, prior=pT_cal).trainLogReg(
             rd.vrow(SCAL), labels_CAL)
         w, b = xf[:-1], xf[-1]
@@ -942,7 +945,6 @@ if __name__ == '__main__':
     actDCF_calibrated = bdm.computeDCF_Binary(confusionMatrix_calibrated, pT, 1, 1, normalize=True)
     print(f"minDCF Calibrated: {minDCF_calibrated}")
     print(f"actDCF Calibrated: {actDCF_calibrated}")
-
     logOdds, actDCF, minDCF = plt.bayesPlot(calibrated_value_GMM, calibrated_label_GMM)
     axes[1, 0].plot(logOdds, minDCF, color='C2', linestyle='--', label='minDCF cal')
     axes[1, 0].plot(logOdds, actDCF, color='C2', linestyle='-', label='actDCF cal')
@@ -1065,9 +1067,11 @@ if __name__ == '__main__':
 
     print("GMM")
     scoreGMM_eval = gmm.predict(evalData)
-    labelGMM_eval = gmm.predict(evalData, labels=True)
+    th = -np.log((pT * 1) / ((1 - pT) * 1))
+    labelGMM_eval = np.int32(scoreGMM_eval > th)
+
     minDCF = bdm.compute_minDCF_binary(scoreGMM_eval, evalLabels, pT, 1, 1)
-    confusionMatrix = bdm.compute_confusion_matrix(labelGMM_eval, evalLabels)
+    confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreGMM_eval > th), evalLabels)
     actDCF = bdm.computeDCF_Binary(confusionMatrix, pT, 1, 1, normalize=True)
     print("minDCF no calibrated", minDCF)
     print("actDCF no calibrated", actDCF)
@@ -1097,7 +1101,8 @@ if __name__ == '__main__':
 
     print("SVM")
     scoreSVM_eval = svmReturn.predict(evalData)
-    labelSVM_eval = svmReturn.predict(evalData, labels=True)
+    th = -np.log((pT * 1) / ((1 - pT) * 1))
+    labelSVM_eval = np.int32(scoreSVM_eval > th)
 
     minDCF = bdm.compute_minDCF_binary(scoreSVM_eval, evalLabels, pT, 1, 1)
     confusionMatrix = bdm.compute_confusion_matrix(np.int32(scoreSVM_eval > th), evalLabels)

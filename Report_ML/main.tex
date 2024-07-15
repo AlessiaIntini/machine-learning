@@ -86,7 +86,7 @@
 \newpage
 
 % ------------------------------------------------------------------------------
-\noindent\textbf{The goal of project is to perform a binary classification on fingerprint spoofing detection, that is to identify genuine vs counterfeit fingerprint images. The dataset consists of labeled samples corresponding to the genuine (True, label 1) class and the fake (False, label 0) class, the data is 6-dimensional.}
+\noindent\textbf{The goal of project is to perform a binary classification on fingerprint spoofing detection, that is to identify genuine vs counterfeit fingerprint images. The dataset consists of labeled samples corresponding to the Genuine (label 1) class and the Fake (label 0) class, the data is 6-dimensional.}
 \section{Dataset Analysis}
 \subsection{Training and evaluation sets}
 The datasets provided contain 6000 samples; the first 6 values in each row represent the features, while the last value is the label. Specifically they are: 
@@ -201,7 +201,10 @@ To compute the transformation matrix \( W \) we need to compute between-class an
     \mathbf{S}_w = \frac{1}{N}\sum_{c=1}^{K} \sum_{i=1}^{n_c} (x_{c,i} - \mu_i)(x_{c,i} - \mu_i)^T
     \end{equation}
 where \( \mu_c \) is the mean of the c-th class, \( \mu \) is the mean of all the data, and \( n_c \) is the number of samples in the c-th class.\\
-The LDA directions can be computed solving the generalized eigenvalue problem \(S_b w=\lambda S_w w\), usually to solve the generalized eigenvalue problem we transform the \(S_w\) matrix into an identity matrix and then solve the eigenvalue problem for the other \(S_b \) matrix. This process allows us to find the discriminant vectors \(w\) that maximize the separation between the classes.\\
+The LDA directions can be computed solving the generalized eigenvalue problem because we want find the eigenvectors of \(S_bS_w^{-1} \), but to solve the generalized eigenvalue problem we transform the \(S_w\) matrix into an identity matrix and then solve the eigenvalue problem for the other \(S_b \) matrix, that becomes equal to diagonal matrix. This process allows us to find the discriminant vectors \(w\) that maximize the separation between the classes.
+\begin{equation}
+    w=P_w^T U_b
+\end{equation}
 In LDA, the maximum number of discriminant directions or dimensions that can be obtained is always equal to C-1 where C is the number of classes. This is because the goal of the LDA is to find the directions that maximize the separation between the classes. 
 In our case having only two classes the LDA can find at most one direction that maximizes the separation between these two classes.
 \begin{figure}[H]
@@ -211,6 +214,7 @@ In our case having only two classes the LDA can find at most one direction that 
     \label{fig:LDA}
 \end{figure} 
 Looking at the results of LDA, in Figure~\ref{fig:LDA}, we can see that it cannot find an optimal direction that gives us a better separation of classes than the results shown previously.
+One reason why LDA may not give good results is because it seeks a linear separation between features that may not be there so it may not be able to capture the structure of the data effectively.
 \subsection{Classification}
 Subsequent to applying dimensionality reduction techniques we used LDA to perform classification, in fact after finding the hyperplane on the training data and projecting the validation data into the new space we used different thresholds to perform classification.
 After applying dimensionality reduction techniques, we used LDA to perform classification; in fact, after finding the hyperplane on the training data and projecting the validation data into the new space these new data values can be used as scores by comparing them with different thresholds to perform classification, if the value exceeds the threshold it is associated with the label 1 while if it is lower 0.
@@ -287,17 +291,15 @@ The first class of models we will analyze is that of Gaussian generative models.
 \begin{equation}
     f_{x|C}(x|c) = \mathcal{N}(x|\mu_c,\Sigma_c)
 \end{equation}
-Since this is a binary classification task, we will assign a probability score to each sample in terms of the log-posterior class likelihood ratio:
+In a binary classification problem, we can assign a label to a test sample \(x_t\) based on the highest posterior probability comparing \(P(c=h_1|x_t)\) and  \(P(c=h_0|x_t)\). We can write the class posterior log-ratio as:
 \begin{equation}
-    llr(x_t) = \log \;r(x_t) = \log \frac{P(C=h_1|x_t)}{P(C=h_0|x_t)}
+    \log{r(x_t)} = \log \frac{f_{X|C}(x_t|C=h_1)}{f_{X|C}(x_t|C=h_1)} + \log{\frac{P(c=h_1)}{P(c=h_0)}}= \log \frac{f_{X|C}(x_t|C=h_1)}{f_{X|C}(x_t|C=h_1)} + \frac{\pi }{1-\pi }
 \end{equation}
-This expression can be expanded writing:
-\begin{equation}
-    llr(x_t) = \log \frac{f_{X|C}(x_t|C=h_1)}{f_{X|C}(x_t|C=h_1)} + \frac{\pi }{1-\pi }
-\end{equation}
-where \( f_{X|C}(x_t|c)=\mathcal{N}(x|\mu_c,\Sigma_c)\)\\\\
-It is necessary to find the parameters \(\theta \), \(\mu_c\) and \(\Sigma_c \); this can be done by maximizing the log-likelihood.\\ Parameter estimation is part of the training phase and is therefore performed on the training part of the dataset.
-While the estimation phase is to calculate the likelihood ratio for each sample and compare it to a threshold, which will be set at 0(th=0) in this step. After doing this, the error rate can be calculated to evaluate the classification. 
+In fact usually in binary problem \(P(c=h_1)=\pi\) and \(P(c=h_0)=1-\pi\).\\
+Where the first term is the log-likelihood ratio and the second term is the prior log-odds.\\
+The optimal class decision is based on comparison between the log-likelihood ratio and a threshold \(th\), if the log-likelihood ratio is greater than the threshold the sample is assigned to class \(h_1\), otherwise to class \(h_0\).\\
+
+It is necessary to find the parameters \(\theta \), \(\mu_c\) and \(\Sigma_c \); this can be done by maximizing the log-likelihood.\\ Parameter estimation is part of the training phase and is therefore performed on the training part of the dataset, after that is possible to do an estimation of the error rate on the validation part.\\
 This analysis has been done on different Gaussian models, the difference between these models is the way the parameters \((\mu_c ,\Sigma_c )\) are calculated, more specifically \(\Sigma_c\).
 \subsubsection{MVG Gaussian Classifier}
 The first model we will analyze is the multivariate Gaussian classifier; in this model the covariance matrix is assumed to be different for each class. The parameters \(\mu_c\) and \(\Sigma_c\) are estimated by maximizing the log-likelihood of the training data. Thus they can be obtained as:
@@ -501,7 +503,7 @@ The Full Covariance model considers all correlations between features, so it may
 Logistic Regression is a discriminative classification model that makes no assumptions about the distribution of the data, but tries to find a hyperplane that maximizes the posterior likelihood. 
 Starting from the results obtained from the Tied Gaussian that provides log-likelihood ratios that are linear functions of our data we can write it as:
 \begin{equation}
-    llr(x) =\log{\frac{P(C=h_1|x)}{P(C=h_0|x)}}=\log{\frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)}}+\log{\frac{\pi}{1-\pi}}= w^Tx + b
+    log{r(x)} =\log{\frac{P(C=h_1|x)}{P(C=h_0|x)}}=\log{\frac{f_{X|C}(x|h_1)}{f_{X|C}(x|h_0)}}+\log{\frac{\pi}{1-\pi}}= w^Tx + b
 \end{equation}
 All prior information has been absorbed in the bias term b, given w and b we can compute the expression for the posterior class probability:
 \begin{equation}
@@ -594,7 +596,7 @@ where \(\lambda\)  is an hyperparameter that represents the regularization term 
          & \textbf{no z-norm} & \textbf{z-norm} & \textbf{no z-norm} & \textbf{z-norm} \\ \hline
         \textbf{\(10^{-4}\)} & 0.363975 &  0.363975 & 0.402089 & 0.402089 \\
         \textbf{\(10^{-3}\)} & 0.364967 & 0.364967 & 0.413002 & 0.413002 \\
-        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.361143 & 0.413002 & 0.456781 \\
+        \textbf{\(10^{-2}\)} & 0.361143 & 0.361143 & 0.413002 & 0.456781 \\
         \textbf{\(10^{-1}\)} & 0.364119 & 0.364119 & 0.851190 & 0.852182 \\ \hline\hline
         \end{tabular}
         
@@ -634,7 +636,7 @@ Now we can analyze the results of the binary logistic regression model on the pr
     \multicolumn{3}{c}{\(\pi_T\) = 0.1}\\  \hline
     \textbf{\(10^{-4}\)} & 0.372056 & 0.672763\\
     \textbf{\(10^{-3}\)} & 0.369928 & 0.709469\\
-    \textbf{\(10^{-2}\)} & \textcolor{red}{0.362983} & 0.890873\\
+    \textbf{\(10^{-2}\)} & 0.362983 & 0.890873\\
     \textbf{\(10^{-1}\)} & 0.364823  & 1.0\\\hline
     \end{tabular}
     \caption{minDCF and actDCF for Binary Logistic Regression with prior-weighted model}
@@ -697,7 +699,7 @@ We can now analyze the results obtained by applying the model after applying PCA
         \multicolumn{5}{c}{m=6}\\  \hline
         \textbf{\(10^{-4}\)} & 0.363975 & 0.363975 &0.402089 & 0.402089 \\
         \textbf{\(10^{-3}\)} & 0.364967 & 0.364967 & 0.413002 & 0.413002\\
-        \textbf{\(10^{-2}\)} & \textcolor{red}{0.361143} & 0.361143 & 0.456781 & 0.456781 \\
+        \textbf{\(10^{-2}\)} & 0.361143 & 0.361143 & 0.456781 & 0.456781 \\
         \textbf{\(10^{-1}\)} & 0.364119 & 0.364119 & 0.851190 & 0.852183 \\ \hline
         \end{tabular}
         \caption{minDCF and actDCF for Binary Logistic Regression with PCA and with and without z-normalization}
@@ -1101,7 +1103,7 @@ Having selected the best models using minDCF as a metric we can now calibrate th
     \multicolumn{4}{c}{\textbf{Uncalibrated Models [minDCF/actDCF] }} \\   \hline
     \textbf{QLR} & & 0.243631/0.497167 & \\
     \textbf{SVM} &  & 0.185531/0.361111 & \\
-    \textbf{GMM} &  & 0.131240/0.319092 & \\
+    \textbf{GMM} &  & 0.131240/0.151657 & \\
     \hline
     \hline
     \multicolumn{4}{c}{\textbf{Calibrated Models [minDCF/actDCF] }} \\   \hline
@@ -1164,14 +1166,14 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
     \begin{tabular}{>{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{3cm}>{\centering\arraybackslash}m{3cm}}
     \hline
     \multicolumn{4}{c}{\textbf{Uncalibrated Models [minDCF/actDCF] }} \\   \hline
-    \textbf{QLR} & & 0.351473/0.493525 & \\
+    \textbf{QLR} & & 0.243631/0.497167 & \\
     \textbf{SVM} &  & 0.265915/0.364114 & \\
-    \textbf{GMM} &  & 0.183800/0.369626 & \\\hline
+    \textbf{GMM} &  & 0.183800/0.209626 & \\\hline
     \textbf{Fusion}& & 0.197922/0.236549 & \\\hline
     \hline
     \multicolumn{4}{c}{\textbf{Calibrated Models [minDCF/actDCF] }} \\   \hline
     &\textbf{\(\tilde{\pi}=0.1\)}  &  \textbf{\(\tilde{\pi}=0.5\)} & \textbf{\(\tilde{\pi}=0.9\)} \\ \hline
-    \textbf{QLR} & 0.351473/0.389589 & 0.351473/0.371689 & 0.351473/0.364806\\
+    \textbf{QLR} & 0.248591/0.272129 & 0.249583/0.260928 & 0.248031/0.265745\\
     \textbf{SVM} & 0.265915/0.294592 & 0.265915/0.275374 & 0.265915/0.273113\\
     \textbf{GMM} & \textcolor{red}{0.185387/0.205280}& 0.183800/0.202290 & 0.183800/0.210571\\
     \hline
@@ -1218,7 +1220,7 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
     \hline
     \multicolumn{3}{c}{\textbf{Chosen model GMM(Diag,nc0=8,nc1=32)}} \\   \hline
     &\textbf{Uncalibrated} & \textbf{Calibrated}\\\hline
-     minDCF/actDCF & 0.183800/0.369626 & 0.185387/0.205280\\
+     minDCF/actDCF & 0.183800/0.209626 & 0.185387/0.205280\\
     \hline
     \multicolumn{3}{c}{\textbf{Other model GMM(Diag,nc0=4,nc1=16)}} \\   \hline
     &\textbf{Uncalibrated} & \textbf{Calibrated}\\\hline
