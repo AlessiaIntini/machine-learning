@@ -770,7 +770,7 @@ where vec(X) is the operator that stacks the columns of X into a single column v
 
  The quadratic model can help us extract correlations between features that cannot be extracted by a linear model, in our case we can see that Quadratic Logistic Regression performs better than Binary Logistic Regression with and without prior-weighted.
 
-\subsubsection*{Conclusion for Binary Logistic Regression}
+\subsubsection*{Conclusion for Logistic Regression}
 \begin{itemize}
     \item We can see that applying z-normalization does not bring us significant changes in the observed metrics, it could be because of the invariance of Logistic Regression in fact being based on a linear function of the data, it is invariant to linear transformations of the data, i.e. it does not change the ability of the model to separate classes if the relationship between the features and the label is already linearly separable.  Also if the regularization parameter is chosen appropriately this could minimize the effect of z-normalization. Finally, if our data are already distributed such that features contribute equally to the model decision, z-normalization may not have a significant impact.  
     \item For all the various models represented in
@@ -1039,6 +1039,8 @@ During training with the GMM model, all achievable results were tested by giving
     \item  After applying the model we can conclude that the best performance is achieved by using 8 components for class 0 and 32 components for class 1, the choice of 8 components for class 0 and 32 for class 1 suggests that class 1 requires a more complex model to avoid underfitting, while for class 0 a less complex model is sufficient.\\
     While the better performance using a diagonal type covariance matrix indicates that assuming independence of features from each other leads to better results. This may suggest that the features in the dataset have a primarily independent relationship and that the additional complexity introduced by a full covariance matrix does not provide significant benefits in terms of model performance.
     \item Compared with the other models, it is also possible to see that the results are better calibrated than all the other cases, in fact, in addition to being the model that gives us lower minDCF than all the others, it is also the one that is better calibrated.
+    \item We can say that GMM probably turns out to be the best performing model on our dataset for several reasons, the first might be that it is able to model complex distributions of the data through the combination of multiple Gaussian distributions, this allows it to better fit various shapes and overlaps of class distributions than simpler or linear models. The second it assigns a membership probability to each class for each data point, rather than a rigid classification this can give good results in the presence of overlapping data where if we were to associate only one component the assignment could be wrong. Also by estimating Gaussian parameters we can effectively model the distributions of the data we have, even if they are complex. Finally through cross validation we can also choose the number of components that we feel is most correct for each class to represent the features. For all these reasons we can say that in our case this seems to be the model that fits best.
+
 \end{itemize}
 \underline{Best GMM model} analyzed for our main application that is application with \(\pi_T=0.1\) is:
 \begin{itemize}
@@ -1234,7 +1236,7 @@ In the Figure~\Ref{fig:Act} we can see what the actDCF values are for the differ
 We can therefore conclude that in general quadratic models give better performance than linear models. And also that the features do not turn out to be particularly correlated as we had mentioned from the beginning since precisely GMM which is the best performing model suggests to us that the features can be considered independent of each other, since using a diagonal covariance matrix assumes that there is no correlation between the different features in the data. This implies that each dimension contributes independently to the overall distribution without interactions with other dimensions.\\\\
 Also for this same reason we can conclude that PCA did not give any real improvements, rather the performance remained similar to before the application of it, this could be because the original features are already independent and contribute uniformly to the variance of the data and therefore the application of PCA may not lead to significant improvement in model performance. This is because PCA is useful when there are relationships between features that can be exploited to reduce dimensionality, but if they are already independent, each principal component may end up capturing only a small portion of the total variance, making dimensionality reduction less useful.\\
 In the end however, we can conclude that for the target application \(\tilde{\pi}=0.1\) and the choices made on the training dataset also proved useful on the evaluation set when we went to apply them.
-
+In fact, even during the evaluation on the evaluation dataset, we could see that all the assumptions made during the testing of all the models were correct, and indeed the chosen model is the one that obtained the best results.
 \newpage
 
 
